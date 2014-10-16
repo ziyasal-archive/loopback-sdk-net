@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopBack.Sdk.Xamarin", "LoopBack.Sdk.Xamarin\LoopBack.Sdk.Xamarin.csproj", "{851D16E6-3D7C-4916-8864-CED6E589E0A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopBack.Sdk.Xamarin.Tests", "LoopBack.Sdk.Xamarin.Tests\LoopBack.Sdk.Xamarin.Tests.csproj", "{B3E1D691-AD02-4A3A-A0A6-0BDBEAA4919F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{851D16E6-3D7C-4916-8864-CED6E589E0A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{851D16E6-3D7C-4916-8864-CED6E589E0A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{851D16E6-3D7C-4916-8864-CED6E589E0A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{851D16E6-3D7C-4916-8864-CED6E589E0A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3E1D691-AD02-4A3A-A0A6-0BDBEAA4919F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3E1D691-AD02-4A3A-A0A6-0BDBEAA4919F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3E1D691-AD02-4A3A-A0A6-0BDBEAA4919F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3E1D691-AD02-4A3A-A0A6-0BDBEAA4919F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = LoopBack.Sdk.Xamarin\LoopBack.Sdk.Xamarin.csproj
+	EndGlobalSection
+EndGlobal
