@@ -1,0 +1,21 @@
+version: 1.0.0
+name: LoopBack.Sdk.Xamarin
+publisher: StrongLoop
+id: loopBack.sdk.xamarin
+publisher-url: http://strongloop.com/
+summary: LoopBack Xamarin Sdk
+monodoc: source/docs/
+libraries:
+  ios: 
+    - 
+  android: 
+    - 
+samples:
+  - name: "Android Sample"
+    path: 
+    nobuild: true
+  - name: "iOS Unified Sample"
+    path: 
+build:
+  - src/LoopBack.Xamarin.iOS/LoopBack.Xamarin.iOS.sln
+  - src/LoopBack.Xamarin.Android/Xamarin.Social.Android.sln
