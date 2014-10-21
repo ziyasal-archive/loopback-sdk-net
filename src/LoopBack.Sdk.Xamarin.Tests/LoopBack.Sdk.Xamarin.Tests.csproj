@@ -65,6 +65,7 @@
     <Compile Include="SampleModel.cs" />
     <Compile Include="ModelRepositoryTests.cs" />
     <Compile Include="Extensions\NunitExtensions.cs" />
+    <Compile Include="Extensions\MoqExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
