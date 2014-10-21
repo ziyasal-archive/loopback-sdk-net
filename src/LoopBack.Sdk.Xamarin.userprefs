@@ -1,9 +1,8 @@
 ﻿<Properties GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="LoopBack.Sdk.Xamarin.Tests/Extensions/MoqExtensions.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="LoopBack.Sdk.Xamarin/AccessToken.cs">
     <Files>
-      <File FileName="LoopBack.Sdk.Xamarin.Tests/Extensions/NunitExtensions.cs" Line="37" Column="37" />
-      <File FileName="LoopBack.Sdk.Xamarin.Tests/Extensions/MoqExtensions.cs" Line="2" Column="2" />
+      <File FileName="LoopBack.Sdk.Xamarin/AccessToken.cs" Line="4" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
