@@ -8,25 +8,29 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
     public class RestAdapter : Adapter
     {
         private static string TAG = "remoting.RestAdapter";
-        private IRestClient _client;
+		private IRestClient _httpClient;
 
         public RestAdapter(IContext context, string url)
             : base(context, url)
         {
             Contract = new RestContract();
-            _client = new RestClient(url);
         }
 
         public RestContract Contract { get; set; }
 
         public override void Connect(IContext context, string url)
         {
-            throw new NotImplementedException();
+			if (url == null) {
+				_httpClient = null;
+			}
+			else {
+				_httpClient = new RestClient (url);
+			}
         }
 
         public override bool IsConnected()
         {
-            throw new NotImplementedException();
+			return _httpClient != null;
         }
 
         public override void InvokeStaticMethod(string method,
@@ -45,5 +49,17 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         {
             throw new NotImplementedException();
         }
+
+		private void invokeStaticMethod(String method, Dictionary<string,object> parameters, Action handler) {
+			if (contract == null) {
+				throw new IllegalStateException("Invalid contract");
+			}
+
+			String verb = contract.getVerbForMethod(method);
+			String path = contract.getUrlForMethod(method, parameters);
+			ParameterEncoding parameterEncoding = contract.getParameterEncodingForMethod(method);
+
+			request(path, verb, parameters, parameterEncoding, httpHandler);
+		}
     }
 }

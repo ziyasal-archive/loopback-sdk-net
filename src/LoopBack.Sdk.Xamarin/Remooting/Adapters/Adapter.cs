@@ -25,7 +25,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         {
             if (url != null)
             {
-                connect(context, url);
+                Connect(context, url);
             }
         }
 
