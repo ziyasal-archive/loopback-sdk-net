@@ -42,7 +42,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
 
             RestContractItem item = Items[method];
 
-            return item != null ? item.GetPattern() : null;
+			return item != null ? item.Pattern : null;
         }
 
         public string GetVerbForMethod(String method)
@@ -54,11 +54,11 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
 
             RestContractItem item = Items[method];
 
-            return item != null ? item.GetVerb() : "POST";
+			return item != null ? item.Verb : "POST";
         }
 
 
-        public ParameterEncoding GetParameterEncodingForMethod(String method)
+        public Adapter.ParameterEncoding GetParameterEncodingForMethod(String method)
         {
             if (method == null)
             {
@@ -68,8 +68,8 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             RestContractItem item = Items[method];
 
             return item != null
-                ? item.GetParameterEncoding()
-                : ParameterEncoding.JSON;
+				? item.ParameterEncoding
+                : Adapter.ParameterEncoding.JSON;
         }
 
         public String GetUrlForMethod(string method, Dictionary<string, object> parameters)

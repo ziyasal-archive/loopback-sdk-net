@@ -1,16 +1,20 @@
-﻿using LoopBack.Sdk.Xamarin.Remooting.Adapters;
+﻿using System;
+using LoopBack.Sdk.Xamarin.Remooting.Adapters;
 
 namespace LoopBack.Sdk.Xamarin.Remooting
 {
-    public class Repository
+    public class Repository<T> : IRepository where T : VirtualObject
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public Adapter GetAdapter()
+        public Adapter Adapter { get; set; }
+
+        public Repository(string className)
         {
-            throw new System.NotImplementedException();
+
+        }
+
+        public Repository(string className, Type classType)
+        {
+
         }
 
         /// <summary>
@@ -19,7 +23,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         /// <returns></returns>
         public string GetClassName()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

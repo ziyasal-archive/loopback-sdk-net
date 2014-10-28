@@ -6,11 +6,20 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
 {
     public abstract class Adapter
     {
+        public enum ParameterEncoding
+        {
+            FORM_URL,
+            JSON,
+            FORM_MULTIPART
+        }
+
+        public string Url { get; set; }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="context"></param>
-        public Adapter(IContext context)
+        protected Adapter(IContext context)
             : this(context, null)
         {
 
@@ -21,11 +30,12 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         /// </summary>
         /// <param name="context"></param>
         /// <param name="url"></param>
-        public Adapter(IContext context, string url)
+        protected Adapter(IContext context, string url)
         {
             if (url != null)
             {
-                connect(context, url);
+                Url = url;
+                Connect(context, url);
             }
         }
 
@@ -57,11 +67,11 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="method"></param>
         /// <param name="parameters"></param>
         /// <param name="onSuccess"></param>
         /// <param name="onError"></param>
-        public void InvokeInstanceMethod(string path,
+        public virtual void InvokeInstanceMethod(string method,
             Dictionary<string, object> parameters,
             Action<byte[], string> onSuccess,
             Action<Exception> onError)
@@ -72,12 +82,12 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="method"></param>
         /// <param name="constructorParameters"></param>
         /// <param name="parameters"></param>
         /// <param name="onSuccess"></param>
         /// <param name="onError"></param>
-        public abstract void InvokeInstanceMethod(string path,
+        public abstract void InvokeInstanceMethod(string method,
             Dictionary<string, object> constructorParameters,
             Dictionary<string, object> parameters,
             Action<string> onSuccess,
@@ -86,12 +96,12 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="method"></param>
         /// <param name="constructorParameters"></param>
         /// <param name="parameters"></param>
         /// <param name="onSuccess"></param>
         /// <param name="onError"></param>
-        public void InvokeInstanceMethod(string path,
+        public virtual void InvokeInstanceMethod(string method,
             Dictionary<string, object> constructorParameters,
             Dictionary<string, object> parameters,
             Action<byte[], string> onSuccess,

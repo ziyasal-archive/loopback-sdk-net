@@ -46,7 +46,7 @@ namespace LoopBack.Sdk.Xamarin.Common
             }
 
             var dictionary = new Dictionary<string, T>();
-            foreach (PropertyInfo property in source.GetType().GetProperties())
+			foreach (PropertyInfo property in source.GetType().GetRuntimeProperties())
             {
                 AddPropertyToDictionary<T>(property, source, dictionary);
             }

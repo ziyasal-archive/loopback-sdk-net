@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using RestSharp.Portable;
 
 namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
 {
@@ -22,7 +22,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             _contentType = contentType;
         }
 
-        public virtual void PutTo(IRestRequest request, string key)
+        public virtual void PutTo(Dictionary<string,object> requestParameters, string key)
         {
             throw new NotImplementedException();
         }

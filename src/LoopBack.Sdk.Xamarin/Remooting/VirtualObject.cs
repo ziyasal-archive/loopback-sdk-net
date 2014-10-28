@@ -9,7 +9,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
     public class VirtualObject
     {
         [JsonIgnore]
-        protected Repository Repository;
+        protected IRepository Repository { get; set; }
 
         private readonly Dictionary<String, object> _creationParameters;
 
@@ -28,7 +28,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="creationParameters"></param>
-        public VirtualObject(Repository repository, Dictionary<String, object> creationParameters)
+        public VirtualObject(IRepository repository, Dictionary<String, object> creationParameters)
         {
             Repository = repository;
             _creationParameters = creationParameters;
@@ -55,7 +55,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
             Action<string> onSuccess,
             Action<Exception> onError)
         {
-            Adapter adapter = Repository.GetAdapter();
+            Adapter adapter = Repository.Adapter;
             if (adapter == null)
             {
                 throw new ArgumentNullException("adapter", "Repository adapter cannot be null");
@@ -75,7 +75,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
             Action<byte[], String> onSuccess,
             Action<Exception> onError)
         {
-            Adapter adapter = Repository.GetAdapter();
+            Adapter adapter = Repository.Adapter;
             if (adapter == null)
             {
                 throw new ArgumentNullException("adapter", "Repository adapter cannot be null");

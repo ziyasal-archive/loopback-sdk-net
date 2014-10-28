@@ -4,7 +4,7 @@
     {
         private readonly string _pattern;
         private readonly string _verb;
-        private readonly ParameterEncoding _parameterEncoding;
+        private readonly Adapter.ParameterEncoding _parameterEncoding;
 
         /// <summary>
         /// 
@@ -21,7 +21,7 @@
         /// <param name="pattern"></param>
         /// <param name="verb"></param>
         public RestContractItem(string pattern, string verb)
-            : this(pattern, verb, ParameterEncoding.JSON)
+            : this(pattern, verb, Adapter.ParameterEncoding.JSON)
         {
         }
 
@@ -34,10 +34,10 @@
 
         public static RestContractItem CreateMultipart(string pattern, string verb)
         {
-            return new RestContractItem(pattern, verb, ParameterEncoding.FORM_MULTIPART);
+            return new RestContractItem(pattern, verb, Adapter.ParameterEncoding.FORM_MULTIPART);
         }
 
-        private RestContractItem(string pattern, string verb, ParameterEncoding parameterEncoding)
+        private RestContractItem(string pattern, string verb, Adapter.ParameterEncoding parameterEncoding)
         {
             _pattern = pattern;
             _verb = verb;
@@ -63,7 +63,7 @@
         /// <summary>
         /// 
         /// </summary>
-        public virtual ParameterEncoding ParameterEncoding
+        public virtual Adapter.ParameterEncoding ParameterEncoding
         {
             get { return _parameterEncoding; }
         }
