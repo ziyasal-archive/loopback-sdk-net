@@ -30,12 +30,20 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Common\DictionaryHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Remooting\Adapters\Adapter.cs" />
+    <Compile Include="Remooting\Adapters\ParameterEncoding.cs" />
     <Compile Include="Remooting\Adapters\RestAdapter.cs" />
     <Compile Include="Loopback\AccessToken.cs" />
     <Compile Include="Loopback\Model.cs" />
     <Compile Include="Loopback\ModelRepository.cs" />
     <Compile Include="Loopback\User.cs" />
+    <Compile Include="Remooting\Adapters\RestContract.cs" />
+    <Compile Include="Remooting\Adapters\RestContractItem.cs" />
+    <Compile Include="Common\IContext.cs" />
+    <Compile Include="Remooting\Adapters\StreamParam.cs" />
+    <Compile Include="Remooting\Repository.cs" />
     <Compile Include="Remooting\VirtualObject.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -76,9 +84,5 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Loopback\" />
-    <Folder Include="Remooting\" />
-    <Folder Include="Remooting\Adapters\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

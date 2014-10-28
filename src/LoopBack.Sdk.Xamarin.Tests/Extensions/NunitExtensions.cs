@@ -1,8 +1,8 @@
 ﻿using System;
-using NUnit.Framework;
 using System.Threading.Tasks;
+using NUnit.Framework;
 
-namespace LoopBack.Sdk.Xamarin.Tests
+namespace LoopBack.Sdk.Xamarin.Tests.Extensions
 {
 	public static class NunitExtensions
 	{

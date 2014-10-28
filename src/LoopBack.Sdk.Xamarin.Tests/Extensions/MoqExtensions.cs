@@ -1,9 +1,8 @@
-﻿using System;
-using Moq.Language.Flow;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Moq.Language;
+using Moq.Language.Flow;
 
-namespace LoopBack.Sdk.Xamarin.Tests
+namespace LoopBack.Sdk.Xamarin.Tests.Extensions
 {
 	public static class MoqExtensions
 	{
