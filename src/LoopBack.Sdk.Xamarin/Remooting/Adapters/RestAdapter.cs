@@ -1,4 +1,4 @@
-﻿namespace LoopBack.Sdk.Xamarin
+﻿namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
 {
 	public class RestAdapter
 	{

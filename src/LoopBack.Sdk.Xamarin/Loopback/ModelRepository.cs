@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LoopBack.Sdk.Xamarin
+﻿namespace LoopBack.Sdk.Xamarin.Loopback
 {
 	public class ModelRepository
 	{
