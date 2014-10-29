@@ -42,18 +42,18 @@ namespace LoopBack.Sdk.Xamarin.Loopback
 
         public virtual ModelRepository<Model> CreateRepository(string name)
         {
-            return CreateRepository<Model>(name, null, null);
+            return CreateRepository<Model>(name, null);
         }
 
         public virtual ModelRepository<Model> CreateRepository(string name, string nameForRestUrl)
         {
-            return CreateRepository<Model>(name, nameForRestUrl, null);
+            return CreateRepository<Model>(name, nameForRestUrl);
         }
 
-        public virtual ModelRepository<T> CreateRepository<T>(string name, string nameForRestUrl, T modelClass)
+        public virtual ModelRepository<T> CreateRepository<T>(string name, string nameForRestUrl)
             where T : Model
         {
-            ModelRepository<T> repository = new ModelRepository<T>(name, nameForRestUrl, modelClass);
+			ModelRepository<T> repository = new ModelRepository<T>(name, nameForRestUrl, typeof(T));
             AttachModelRepository(repository);
             return repository;
         }

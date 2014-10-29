@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace LoopBack.Sdk.Xamarin.Loopback
 {
-    class AccessTokenRepository
+	public class AccessTokenRepository : ModelRepository<AccessToken>
     {
+		public AccessTokenRepository ():base("accessToken",typeof(AccessToken))
+		{
+			
+		}
     }
 }
