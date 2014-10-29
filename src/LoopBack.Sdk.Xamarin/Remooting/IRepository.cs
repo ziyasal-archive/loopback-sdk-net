@@ -5,12 +5,10 @@ namespace LoopBack.Sdk.Xamarin.Remooting
     public interface IRepository
     {
         /// <summary>
-        /// 
         /// </summary>
         Adapter Adapter { get; set; }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <returns></returns>
         string GetClassName();

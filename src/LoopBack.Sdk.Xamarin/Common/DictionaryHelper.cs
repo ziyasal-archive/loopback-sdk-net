@@ -10,6 +10,24 @@ namespace LoopBack.Sdk.Xamarin.Common
         /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="instance"></param>
+        /// <returns></returns>
+        public static T ToObject<T>(this Dictionary<string, object> source, T instance) where T : class
+        {
+            Type someObjectType = instance.GetType();
+
+            foreach (KeyValuePair<string, object> item in source)
+            {
+                someObjectType.GetRuntimeProperty(item.Key).SetValue(instance, item.Value, null);
+            }
+
+            return instance;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="target"></param>
         /// <param name="source"></param>
         public static void AddRange<T>(this ICollection<T> target, IEnumerable<T> source)
@@ -23,7 +41,6 @@ namespace LoopBack.Sdk.Xamarin.Common
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
@@ -33,7 +50,6 @@ namespace LoopBack.Sdk.Xamarin.Common
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
@@ -42,13 +58,14 @@ namespace LoopBack.Sdk.Xamarin.Common
         {
             if (source == null)
             {
-                throw new ArgumentNullException("source", "Unable to convert object to a dictionary. The source object is null.");
+                throw new ArgumentNullException("source",
+                    "Unable to convert object to a dictionary. The source object is null.");
             }
 
             var dictionary = new Dictionary<string, T>();
-			foreach (PropertyInfo property in source.GetType().GetRuntimeProperties())
+            foreach (var property in source.GetType().GetRuntimeProperties())
             {
-                AddPropertyToDictionary<T>(property, source, dictionary);
+                AddPropertyToDictionary(property, source, dictionary);
             }
 
             return dictionary;
@@ -56,7 +73,7 @@ namespace LoopBack.Sdk.Xamarin.Common
 
         private static void AddPropertyToDictionary<T>(PropertyInfo property, object source, Dictionary<string, T> dictionary)
         {
-            object value = property.GetValue(source, null);
+            var value = property.GetValue(source, null);
             if (IsOfType<T>(value))
             {
                 dictionary.Add(property.Name, (T)value);

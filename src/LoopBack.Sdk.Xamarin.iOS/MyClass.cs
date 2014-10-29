@@ -1,12 +1,6 @@
-﻿using System;
-
-namespace LoopBack.Sdk.Xamarin.iOS
+﻿namespace LoopBack.Sdk.Xamarin.iOS
 {
-	public class MyClass
-	{
-		public MyClass ()
-		{
-		}
-	}
+    public class MyClass
+    {
+    }
 }
-

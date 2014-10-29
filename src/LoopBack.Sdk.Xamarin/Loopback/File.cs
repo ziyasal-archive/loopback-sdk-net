@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LoopBack.Sdk.Xamarin.Remooting;
+﻿using LoopBack.Sdk.Xamarin.Remooting;
+using Newtonsoft.Json;
 
 namespace LoopBack.Sdk.Xamarin.Loopback
 {
-    class File:VirtualObject
+    public class File : VirtualObject
     {
+        public string Name { get; set; }
 
+        public string Url { get; set; }
+
+        [JsonIgnore]
+        public Container ContainerRef { get; set; }
     }
 }

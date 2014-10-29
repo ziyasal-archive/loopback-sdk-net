@@ -2,12 +2,11 @@
 {
     public class RestContractItem
     {
+        private readonly Adapter.ParameterEncoding _parameterEncoding;
         private readonly string _pattern;
         private readonly string _verb;
-        private readonly Adapter.ParameterEncoding _parameterEncoding;
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="pattern"></param>
         public RestContractItem(string pattern)
@@ -16,25 +15,12 @@
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="pattern"></param>
         /// <param name="verb"></param>
         public RestContractItem(string pattern, string verb)
             : this(pattern, verb, Adapter.ParameterEncoding.JSON)
         {
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pattern"></param>
-        /// <param name="verb"></param>
-        /// <returns></returns>
-
-        public static RestContractItem CreateMultipart(string pattern, string verb)
-        {
-            return new RestContractItem(pattern, verb, Adapter.ParameterEncoding.FORM_MULTIPART);
         }
 
         private RestContractItem(string pattern, string verb, Adapter.ParameterEncoding parameterEncoding)
@@ -45,7 +31,6 @@
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public virtual string Pattern
         {
@@ -53,7 +38,6 @@
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public virtual string Verb
         {
@@ -61,11 +45,20 @@
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public virtual Adapter.ParameterEncoding ParameterEncoding
         {
             get { return _parameterEncoding; }
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="pattern"></param>
+        /// <param name="verb"></param>
+        /// <returns></returns>
+        public static RestContractItem CreateMultipart(string pattern, string verb)
+        {
+            return new RestContractItem(pattern, verb, Adapter.ParameterEncoding.FORM_MULTIPART);
         }
     }
 }

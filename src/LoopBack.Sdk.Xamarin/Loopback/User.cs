@@ -1,9 +1,6 @@
 ﻿namespace LoopBack.Sdk.Xamarin.Loopback
 {
-	public class User:Model
-	{
-		public User ()
-		{
-		}
-	}
+    public class User : Model
+    {
+    }
 }

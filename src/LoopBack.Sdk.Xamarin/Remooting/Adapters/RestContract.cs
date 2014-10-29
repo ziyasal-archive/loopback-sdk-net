@@ -6,12 +6,12 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
 {
     public class RestContract
     {
-        protected Dictionary<string, RestContractItem> Items { get; set; }
-
         public RestContract()
         {
             Items = new Dictionary<string, RestContractItem>();
         }
+
+        protected Dictionary<string, RestContractItem> Items { get; set; }
 
         public void AddItem(RestContractItem item, String method)
         {
@@ -40,9 +40,9 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
                 throw new ArgumentNullException("method", "Method cannot be null");
             }
 
-            RestContractItem item = Items[method];
+            var item = Items[method];
 
-			return item != null ? item.Pattern : null;
+            return item != null ? item.Pattern : null;
         }
 
         public string GetVerbForMethod(String method)
@@ -52,11 +52,10 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
                 throw new ArgumentNullException("method", "Method cannot be null");
             }
 
-            RestContractItem item = Items[method];
+            var item = Items[method];
 
-			return item != null ? item.Verb : "POST";
+            return item != null ? item.Verb : "POST";
         }
-
 
         public Adapter.ParameterEncoding GetParameterEncodingForMethod(String method)
         {
@@ -65,10 +64,10 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
                 throw new ArgumentNullException("method", "Method cannot be null");
             }
 
-            RestContractItem item = Items[method];
+            var item = Items[method];
 
             return item != null
-				? item.ParameterEncoding
+                ? item.ParameterEncoding
                 : Adapter.ParameterEncoding.JSON;
         }
 
@@ -79,7 +78,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
                 throw new ArgumentNullException("method", "Method cannot be null");
             }
 
-            string pattern = GetPatternForMethod(method);
+            var pattern = GetPatternForMethod(method);
 
             if (pattern != null)
             {
@@ -106,16 +105,16 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
                 throw new ArgumentNullException("method", "Method cannot be null");
             }
 
-            string url = pattern;
+            var url = pattern;
             if (parameters == null)
             {
                 return url;
             }
 
-            foreach (KeyValuePair<string, object> entry in parameters)
+            foreach (var entry in parameters)
             {
-                string key = ":" + entry.Key;
-                string value = entry.Value.ToString();
+                var key = ":" + entry.Key;
+                var value = entry.Value.ToString();
                 url = url.Replace(key, value);
             }
 

@@ -8,7 +8,6 @@ namespace LoopBack.Sdk.Xamarin.Loopback
     {
         public const string SHARED_PREFERENCES_NAME = "RestAdapter";
         public const string PROPERTY_ACCESS_TOKEN = "accessToken";
-
         private readonly IContext context;
 
         public RestAdapter(IContext context, string url)
@@ -29,36 +28,35 @@ namespace LoopBack.Sdk.Xamarin.Loopback
             }
         }
 
-        public virtual void ClearAccessToken()
-        {
-            Client.DefaultRequestHeaders.Add("Authorization", string.Empty);
-        }
-
         public virtual IContext ApplicationContext
         {
             get { return context; }
         }
 
+        public virtual void ClearAccessToken()
+        {
+            Client.DefaultRequestHeaders.Add("Authorization", string.Empty);
+        }
 
         public virtual ModelRepository<Model> CreateRepository(string name)
         {
-            return CreateRepository<Model>(name, null);
+            return CreateRepository<Model>(name, null,null);
         }
 
         public virtual ModelRepository<Model> CreateRepository(string name, string nameForRestUrl)
         {
-            return CreateRepository<Model>(name, nameForRestUrl);
+            return CreateRepository<Model>(name, nameForRestUrl,null);
         }
 
-        public virtual ModelRepository<T> CreateRepository<T>(string name, string nameForRestUrl)
+        public virtual ModelRepository<T> CreateRepository<T>(string name, string nameForRestUrl,Type modelClass)
             where T : Model
         {
-			ModelRepository<T> repository = new ModelRepository<T>(name, nameForRestUrl, typeof(T));
+            var repository = new ModelRepository<T>(name, nameForRestUrl, modelClass);
             AttachModelRepository(repository);
             return repository;
         }
 
-        public virtual TRepository CreateRepository<TRepository, T>(TRepository repositoryClass)
+        public virtual TRepository CreateRepository<TRepository, T>()
             where TRepository : RestRepository<T>, new()
             where T : VirtualObject
         {
@@ -72,7 +70,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
             }
             catch (Exception e)
             {
-                ArgumentException ex = new ArgumentException("", e);
+                var ex = new ArgumentException("", e);
                 throw ex;
             }
 
@@ -80,7 +78,6 @@ namespace LoopBack.Sdk.Xamarin.Loopback
 
             return repository;
         }
-
 
         private void AttachModelRepository<T>(RestRepository<T> repository) where T : VirtualObject
         {

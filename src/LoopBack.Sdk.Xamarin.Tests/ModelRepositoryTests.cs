@@ -10,17 +10,16 @@ namespace LoopBack.Sdk.Xamarin.Tests
         [Test]
         public void Create_class_from_dictionary_test()
         {
-            Dictionary<string, object> dictionary = new Dictionary<string, object>
+            var dictionary = new Dictionary<string, object>
             {
                 {"name", "ziyasal"},
                 {"age", 26}
             };
 
-            string json = JsonConvert.SerializeObject(dictionary);
-            SampleModel deserializeObject = JsonConvert.DeserializeObject<SampleModel>(json);
+            var json = JsonConvert.SerializeObject(dictionary);
+            var deserializeObject = JsonConvert.DeserializeObject<SampleModel>(json);
 
             Assert.NotNull(deserializeObject);
         }
     }
 }
-

@@ -1,42 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using LoopBack.Sdk.Xamarin.Common;
-using LoopBack.Sdk.Xamarin.Remooting.Adapters;
 using Newtonsoft.Json;
 
 namespace LoopBack.Sdk.Xamarin.Remooting
 {
     public class VirtualObject
     {
-        [JsonIgnore]
-        protected IRepository Repository { get; set; }
-
-        private readonly Dictionary<String, object> _creationParameters;
+        public Dictionary<String, object> CreationParameters { get; set; }
 
         /// <summary>
-        /// 
         /// </summary>
         public VirtualObject()
             : this(null, null)
         {
-
         }
 
-
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="creationParameters"></param>
         public VirtualObject(IRepository repository, Dictionary<String, object> creationParameters)
         {
             Repository = repository;
-            _creationParameters = creationParameters;
+            CreationParameters = creationParameters;
         }
 
+        [JsonIgnore]
+        public IRepository Repository { get; set; }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <returns></returns>
         protected Dictionary<string, object> ToMap()
@@ -45,7 +38,6 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="method"></param>
         /// <param name="parameters"></param>
@@ -55,17 +47,16 @@ namespace LoopBack.Sdk.Xamarin.Remooting
             Action<string> onSuccess,
             Action<Exception> onError)
         {
-            Adapter adapter = Repository.Adapter;
+            var adapter = Repository.Adapter;
             if (adapter == null)
             {
                 throw new ArgumentNullException("adapter", "Repository adapter cannot be null");
             }
-            String path = Repository.GetClassName() + ".prototype." + method;
-            adapter.InvokeInstanceMethod(path, _creationParameters, parameters, onSuccess, onError);
+            var path = Repository.GetClassName() + ".prototype." + method;
+            adapter.InvokeInstanceMethod(path, CreationParameters, parameters, onSuccess, onError);
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="method"></param>
         /// <param name="parameters"></param>
@@ -75,14 +66,14 @@ namespace LoopBack.Sdk.Xamarin.Remooting
             Action<byte[], String> onSuccess,
             Action<Exception> onError)
         {
-            Adapter adapter = Repository.Adapter;
+            var adapter = Repository.Adapter;
             if (adapter == null)
             {
                 throw new ArgumentNullException("adapter", "Repository adapter cannot be null");
             }
-            String path = Repository.GetClassName() + ".prototype." + method;
+            var path = Repository.GetClassName() + ".prototype." + method;
 
-            adapter.InvokeInstanceMethod(path, _creationParameters, parameters, onSuccess, onError);
+            adapter.InvokeInstanceMethod(path, CreationParameters, parameters, onSuccess, onError);
         }
     }
 }

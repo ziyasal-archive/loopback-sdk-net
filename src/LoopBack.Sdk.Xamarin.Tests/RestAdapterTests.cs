@@ -8,7 +8,6 @@ namespace LoopBack.Sdk.Xamarin.Tests
         [Test]
         public void TestCase()
         {
-          
         }
     }
 }

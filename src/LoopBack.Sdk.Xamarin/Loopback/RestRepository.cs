@@ -12,32 +12,28 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         {
         }
 
-        public RestRepository(string className, Type classType)
-            : base(className, classType)
+        public RestRepository(string className, Type objectClass)
+            : base(className, objectClass)
         {
-
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <returns></returns>
-        public RestContract CreateContract()
+        public virtual RestContract CreateContract()
         {
             return new RestContract();
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <returns></returns>
         public RestAdapter GetRestAdapter()
         {
-            return (RestAdapter)Adapter;
+            return (RestAdapter) Adapter;
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <returns></returns>
         protected IContext GetApplicationContext()

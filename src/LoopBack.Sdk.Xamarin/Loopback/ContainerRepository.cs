@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LoopBack.Sdk.Xamarin.Loopback
+﻿namespace LoopBack.Sdk.Xamarin.Loopback
 {
-    class ContainerRepository
+    internal class ContainerRepository
     {
     }
 }

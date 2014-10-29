@@ -6,9 +6,9 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
 {
     public class StreamParam
     {
-        private readonly Stream _stream;
-        private readonly string _fileName;
         private readonly string _contentType;
+        private readonly string _fileName;
+        private readonly Stream _stream;
 
         public StreamParam(Stream stream, string fileName)
             : this(stream, fileName, null)
@@ -22,7 +22,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             _contentType = contentType;
         }
 
-        public virtual void PutTo(Dictionary<string,object> requestParameters, string key)
+        public virtual void PutTo(Dictionary<string, object> requestParameters, string key)
         {
             throw new NotImplementedException();
         }

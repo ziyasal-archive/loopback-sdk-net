@@ -13,20 +13,15 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             FORM_MULTIPART
         }
 
-        public string Url { get; set; }
-
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="context"></param>
         protected Adapter(IContext context)
             : this(context, null)
         {
-
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="context"></param>
         /// <param name="url"></param>
@@ -39,21 +34,20 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             }
         }
 
+        public string Url { get; set; }
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="context"></param>
         /// <param name="url"></param>
         public abstract void Connect(IContext context, string url);
 
         /// <summary>
-        /// 
         /// </summary>
         /// <returns></returns>
         public abstract bool IsConnected();
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="method"></param>
         /// <param name="parameters"></param>
@@ -65,13 +59,12 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             Action<Exception> onError);
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="method"></param>
         /// <param name="parameters"></param>
         /// <param name="onSuccess"></param>
         /// <param name="onError"></param>
-        public virtual void InvokeInstanceMethod(string method,
+        public virtual void InvokeStaticMethod(string method,
             Dictionary<string, object> parameters,
             Action<byte[], string> onSuccess,
             Action<Exception> onError)
@@ -80,7 +73,6 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="method"></param>
         /// <param name="constructorParameters"></param>
@@ -94,7 +86,6 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             Action<Exception> onError);
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="method"></param>
         /// <param name="constructorParameters"></param>
