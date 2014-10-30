@@ -4,33 +4,40 @@ using LoopBack.Sdk.Xamarin.Remooting;
 
 namespace LoopBack.Sdk.Xamarin.Loopback
 {
+    /// <summary>
+    /// An extension to the vanilla <see cref="RestAdapter"/> to make working with <see cref="Model"/> s easier.
+    /// </summary>
     public class RestAdapter : Remooting.Adapters.RestAdapter
     {
-        public const string SHARED_PREFERENCES_NAME = "RestAdapter";
-        public const string PROPERTY_ACCESS_TOKEN = "accessToken";
-        private readonly IContext context;
+        public static string SHARED_PREFERENCES_NAME = "RestAdapter";
+        public static string PROPERTY_ACCESS_TOKEN = "accessToken";
+        private readonly IContext _context;
 
         public RestAdapter(IContext context, string url)
             : base(context, url)
         {
             if (context == null)
-                throw new ArgumentNullException("context must be not null");
-            this.context = context;
-            //AccessToken = loadAccessToken();
+            {
+                throw new ArgumentNullException("context", "context must be not null");
+
+            }
+
+            _context = context;
+            AccessToken = LoadAccessToken();
         }
 
         public virtual string AccessToken
         {
             set
             {
-                //saveAccessToken(value);
+                SaveAccessToken(value);
                 Client.DefaultRequestHeaders.Add("Authorization", value);
             }
         }
 
         public virtual IContext ApplicationContext
         {
-            get { return context; }
+            get { return _context; }
         }
 
         public virtual void ClearAccessToken()
@@ -38,17 +45,37 @@ namespace LoopBack.Sdk.Xamarin.Loopback
             Client.DefaultRequestHeaders.Add("Authorization", string.Empty);
         }
 
+        /// <summary>
+        /// Creates a new <see cref="ModelRepository{T}"/> representing the named model type.
+        /// </summary>
+        /// <param name="name">The model name.</param>
+        /// <returns> A new repository instance.</returns>
         public virtual ModelRepository<Model> CreateRepository(string name)
         {
-            return CreateRepository<Model>(name, null,null);
+            return CreateRepository<Model>(name, null, null);
         }
 
+
+        /// <summary>
+        /// Creates a new <see cref="ModelRepository{T}"/>  representing the named model type.
+        /// </summary>
+        /// <param name="name">The model name.</param>
+        /// <param name="nameForRestUrl">The model name to use in REST URL, usually the plural form of `name`.</param>
+        /// <returns>A new repository instance.</returns>
         public virtual ModelRepository<Model> CreateRepository(string name, string nameForRestUrl)
         {
-            return CreateRepository<Model>(name, nameForRestUrl,null);
+            return CreateRepository<Model>(name, nameForRestUrl, null);
         }
 
-        public virtual ModelRepository<T> CreateRepository<T>(string name, string nameForRestUrl,Type modelClass)
+        /// <summary>
+        /// Creates a new <see cref="ModelRepository{T}"/> representing the named model type.
+        /// </summary>
+        /// <typeparam name="T">The model type that inherited from <see cref="Model"/>.</typeparam>
+        /// <param name="name">The model name.</param>
+        /// <param name="nameForRestUrl">The model name to use in REST URL, usually the plural form of `name`.</param>
+        /// <param name="modelClass">modelClass The model class. The class must have a public no-argument constructor.</param>
+        /// <returns>A new repository instance.</returns>
+        public virtual ModelRepository<T> CreateRepository<T>(string name, string nameForRestUrl, Type modelClass)
             where T : Model
         {
             var repository = new ModelRepository<T>(name, nameForRestUrl, modelClass);
@@ -56,6 +83,12 @@ namespace LoopBack.Sdk.Xamarin.Loopback
             return repository;
         }
 
+        /// <summary>
+        /// Creates a new <see cref="ModelRepository{T}"/> from the given subclass.
+        /// </summary>
+        /// <typeparam name="TRepository">A subclass of <see cref="RestRepository{T}"/> to use. The class must have a public no-argument constructor.</typeparam>
+        /// <typeparam name="T">The model calss that inherited from <see cref="Model"/></typeparam>
+        /// <returns>A new repository instance.</returns>
         public virtual TRepository CreateRepository<TRepository, T>()
             where TRepository : RestRepository<T>, new()
             where T : VirtualObject
@@ -83,6 +116,17 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         {
             Contract.AddItemsFromContract(repository.CreateContract());
             repository.Adapter = this;
+        }
+
+        private void SaveAccessToken(string accessToken)
+        {
+            //TODO: SharedPreferences
+        }
+
+        private string LoadAccessToken()
+        {
+            //TODO: SharedPreferences
+            return null;
         }
     }
 }

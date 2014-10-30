@@ -10,7 +10,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
     public class Model : VirtualObject
     {
         /// <summary>
-        /// the model's id field.
+        /// The model's id field.
         /// </summary>
         public object Id { get; internal set; }
 

@@ -17,25 +17,16 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         {
         }
 
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
         public virtual RestContract CreateContract()
         {
             return new RestContract();
         }
 
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
         public RestAdapter GetRestAdapter()
         {
-            return (RestAdapter) Adapter;
+            return (RestAdapter)Adapter;
         }
 
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
         protected IContext GetApplicationContext()
         {
             return GetRestAdapter().ApplicationContext;
