@@ -4,6 +4,7 @@
     {
         public AccessTokenRepository() : base("accessToken", typeof (AccessToken))
         {
+
         }
     }
 }

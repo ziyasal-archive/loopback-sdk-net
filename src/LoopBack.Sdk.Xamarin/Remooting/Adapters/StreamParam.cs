@@ -18,6 +18,10 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         {
         }
 
+        public StreamParam(byte[] content, string fileName)
+        {
+        }
+
         public StreamParam(Stream stream, string fileName, string contentType)
         {
             _stream = stream;

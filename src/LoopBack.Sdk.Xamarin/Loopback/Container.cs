@@ -10,29 +10,29 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         public virtual string Name { set; get; }
 
 
-        public virtual void Upload(IFile file, Action<File> callback)
+        public virtual void Upload(IFile file, Action<File> onSuccess, Action<Exception> onError)
         {
-            FileRepository.Upload(file, callback);
+            FileRepository.Upload(file, onSuccess, onError);
         }
 
-        public virtual void Upload(string fileName, byte[] content, string contentType, Action<File> callback)
+        public virtual void Upload(string fileName, byte[] content, string contentType, Action<File> onSuccess, Action<Exception> onError)
         {
-            FileRepository.Upload(fileName, content, contentType, callback);
+            FileRepository.Upload(fileName, content, contentType, onSuccess, onError);
         }
-   
+
         public virtual File CreateFileObject(string name)
         {
-            return FileRepository.CreateObject(new Dictionary<string, object>() { { "name", name } });
+            return FileRepository.CreateObject(new Dictionary<string, object> { { "name", name } });
         }
-   
-        public virtual void GetFile(string fileName, Action<File> callback)
+
+        public virtual void GetFile(string fileName, Action<File> onSuccess, Action<Exception> onError)
         {
-            FileRepository.Get(fileName, callback);
+            FileRepository.Get(fileName, onSuccess, onError);
         }
- 
-        public virtual void GetAllFiles(Action<File> callback)
+
+        public virtual void GetAllFiles(Action<List<File>> onSuccess, Action<Exception> onError)
         {
-            FileRepository.GetAll(callback);
+            FileRepository.GetAll(onSuccess, onError);
         }
 
         public virtual FileRepository FileRepository
@@ -40,7 +40,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
             get
             {
                 RestAdapter adapter = ((RestAdapter)Repository.Adapter);
-                FileRepository repo = adapter.CreateRepository<FileRepository,File>();
+                FileRepository repo = adapter.CreateRepository<FileRepository, File>();
                 repo.Container = this;
                 return repo;
             }
