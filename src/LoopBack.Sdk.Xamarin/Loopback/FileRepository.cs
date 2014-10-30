@@ -159,9 +159,8 @@ namespace LoopBack.Sdk.Xamarin.Loopback
 
             InvokeStaticMethod("get", parameters, response =>
             {
-                JObject jObject = JObject.Parse(response);
-
-                Dictionary<string, object> creationParams = jObject.ToString().ToDictionaryFromJson();
+                //TODO: valid json
+                Dictionary<string, object> creationParams = response.ToDictionaryFromJson();
                 File file = CreateObject(creationParams);
                 onSuccess(file);
 
