@@ -248,5 +248,5 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         }
     }
 
-    //TODO: AFNetworking . In fact Paul says "modernhttpclient" solves general needs.
+    //TODO: AFNetworking . Paul Betts, says "modernhttpclient" solves general needs.
 }

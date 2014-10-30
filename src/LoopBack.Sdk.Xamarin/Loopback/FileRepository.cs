@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using LoopBack.Sdk.Xamarin.Common;
 using LoopBack.Sdk.Xamarin.Remooting.Adapters;
 using Newtonsoft.Json.Linq;
@@ -56,6 +58,29 @@ namespace LoopBack.Sdk.Xamarin.Loopback
             return file;
         }
 
+        private Action<string> UploadResponseParserHandler(Action<File> onSuccess, Action<Exception> onError)
+        {
+            return response =>
+            {
+                try
+                {
+                    //TODO: Test
+                    JObject data = JObject.Parse(response);
+                    JToken files = data["files"];
+                    JToken fileJson = files.First;
+
+                    Dictionary<string, object> creationParams = fileJson.ToString().ToDictionaryFromJson();
+                    File fileObj = CreateObject(creationParams);
+                    onSuccess(fileObj);
+                }
+                catch (Exception ex)
+                {
+                    onError(ex);
+                    //TODO:Log
+                }
+            };
+        }
+
         /// <summary>
         /// Upload a new file
         /// </summary>
@@ -66,8 +91,27 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         /// <param name="onError">The onSuccess to invoke when the execution finished with error</param>
         public void Upload(string fileName, byte[] content, string contentType, Action<File> onSuccess, Action<Exception> onError)
         {
-            //TODO: file to stream
-            throw new NotImplementedException();
+            Upload(fileName, new MemoryStream(content), contentType, onSuccess, onError);
+        }
+
+        /// <summary>
+        /// Upload a new file
+        /// </summary>
+        /// <param name="fileName">The file name, must be unique within the container.</param>
+        /// <param name="content">Content of the file.</param>
+        /// <param name="contentType">Content type (optional).</param>
+        /// <param name="onSuccess">The onSuccess to invoke when the execution finished with success</param>
+        /// <param name="onError">The onSuccess to invoke when the execution finished with error</param>
+        public void Upload(string fileName, Stream content, string contentType, Action<File> onSuccess, Action<Exception> onError)
+        {
+            StreamParam streamParam = new StreamParam(content, fileName, contentType);
+            Dictionary<string, object> parameters = new Dictionary<string, object>()
+            {
+                {"container",GetContainerName() },
+                {"file" ,streamParam}
+            };
+
+            InvokeStaticMethod("upload", parameters, UploadResponseParserHandler(onSuccess, onError), onError);
         }
 
         /// <summary>
@@ -80,8 +124,9 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         /// <param name="onError">The onSuccess to invoke when the execution finished with error</param>
         public void Upload(string name, IFile file, string contentType, Action<File> onSuccess, Action<Exception> onError)
         {
-            //TODO: file to stream
-            throw new NotImplementedException();
+            Task<string> allText = file.ReadAllTextAsync();
+            byte[] content = allText.Result.GetBytes();
+            Upload(name, content, contentType, onSuccess, onError);
         }
 
         /// <summary>
@@ -92,8 +137,9 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         /// <param name="onError">The onSuccess to invoke when the execution finished with error</param>
         public void Upload(IFile file, Action<File> onSuccess, Action<Exception> onError)
         {
-            //TODO: file to stream
-            throw new NotImplementedException();
+            Task<string> allText = file.ReadAllTextAsync();
+            byte[] content = allText.Result.GetBytes();
+            Upload(file.Name, content, null, onSuccess, onError);
         }
 
         /// <summary>
@@ -104,10 +150,13 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         /// <param name="onError">The onSuccess to invoke when the execution finished with error</param>
         public void Get(string fileName, Action<File> onSuccess, Action<Exception> onError)
         {
-            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            //TODO: Test
+            Dictionary<string, object> parameters = new Dictionary<string, object>
+            {
+                {"container", GetContainerName()},
+                {"name", fileName}
+            };
 
-            parameters.Add("container", GetContainerName());
-            parameters.Add("name", fileName);
             InvokeStaticMethod("get", parameters, response =>
             {
                 JObject jObject = JObject.Parse(response);
@@ -126,6 +175,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         /// <param name="onError">The onSuccess to invoke when the execution finished with error</param>
         public void GetAll(Action<List<File>> onSuccess, Action<Exception> onError)
         {
+            //TODO: Test
             Dictionary<string, object> dictionary = new Dictionary<string, object>()
            {
                {"container",GetContainerName()}
