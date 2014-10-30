@@ -5,34 +5,63 @@ using LoopBack.Sdk.Xamarin.Remooting.Adapters;
 
 namespace LoopBack.Sdk.Xamarin.Remooting
 {
+    /// <summary>
+    ///  A local representative of remote model repository, it provides access to static methods like <pre>User.findById()</pre>
+    /// </summary>
     public class Repository<T> : IRepository where T : VirtualObject
     {
         private readonly Type _objectClass;
-        private readonly string _className;
 
-        public Repository(string className)
+        private string _className;
+
+        /// <summary>
+        /// The Adapter that should be used for invoking methods, both
+        /// for static methods on this prototype and all methods on all instances of
+        /// this prototype.
+        /// </summary>
+        public Adapter Adapter { get; set; }
+
+        /// <summary>
+        /// The name given to this prototype on the server.
+        /// </summary>
+        public string ClassName
         {
-            _className = className;
+            get { return _className; }
+            private set { _className = value; }
         }
 
+        /// <summary>
+        /// Creates a new Repository, associating it with the named remote class.
+        /// </summary>
+        /// <param name="className">The remote class name</param>
+        public Repository(string className)
+            : this(className, null)
+        {
+        }
+
+
+        /// <summary>
+        /// Creates a new Repository, associating it with the named remote class.
+        /// </summary>
+        /// <param name="className">The remote class name.</param>
+        /// <param name="objectClass"></param>
         public Repository(string className, Type objectClass)
         {
             if (string.IsNullOrEmpty(className))
             {
-                throw new ArgumentNullException("Class name cannot be null or empty.");
+                throw new ArgumentException("Class name cannot be null or empty.");
             }
-            _className = className;
+            ClassName = className;
 
             _objectClass = objectClass ?? typeof(VirtualObject);
         }
 
-        public Adapter Adapter { get; set; }
 
-        public string GetClassName()
-        {
-            return _className;
-        }
-
+        /// <summary>
+        /// Creates a new <see cref="VirtualObject"/> as a virtual instance of this remote class.
+        /// </summary>
+        /// <param name="creationParameters">The creation parameters of the new object</param>
+        /// <returns>A new <see cref="VirtualObject"/> based on this prototype.</returns>
         public virtual T CreateObject(Dictionary<string, object> creationParameters)
         {
             T objectToCreate;
@@ -57,6 +86,13 @@ namespace LoopBack.Sdk.Xamarin.Remooting
             return objectToCreate;
         }
 
+        /// <summary>
+        /// Invokes a remotable method exposed statically within this class on the server.
+        /// </summary>
+        /// <param name="method">The method to invoke (without the class name), e.g. <code>"doSomething"</code>.</param>
+        /// <param name="parameters">The parameters to invoke with.</param>
+        /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
+        /// <param name="onError">The callback to invoke when the execution finished with error</param>
         public void InvokeStaticMethod(string method, Dictionary<string, object> parameters, Action<string> onSuccess, Action<Exception> onError)
         {
             if (Adapter == null)
@@ -67,6 +103,13 @@ namespace LoopBack.Sdk.Xamarin.Remooting
             Adapter.InvokeStaticMethod(path, parameters, onSuccess, onError);
         }
 
+        /// <summary>
+        /// Invokes a remotable method exposed statically within this class on the server, parses the response as binary data.,
+        /// </summary>
+        /// <param name="method">The method to invoke (without the class name), e.g. <code>"doSomething"</code>.</param>
+        /// <param name="parameters">The parameters to invoke with.</param>
+        /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
+        /// <param name="onError">The callback to invoke when the execution finished with error</param>
         public void InvokeStaticMethod(string method,
                                   Dictionary<string, object> parameters, Action<byte[], string> onSuccess, Action<Exception> onError)
         {

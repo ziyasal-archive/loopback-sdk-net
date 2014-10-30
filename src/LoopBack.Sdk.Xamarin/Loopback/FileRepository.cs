@@ -26,17 +26,17 @@ namespace LoopBack.Sdk.Xamarin.Loopback
             RestContract contract = new RestContract();
 
             const string basePath = "/containers/:container";
-            string className = GetClassName();
 
-            contract.AddItem(new RestContractItem(basePath + "/files/:name", "GET"), className + ".get");
 
-            contract.AddItem(new RestContractItem(basePath + "/files", "GET"), className + ".getAll");
+            contract.AddItem(new RestContractItem(basePath + "/files/:name", "GET"), ClassName + ".get");
 
-            contract.AddItem(RestContractItem.CreateMultipart(basePath + "/upload", "POST"), className + ".upload");
+            contract.AddItem(new RestContractItem(basePath + "/files", "GET"), ClassName + ".getAll");
 
-            contract.AddItem(new RestContractItem(basePath + "/download/:name", "GET"), className + ".prototype.download");
+            contract.AddItem(RestContractItem.CreateMultipart(basePath + "/upload", "POST"), ClassName + ".upload");
 
-            contract.AddItem(new RestContractItem(basePath + "/files/:name", "DELETE"), className + ".prototype.delete");
+            contract.AddItem(new RestContractItem(basePath + "/download/:name", "GET"), ClassName + ".prototype.download");
+
+            contract.AddItem(new RestContractItem(basePath + "/files/:name", "DELETE"), ClassName + ".prototype.delete");
 
             return contract;
         }

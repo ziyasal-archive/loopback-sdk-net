@@ -4,6 +4,9 @@ using System.IO;
 
 namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
 {
+    /// <summary>
+    /// A request parameter that is a (binary) stream.
+    /// </summary>
     public class StreamParam
     {
         private readonly string _contentType;
@@ -24,6 +27,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
 
         public virtual void PutTo(Dictionary<string, object> requestParameters, string key)
         {
+            //TODO:
             throw new NotImplementedException();
         }
     }

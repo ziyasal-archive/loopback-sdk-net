@@ -4,15 +4,8 @@ using System.Reflection;
 
 namespace LoopBack.Sdk.Xamarin.Common
 {
-    public static class DictionaryHelper
+    public static class DictionaryExtensions
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="instance"></param>
-        /// <returns></returns>
         public static T ToObject<T>(this Dictionary<string, object> source, T instance) where T : class
         {
             Type someObjectType = instance.GetType();
@@ -25,11 +18,6 @@ namespace LoopBack.Sdk.Xamarin.Common
             return instance;
         }
 
-        /// <summary>
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="target"></param>
-        /// <param name="source"></param>
         public static void AddRange<T>(this ICollection<T> target, IEnumerable<T> source)
         {
             if (target == null)
@@ -40,20 +28,11 @@ namespace LoopBack.Sdk.Xamarin.Common
                 target.Add(element);
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
         public static Dictionary<string, object> ToDictionary(this object source)
         {
             return source.ToDictionary<object>();
         }
 
-        /// <summary>
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="source"></param>
-        /// <returns></returns>
         public static Dictionary<string, T> ToDictionary<T>(this object source)
         {
             if (source == null)
