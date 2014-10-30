@@ -108,6 +108,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         /// <param name="onError">The onSuccess to invoke when the execution finished with error</param>
         public void GetAll(Action<List<Container>> onSuccess, Action<Exception> onError)
         {
+            //WARNING: REusable Action
             InvokeStaticMethod("getAll", null, response =>
              {
                  List<Container> result = new List<Container>();

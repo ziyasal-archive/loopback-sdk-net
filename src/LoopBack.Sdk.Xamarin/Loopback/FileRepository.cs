@@ -180,6 +180,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
                {"container",GetContainerName()}
            };
 
+            //WARNING: REusable Action
             InvokeStaticMethod("getAll", dictionary, response =>
             {
                 List<File> result = new List<File>();
