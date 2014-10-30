@@ -1,11 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Newtonsoft.Json;
 
 namespace LoopBack.Sdk.Xamarin.Common
 {
     public static class DictionaryExtensions
     {
+        public static Dictionary<string, object> ToDictionaryFromJson(this string json)
+        {
+            var values = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+            var values2 = new Dictionary<string, object>();
+            foreach (KeyValuePair<string, object> d in values)
+            {
+                if (d.Value.GetType().FullName.Contains("Newtonsoft.Json.Linq.JObject"))
+                {
+                    values2.Add(d.Key, ToDictionaryFromJson(d.Value.ToString()));
+                }
+                else
+                {
+                    values2.Add(d.Key, d.Value);
+                }
+            }
+            return values2;
+        }
         public static T ToObject<T>(this Dictionary<string, object> source, T instance) where T : class
         {
             Type someObjectType = instance.GetType();
