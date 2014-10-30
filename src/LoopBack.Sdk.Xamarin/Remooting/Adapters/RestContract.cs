@@ -81,16 +81,21 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         /// </summary>
         /// <param name="method">The method to resolve.</param>
         /// <returns>The custom pattern if one exists, <code>null</code> otherwise.</returns>
-        public string GetPatternForMethod(String method)
+        public string GetPatternForMethod(string method)
         {
             if (string.IsNullOrEmpty(method))
             {
                 throw new ArgumentNullException("method", "Method cannot be null");
             }
 
-            var item = Items[method];
+            if (Items.ContainsKey(method))
+            {
+                var item = Items[method];
 
-            return item != null ? item.Pattern : null;
+                return item != null ? item.Pattern : null;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -98,16 +103,22 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         /// </summary>
         /// <param name="method">The method to resolve.</param>
         /// <returns>The resolved verb, or "POST" if it isn't defined.</returns>
-        public string GetVerbForMethod(String method)
+        public string GetVerbForMethod(string method)
         {
             if (string.IsNullOrEmpty(method))
             {
                 throw new ArgumentNullException("method", "Method cannot be null");
             }
+            const string defaultVerb = "POST";
 
-            var item = Items[method];
+            if (Items.ContainsKey(method))
+            {
+                var item = Items[method];
+                return item != null ? item.Verb : defaultVerb;
+            }
 
-            return item != null ? item.Verb : "POST";
+            return defaultVerb;
+
         }
 
         /// <summary>
@@ -115,18 +126,21 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         /// </summary>
         /// <param name="method">The method to resolve.</param>
         /// <returns>The parameter encoding.</returns>
-        public Adapter.ParameterEncoding GetParameterEncodingForMethod(String method)
+        public Adapter.ParameterEncoding GetParameterEncodingForMethod(string method)
         {
             if (string.IsNullOrEmpty(method))
             {
                 throw new ArgumentNullException("method", "Method cannot be null");
             }
 
-            var item = Items[method];
+            if (Items.ContainsKey(method))
+            {
+                var item = Items[method];
 
-            return item != null
-                ? item.ParameterEncoding
-                : Adapter.ParameterEncoding.JSON;
+                return item != null ? item.ParameterEncoding : Adapter.ParameterEncoding.JSON;
+            }
+
+            return Adapter.ParameterEncoding.JSON;
         }
 
         /// <summary>

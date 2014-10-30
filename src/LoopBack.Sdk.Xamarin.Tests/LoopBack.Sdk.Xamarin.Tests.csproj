@@ -84,8 +84,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RestAdapterTests.cs" />
-    <Compile Include="SampleModel.cs" />
+    <Compile Include="Remoot\RestAdapterTests.cs" />
+    <Compile Include="Remoot\SimpleClass.cs" />
+    <Compile Include="TestBase.cs" />
     <Compile Include="ModelRepositoryTests.cs" />
     <Compile Include="Extensions\NunitExtensions.cs" />
     <Compile Include="Extensions\MoqExtensions.cs" />
@@ -97,5 +98,13 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Loopback\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LoopBack.Sdk.Xamarin\LoopBack.Sdk.Xamarin.csproj">
+      <Project>{851d16e6-3d7c-4916-8864-ced6e589e0a5}</Project>
+      <Name>LoopBack.Sdk.Xamarin</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

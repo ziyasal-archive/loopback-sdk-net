@@ -34,7 +34,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         /// <param name="url">The URL to connect to.</param>
         protected Adapter(IContext context, string url)
         {
-            if (string.IsNullOrEmpty(url))
+            if (!string.IsNullOrEmpty(url))
             {
                 Url = url;
                 Connect(context, url);

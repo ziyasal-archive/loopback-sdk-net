@@ -58,8 +58,8 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         /// <param name="parameters">The parameters to invoke with.</param>
         /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
         /// <param name="onError">The callback to invoke when the execution finished with error</param>
-        public void InvokeMethod(String method,
-            Dictionary<String, object> parameters,
+        public void InvokeMethod(string method,
+            Dictionary<string, object> parameters,
             Action<string> onSuccess,
             Action<Exception> onError)
         {

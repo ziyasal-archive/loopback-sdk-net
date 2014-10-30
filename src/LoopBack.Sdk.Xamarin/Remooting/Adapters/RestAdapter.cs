@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Humanizer;
 using LoopBack.Sdk.Xamarin.Common;
 using ModernHttpClient;
 using Newtonsoft.Json;
@@ -11,7 +12,7 @@ using Newtonsoft.Json;
 namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
 {
     /// <summary>
-    /// A specific {@link Adapter} implementation for RESTful servers.
+    /// A specific <see cref="Adapter"/> implementation for RESTful servers.
     ///
     /// In addition to implementing the <see cref="Adapter"/> interface,
     /// <code>RestAdapter</code> contains a single <see cref="RestContract"/> to map
@@ -37,7 +38,6 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         {
             get { return _httpClient; }
         }
-
 
         /// <summary>
         /// </summary>
@@ -72,7 +72,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             Action<string> onSuccess,
             Action<Exception> onError)
         {
-            InvokeStaticMethodImpl(method, parameters, async response => { await Callback(onSuccess, onError, response); });
+            InvokeStaticMethodImpl(method, parameters, response => { Callback(onSuccess, onError, response); });
         }
 
 
@@ -93,9 +93,9 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             Action<string> onSuccess,
             Action<Exception> onError)
         {
-            InvokeInstanceMethodImpl(method, constructorParameters, parameters, async response =>
+            InvokeInstanceMethodImpl(method, constructorParameters, parameters, response =>
             {
-                await Callback(onSuccess, onError, response);
+                Callback(onSuccess, onError, response);
             });
         }
 
@@ -116,14 +116,15 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
                 async response => { await BinaryCallback(onSuccess, onError, response); });
         }
 
-        private static async Task Callback(Action<string> onSuccess, Action<Exception> onError,
+        private static void Callback(Action<string> onSuccess, Action<Exception> onError,
             HttpResponseMessage response)
         {
             try
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    onSuccess(await response.Content.ReadAsStringAsync());
+                    Task<string> task = response.Content.ReadAsStringAsync();
+                    onSuccess(task.Result);
                 }
             }
             catch (Exception exception)
@@ -201,7 +202,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             Request(path, verb, combinedParameters, parameterEncoding, httpHandler);
         }
 
-        private async void Request(string path,
+        private void Request(string path,
             string verb,
             Dictionary<string, object> parameters,
             ParameterEncoding parameterEncoding,
@@ -212,13 +213,12 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
                 throw new Exception("Adapter not connected");
             }
 
-            //TODO:
-            //using (var client = new HttpClient(new NativeMessageHandler()))
-            //{
+            //TODO: AFNetworking . Paul Betts, says "modernhttpclient" solves general needs.
+            //TODO: Dispose HttpClient?
             _httpClient.BaseAddress = new Uri(Url);
 
-            var method = (HttpMethod)Enum.Parse(typeof(HttpMethod), verb, true);
-            var request = new HttpRequestMessage(method, path);
+            HttpMethod method = new HttpMethod(verb);
+            HttpRequestMessage request = new HttpRequestMessage(method, path);
             HttpContent content;
             switch (parameterEncoding)
             {
@@ -242,11 +242,8 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             }
 
             request.Content = content;
-            var message = await Client.SendAsync(request);
-            responseHandler(message);
-            //}
+            Task<HttpResponseMessage> message = Client.SendAsync(request);
+            responseHandler(message.Result);
         }
     }
-
-    //TODO: AFNetworking . Paul Betts, says "modernhttpclient" solves general needs.
 }
