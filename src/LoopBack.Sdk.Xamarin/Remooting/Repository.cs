@@ -10,7 +10,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
     /// </summary>
     public class Repository<T> : IRepository where T : VirtualObject
     {
-        private readonly Type _objectClass;
+        private readonly Type _classType;
 
         private string _className;
 
@@ -44,8 +44,8 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         /// Creates a new Repository, associating it with the named remote class.
         /// </summary>
         /// <param name="className">The remote class name.</param>
-        /// <param name="objectClass"></param>
-        public Repository(string className, Type objectClass)
+        /// <param name="classType"></param>
+        public Repository(string className, Type classType)
         {
             if (string.IsNullOrEmpty(className))
             {
@@ -53,7 +53,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
             }
             ClassName = className;
 
-            _objectClass = objectClass ?? typeof(VirtualObject);
+            _classType = classType ?? typeof(VirtualObject);
         }
 
 
@@ -97,7 +97,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         {
             if (Adapter == null)
             {
-                throw new ArgumentNullException("No adapter set");
+                throw new ArgumentException("No adapter set");
             }
             string path = _className + "." + method;
             Adapter.InvokeStaticMethod(path, parameters, onSuccess, onError);
@@ -115,7 +115,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         {
             if (Adapter == null)
             {
-                throw new ArgumentNullException("No adapter set");
+                throw new ArgumentException("No adapter set");
             }
             string path = _className + "." + method;
             Adapter.InvokeStaticMethod(path, parameters, onSuccess, onError);

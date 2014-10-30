@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace LoopBack.Sdk.Xamarin.Tests
 {

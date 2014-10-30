@@ -12,8 +12,8 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         {
         }
 
-        public RestRepository(string className, Type objectClass)
-            : base(className, objectClass)
+        public RestRepository(string className, Type classType)
+            : base(className, classType)
         {
         }
 

@@ -15,7 +15,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         /// <summary>
         /// The creation parameters this object was created from.
         /// </summary>
-        public Dictionary<String, object> CreationParameters { get; set; }
+        public Dictionary<string, object> CreationParameters { get; set; }
 
         /// <summary>
         /// The Repository this object was created from
@@ -36,7 +36,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         /// </summary>
         /// <param name="repository">The repository this object should inherit from</param>
         /// <param name="creationParameters">The creationParameters of the new object</param>
-        public VirtualObject(IRepository repository, Dictionary<String, object> creationParameters)
+        public VirtualObject(IRepository repository, Dictionary<string, object> creationParameters)
         {
             Repository = repository;
             CreationParameters = creationParameters;
@@ -66,7 +66,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
             var adapter = Repository.Adapter;
             if (adapter == null)
             {
-                throw new ArgumentException("adapter", "Repository adapter cannot be null");
+                throw new ArgumentException("Repository adapter cannot be null");
             }
             var path = Repository.ClassName + ".prototype." + method;
             adapter.InvokeInstanceMethod(path, CreationParameters, parameters, onSuccess, onError);
@@ -79,14 +79,14 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         /// <param name="parameters">The parameters to invoke with.</param>
         /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
         /// <param name="onError">The callback to invoke when the execution finished with error</param>
-        public void InvokeMethod(String method, Dictionary<String, object> parameters,
-            Action<byte[], String> onSuccess,
+        public void InvokeMethod(string method, Dictionary<string, object> parameters,
+            Action<byte[], string> onSuccess,
             Action<Exception> onError)
         {
             var adapter = Repository.Adapter;
             if (adapter == null)
             {
-                throw new ArgumentException("adapter", "Repository adapter cannot be null");
+                throw new ArgumentException("Repository adapter cannot be null");
             }
             var path = Repository.ClassName + ".prototype." + method;
 
