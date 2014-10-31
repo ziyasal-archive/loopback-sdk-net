@@ -30,8 +30,11 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         {
             set
             {
-                SaveAccessToken(value);
-                Client.DefaultRequestHeaders.Add("Authorization", value);
+                if (!string.IsNullOrEmpty(value))
+                {
+                    SaveAccessToken(value);
+                    Client.DefaultRequestHeaders.Add("Authorization", value);
+                }
             }
         }
 

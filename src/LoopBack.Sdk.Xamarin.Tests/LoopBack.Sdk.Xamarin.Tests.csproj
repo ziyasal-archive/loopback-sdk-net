@@ -89,6 +89,7 @@
     <Compile Include="Remoot\RestAdapterTests.cs" />
     <Compile Include="Remoot\RestContractTests.cs" />
     <Compile Include="Remoot\SimpleClass.cs" />
+    <Compile Include="Remoot\DummyContextImpl.cs" />
     <Compile Include="Remoot\TestingHelper.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="ModelRepositoryTests.cs" />

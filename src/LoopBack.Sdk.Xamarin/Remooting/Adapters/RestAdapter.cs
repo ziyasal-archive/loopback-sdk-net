@@ -38,7 +38,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         /// <summary>
         /// The underlying HTTP client. This allows subclasses to add  custom headers like Authorization.
         /// </summary>
-        protected HttpClient Client
+        public HttpClient Client
         {
             get { return _httpClient; }
         }
@@ -85,6 +85,10 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             Action<byte[], string> onSuccess,
             Action<Exception> onError)
         {
+            //TODO: Fix
+            //Client.DefaultRequestHeaders.Accept.Clear();
+            //Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/octet-stream"));
+
             InvokeStaticMethodImpl(method, parameters, async response =>
             {
                 await BinaryCallback(onSuccess, onError, response);
@@ -255,7 +259,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
                 case ParameterEncoding.JSON:
                     _httpClient.DefaultRequestHeaders.Accept.Clear();
                     _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    if (!skipBody)
+                    if (!skipBody && parameters != null)
                     {
                         content = new StringContent(JsonConvert.SerializeObject(parameters));
                         request.Content = content;
@@ -290,7 +294,6 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
 
             foreach (KeyValuePair<string, object> entry in parameters)
             {
-
                 String key = keyPrefix != null
                         ? keyPrefix + "[" + entry.Key + "]"
                         : entry.Key;
