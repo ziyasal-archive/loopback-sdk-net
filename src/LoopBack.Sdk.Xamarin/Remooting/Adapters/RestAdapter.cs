@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Threading.Tasks;
 using Humanizer;
 using LoopBack.Sdk.Xamarin.Common;
@@ -210,6 +212,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             ParameterEncoding parameterEncoding,
             Action<HttpResponseMessage> responseHandler)
         {
+            bool skipBody = false;
             if (!IsConnected())
             {
                 throw new Exception("Adapter not connected");
@@ -219,6 +222,19 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             //TODO:
             //http://stackoverflow.com/questions/3981564/cannot-send-a-content-body-with-this-verb-type
             //http://stackoverflow.com/questions/2064281/sending-post-data-with-get-request-valid
+
+            if (parameters != null)
+            {
+                if ("GET".Equals(verb) || "HEAD".Equals(verb) || "DELETE".Equals(verb))
+                {
+                    Dictionary<string, object> flattenParameters = FlattenParameters(parameters);
+
+                    List<string> keyValues = new List<string>(flattenParameters.Count);
+                    keyValues.AddRange(flattenParameters.Select(param => string.Format("{0}={1}", param.Key, param.Value)));
+                    path += "?" + string.Join("&", keyValues);
+                    skipBody = true;
+                }
+            }
 
             //TODO: AFNetworking . Paul Betts, says "modernhttpclient" solves general needs.
             //TODO: Dispose HttpClient
@@ -239,9 +255,13 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
                 case ParameterEncoding.JSON:
                     _httpClient.DefaultRequestHeaders.Accept.Clear();
                     _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    content = new StringContent(JsonConvert.SerializeObject(parameters));
-                    request.Content = content;
-                    request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    if (!skipBody)
+                    {
+                        content = new StringContent(JsonConvert.SerializeObject(parameters));
+                        request.Content = content;
+                        request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    }
+
                     break;
                 case ParameterEncoding.FORM_MULTIPART:
                     //TODO:
@@ -254,6 +274,38 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
 
             Task<HttpResponseMessage> message = Client.SendAsync(request);
             responseHandler(message.Result);
+        }
+
+        private Dictionary<string, object> FlattenParameters(Dictionary<string, object> parameters)
+        {
+            return FlattenParameters(null, parameters);
+        }
+        private Dictionary<string, object> FlattenParameters(string keyPrefix, Dictionary<string, object> parameters)
+        {
+            // This method converts nested maps into a flat list
+            //   Input:  { "here": { "lat": 10, "lng": 20 }
+            //   Output: { "here[lat]": 10, "here[lng]": 20 }
+
+            Dictionary<string, object> result = new Dictionary<string, object>();
+
+            foreach (KeyValuePair<string, object> entry in parameters)
+            {
+
+                String key = keyPrefix != null
+                        ? keyPrefix + "[" + entry.Key + "]"
+                        : entry.Key;
+
+                if (entry.Value is Dictionary<string, object>)
+                {
+                    result.AddRange(FlattenParameters(key, (Dictionary<string, object>)entry.Value));
+                }
+                else
+                {
+                    result.Add(key, entry.Value);
+                }
+            }
+
+            return result;
         }
     }
 }

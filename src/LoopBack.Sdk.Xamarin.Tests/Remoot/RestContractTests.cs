@@ -186,9 +186,9 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remoot
             _adapter.InvokeStaticMethod("contract.geopoint", TestingHelper.BuildParameters("here", (object)parameters), response =>
             {
                 JObject data = JObject.Parse(response);
-                JToken token = data["data"];
-                token.Should().NotBeNull();
-                token.ToString().ShouldBeEquivalentTo("somename");
+                data.Should().NotBeNull();
+                data["lat"].ToString().ShouldBeEquivalentTo("10");
+                data["lng"].ToString().ShouldBeEquivalentTo("20");
             }, exception =>
             {
 
