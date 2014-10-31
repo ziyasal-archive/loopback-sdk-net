@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FluentAssertions;
 using LoopBack.Sdk.Xamarin.Remooting;
 using LoopBack.Sdk.Xamarin.Remooting.Adapters;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
-namespace LoopBack.Sdk.Xamarin.Tests.Remoot
+namespace LoopBack.Sdk.Xamarin.Tests.Remooting
 {
     public class RestContractTests : TestBase
     {
         public string REST_SERVER_URL = "http://localhost:3001";
 
-        private Remooting.Adapters.RestAdapter _adapter;
+        private Xamarin.Remooting.Adapters.RestAdapter _adapter;
         private Repository<ContractClass> _testClass;
 
         protected override void FinalizeSetUp()
@@ -35,9 +34,9 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remoot
             };
         }
 
-        private Remooting.Adapters.RestAdapter CreateAdapter()
+        private Xamarin.Remooting.Adapters.RestAdapter CreateAdapter()
         {
-            return new Remooting.Adapters.RestAdapter(null, REST_SERVER_URL);
+            return new Xamarin.Remooting.Adapters.RestAdapter(null, REST_SERVER_URL);
         }
 
         [Test]

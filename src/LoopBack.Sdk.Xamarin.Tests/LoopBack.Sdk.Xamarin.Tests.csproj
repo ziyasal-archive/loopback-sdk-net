@@ -85,12 +85,12 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Remoot\ContractClass.cs" />
-    <Compile Include="Remoot\RestAdapterTests.cs" />
-    <Compile Include="Remoot\RestContractTests.cs" />
-    <Compile Include="Remoot\SimpleClass.cs" />
-    <Compile Include="Remoot\DummyContextImpl.cs" />
-    <Compile Include="Remoot\TestingHelper.cs" />
+    <Compile Include="Remooting\ContractClass.cs" />
+    <Compile Include="Remooting\RestAdapterTests.cs" />
+    <Compile Include="Remooting\RestContractTests.cs" />
+    <Compile Include="Remooting\SimpleClass.cs" />
+    <Compile Include="Remooting\DummyContextImpl.cs" />
+    <Compile Include="Remooting\TestingHelper.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="ModelRepositoryTests.cs" />
     <Compile Include="Extensions\NunitExtensions.cs" />
