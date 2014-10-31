@@ -227,21 +227,24 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
                         parameters.Select(pair => new KeyValuePair<string, string>(pair.Key, pair.Value.ToString()))
                             .AsEnumerable();
                     content = new FormUrlEncodedContent(listOfParams);
+                    request.Content = content;
                     break;
                 case ParameterEncoding.JSON:
                     _httpClient.DefaultRequestHeaders.Accept.Clear();
                     _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     content = new StringContent(JsonConvert.SerializeObject(parameters));
+                    request.Content = content;
+                    request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                     break;
                 case ParameterEncoding.FORM_MULTIPART:
                     //TODO:
                     content = new MultipartFormDataContent("");
+                    request.Content = content;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("parameterEncoding");
             }
 
-            request.Content = content;
             Task<HttpResponseMessage> message = Client.SendAsync(request);
             responseHandler(message.Result);
         }
