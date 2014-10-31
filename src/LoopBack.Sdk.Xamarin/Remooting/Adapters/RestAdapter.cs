@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -213,8 +215,13 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
                 throw new Exception("Adapter not connected");
             }
 
+
+            //TODO:
+            //http://stackoverflow.com/questions/3981564/cannot-send-a-content-body-with-this-verb-type
+            //http://stackoverflow.com/questions/2064281/sending-post-data-with-get-request-valid
+
             //TODO: AFNetworking . Paul Betts, says "modernhttpclient" solves general needs.
-            //TODO: Dispose HttpClient?
+            //TODO: Dispose HttpClient
             _httpClient.BaseAddress = new Uri(Url);
 
             HttpMethod method = new HttpMethod(verb);

@@ -149,7 +149,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         /// <param name="method">The method to resolve.</param>
         /// <param name="parameters">Pattern parameters. Can be <code>null</code>.</param>
         /// <returns>The complete, resolved URL.</returns>
-        public String GetUrlForMethod(string method, Dictionary<string, object> parameters)
+        public String GetUrlForMethod(string method, Dictionary<string, object> parameters=null)
         {
             if (string.IsNullOrEmpty(method))
             {
