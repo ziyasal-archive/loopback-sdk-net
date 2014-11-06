@@ -145,7 +145,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
         [Test]
         public void PrototypeGet_Test()
         {
-            VirtualObject test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object)"somename"));
+            RemoteClass test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object)"somename"));
             test.InvokeMethod("getName", null, response =>
             {
                 JObject data = JObject.Parse(response);
@@ -161,7 +161,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
         [Test]
         public void PrototypeTransform_Test()
         {
-            VirtualObject test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object)"somename"));
+            RemoteClass test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object)"somename"));
             test.InvokeMethod("greet", TestUtil.BuildParameters("other", (object)"othername"), response =>
             {
                 JObject data = JObject.Parse(response);

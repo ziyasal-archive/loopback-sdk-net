@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace LoopBack.Sdk.Xamarin.Loopback
 {
-    public class Model : VirtualObject
+    public class Model : RemoteClass
     {
         /// <summary>
         /// The model's id field.
@@ -81,7 +81,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         }
 
         /// <summary>
-        /// Saves the Model to the server. <p> This method calls <see cref="VirtualObject.ToDictionary()"/> to determine which fields should be saved.</p>
+        /// Saves the Model to the server. <p> This method calls <see cref="RemoteClass.ToDictionary()"/> to determine which fields should be saved.</p>
         /// </summary>
         /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
         /// <param name="onError">The callback to invoke when the execution finished with error</param>

@@ -8,7 +8,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
     /// <summary>
     ///  A local representative of remote model repository, it provides access to static methods like <pre>User.findById()</pre>
     /// </summary>
-    public class Repository<T> : IRepository where T : VirtualObject
+    public class Repository<T> : IRepository where T : RemoteClass
     {
         private readonly Type _classType;
 
@@ -53,15 +53,15 @@ namespace LoopBack.Sdk.Xamarin.Remooting
             }
             ClassName = className;
 
-            _classType = classType ?? typeof(VirtualObject);
+            _classType = classType ?? typeof(RemoteClass);
         }
 
 
         /// <summary>
-        /// Creates a new <see cref="VirtualObject"/> as a virtual instance of this remote class.
+        /// Creates a new <see cref="RemoteClass"/> as a virtual instance of this remote class.
         /// </summary>
         /// <param name="creationParameters">The creation parameters of the new object</param>
-        /// <returns>A new <see cref="VirtualObject"/> based on this prototype.</returns>
+        /// <returns>A new <see cref="RemoteClass"/> based on this prototype.</returns>
         public virtual T CreateObject(Dictionary<string, object> creationParameters)
         {
             T objectToCreate;

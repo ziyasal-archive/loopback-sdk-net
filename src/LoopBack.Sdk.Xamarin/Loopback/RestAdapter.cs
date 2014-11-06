@@ -94,7 +94,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         /// <returns>A new repository instance.</returns>
         public virtual TRepository CreateRepository<TRepository, T>()
             where TRepository : RestRepository<T>, new()
-            where T : VirtualObject
+            where T : RemoteClass
         {
             TRepository repository;
             try
@@ -115,7 +115,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
             return repository;
         }
 
-        private void AttachModelRepository<T>(RestRepository<T> repository) where T : VirtualObject
+        private void AttachModelRepository<T>(RestRepository<T> repository) where T : RemoteClass
         {
             Contract.AddItemsFromContract(repository.CreateContract());
             repository.Adapter = this;

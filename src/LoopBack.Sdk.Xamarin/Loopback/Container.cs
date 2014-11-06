@@ -5,7 +5,7 @@ using PCLStorage;
 
 namespace LoopBack.Sdk.Xamarin.Loopback
 {
-    public class Container : VirtualObject
+    public class Container : RemoteClass
     {
         public virtual string Name { set; get; }
 

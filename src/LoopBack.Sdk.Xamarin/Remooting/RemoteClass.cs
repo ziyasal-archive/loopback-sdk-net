@@ -10,7 +10,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
     /// object is defined through a model defined on the server, and the identity
     /// of this instance is defined through its `creationParameters`.
     /// </summary>
-    public class VirtualObject
+    public class RemoteClass
     {
         /// <summary>
         /// The creation parameters this object was created from.
@@ -26,7 +26,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         /// <summary>
         /// Creates a new object not attached to any repository.
         /// </summary>
-        public VirtualObject()
+        public RemoteClass()
             : this(null, null)
         {
         }
@@ -36,7 +36,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         /// </summary>
         /// <param name="repository">The repository this object should inherit from</param>
         /// <param name="creationParameters">The creationParameters of the new object</param>
-        public VirtualObject(IRepository repository, Dictionary<string, object> creationParameters)
+        public RemoteClass(IRepository repository, Dictionary<string, object> creationParameters)
         {
             Repository = repository;
             CreationParameters = creationParameters;
