@@ -55,8 +55,8 @@
     <Compile Include="Remooting\Adapters\RestContractItem.cs" />
     <Compile Include="Common\IContext.cs" />
     <Compile Include="Remooting\Adapters\StreamParam.cs" />
-    <Compile Include="Remooting\IRepository.cs" />
-    <Compile Include="Remooting\Repository.cs" />
+    <Compile Include="Remooting\IRemoteRepository.cs" />
+    <Compile Include="Remooting\RemoteRepository.cs" />
     <Compile Include="Remooting\RemoteClass.cs" />
   </ItemGroup>
   <ItemGroup>

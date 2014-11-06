@@ -21,7 +21,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         /// The Repository this object was created from
         /// </summary>
         [JsonIgnore]
-        public IRepository Repository { get; set; }
+        public IRemoteRepository RemoteRepository { get; set; }
 
         /// <summary>
         /// Creates a new object not attached to any repository.
@@ -36,9 +36,9 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         /// </summary>
         /// <param name="repository">The repository this object should inherit from</param>
         /// <param name="creationParameters">The creationParameters of the new object</param>
-        public RemoteClass(IRepository repository, Dictionary<string, object> creationParameters)
+        public RemoteClass(IRemoteRepository repository, Dictionary<string, object> creationParameters)
         {
-            Repository = repository;
+            RemoteRepository = repository;
             CreationParameters = creationParameters;
         }
 
@@ -63,12 +63,12 @@ namespace LoopBack.Sdk.Xamarin.Remooting
             Action<string> onSuccess,
             Action<Exception> onError)
         {
-            var adapter = Repository.Adapter;
+            var adapter = RemoteRepository.Adapter;
             if (adapter == null)
             {
                 throw new ArgumentException("Repository adapter cannot be null");
             }
-            var path = Repository.ClassName + ".prototype." + method;
+            var path = RemoteRepository.ClassName + ".prototype." + method;
             adapter.InvokeInstanceMethod(path, CreationParameters, parameters, onSuccess, onError);
         }
 
@@ -83,12 +83,12 @@ namespace LoopBack.Sdk.Xamarin.Remooting
             Action<byte[], string> onSuccess,
             Action<Exception> onError)
         {
-            var adapter = Repository.Adapter;
+            var adapter = RemoteRepository.Adapter;
             if (adapter == null)
             {
                 throw new ArgumentException("Repository adapter cannot be null");
             }
-            var path = Repository.ClassName + ".prototype." + method;
+            var path = RemoteRepository.ClassName + ".prototype." + method;
 
             adapter.InvokeInstanceMethod(path, CreationParameters, parameters, onSuccess, onError);
         }

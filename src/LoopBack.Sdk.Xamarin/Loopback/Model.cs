@@ -23,7 +23,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
 
         }
 
-        public Model(IRepository repository, Dictionary<string, object> creationParameters)
+        public Model(IRemoteRepository repository, Dictionary<string, object> creationParameters)
             : base(repository, creationParameters)
         {
 

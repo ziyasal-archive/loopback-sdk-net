@@ -10,12 +10,12 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
         public string REST_SERVER_URL = "http://localhost:3001";
 
         private Xamarin.Remooting.Adapters.RestAdapter _adapter;
-        private Repository<SimpleClass> _testClass;
+        private RemoteRepository<SimpleClass> _testClass;
 
         protected override void FinalizeSetUp()
         {
             _adapter = CreateAdapter();
-            _testClass = new Repository<SimpleClass>("SimpleClass")
+            _testClass = new RemoteRepository<SimpleClass>("SimpleClass")
             {
                 Adapter = _adapter
             };

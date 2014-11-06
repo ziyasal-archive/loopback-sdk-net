@@ -12,7 +12,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
         public string REST_SERVER_URL = "http://localhost:3001";
 
         private RestAdapter _adapter;
-        private Repository<ContractClass> _testClass;
+        private RemoteRepository<ContractClass> _testClass;
 
         protected override void FinalizeSetUp()
         {
@@ -28,7 +28,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
             contract.AddItem(new RestContractItem("/ContractClass/:name/greet", "POST"), "ContractClass.prototype.greet");
             contract.AddItem(new RestContractItem("/contract/binary", "GET"), "contract.binary");
 
-            _testClass = new Repository<ContractClass>("ContractClass")
+            _testClass = new RemoteRepository<ContractClass>("ContractClass")
             {
                 Adapter = _adapter
             };

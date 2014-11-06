@@ -8,7 +8,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
     /// <summary>
     ///  A local representative of remote model repository, it provides access to static methods like <pre>User.findById()</pre>
     /// </summary>
-    public class Repository<T> : IRepository where T : RemoteClass
+    public class RemoteRepository<T> : IRemoteRepository where T : RemoteClass
     {
         private readonly Type _classType;
 
@@ -34,7 +34,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         /// Creates a new Repository, associating it with the named remote class.
         /// </summary>
         /// <param name="className">The remote class name</param>
-        public Repository(string className)
+        public RemoteRepository(string className)
             : this(className, null)
         {
         }
@@ -45,7 +45,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         /// </summary>
         /// <param name="className">The remote class name.</param>
         /// <param name="classType"></param>
-        public Repository(string className, Type classType)
+        public RemoteRepository(string className, Type classType)
         {
             if (string.IsNullOrEmpty(className))
             {
@@ -75,7 +75,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
 
                 throw ex;
             }
-            objectToCreate.Repository = this;
+            objectToCreate.RemoteRepository = this;
 
             if (creationParameters != null)
             {
