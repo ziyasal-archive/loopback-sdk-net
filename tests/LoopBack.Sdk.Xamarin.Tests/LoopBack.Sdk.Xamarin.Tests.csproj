@@ -8,6 +8,7 @@
     <RootNamespace>LoopBack.Sdk.Xamarin.Tests</RootNamespace>
     <AssemblyName>LoopBack.Sdk.Xamarin.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <NuGetPackageImportStamp>76d238e6</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,59 +30,50 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentAssertions">
-      <HintPath>..\packages\FluentAssertions.3.2.1\lib\net45\FluentAssertions.dll</HintPath>
+      <HintPath>..\..\src\packages\FluentAssertions.3.2.1\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
     <Reference Include="FluentAssertions.Core">
-      <HintPath>..\packages\FluentAssertions.3.2.1\lib\net45\FluentAssertions.Core.dll</HintPath>
+      <HintPath>..\..\src\packages\FluentAssertions.3.2.1\lib\net45\FluentAssertions.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Threading.Tasks">
-      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
+    <Reference Include="Humanizer">
+      <HintPath>..\..\src\packages\Humanizer.1.31.0\lib\portable-win+net40+sl50+wp8+wpa81\Humanizer.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Threading.Tasks.Extensions">
-      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop">
-      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
+    <Reference Include="ModernHttpClient">
+      <HintPath>..\..\src\packages\modernhttpclient.2.1.4\lib\Portable-Net45+WinRT45+WP8+WPA81\ModernHttpClient.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
+      <HintPath>..\..\src\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\src\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\src\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="PCLStorage">
-      <HintPath>..\packages\PCLStorage.1.0.0\lib\net45\PCLStorage.dll</HintPath>
+      <HintPath>..\..\src\packages\PCLStorage.1.0.0\lib\net45\PCLStorage.dll</HintPath>
     </Reference>
     <Reference Include="PCLStorage.Abstractions">
-      <HintPath>..\packages\PCLStorage.1.0.0\lib\net45\PCLStorage.Abstractions.dll</HintPath>
+      <HintPath>..\..\src\packages\PCLStorage.1.0.0\lib\net45\PCLStorage.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Ploeh.AutoFixture">
+      <HintPath>..\..\src\packages\AutoFixture.3.21.1\lib\net40\Ploeh.AutoFixture.dll</HintPath>
     </Reference>
     <Reference Include="Splat">
-      <HintPath>..\packages\Splat.1.5.1\lib\Net45\Splat.dll</HintPath>
+      <HintPath>..\..\src\packages\Splat.1.5.1\lib\Net45\Splat.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\..\src\packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\..\src\packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="ModernHttpClient">
-      <HintPath>..\packages\modernhttpclient.2.1.4\lib\Portable-Net45+WinRT45+WP8+WPA81\ModernHttpClient.dll</HintPath>
-    </Reference>
-    <Reference Include="Humanizer">
-      <HintPath>..\packages\Humanizer.1.31.0\lib\portable-win+net40+sl50+wp8+wpa81\Humanizer.dll</HintPath>
-    </Reference>
-    <Reference Include="Ploeh.AutoFixture">
-      <HintPath>..\packages\AutoFixture.3.21.1\lib\net40\Ploeh.AutoFixture.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http.Primitives">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Primitives.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http.Extensions">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Extensions.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Remooting\ContractClass.cs" />
@@ -91,12 +83,10 @@
     <Compile Include="Remooting\DummyContextImpl.cs" />
     <Compile Include="Remooting\TestUtil.cs" />
     <Compile Include="TestBase.cs" />
-    <Compile Include="ModelRepositoryTests.cs" />
     <Compile Include="Extensions\NunitExtensions.cs" />
     <Compile Include="Extensions\MoqExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config">
@@ -107,9 +97,16 @@
     <Folder Include="Loopback\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LoopBack.Sdk.Xamarin\LoopBack.Sdk.Xamarin.csproj">
+    <ProjectReference Include="..\..\src\LoopBack.Sdk.Xamarin\LoopBack.Sdk.Xamarin.csproj">
       <Project>{851D16E6-3D7C-4916-8864-CED6E589E0A5}</Project>
       <Name>LoopBack.Sdk.Xamarin</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\..\src\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\src\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\src\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\src\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+  </Target>
 </Project>
