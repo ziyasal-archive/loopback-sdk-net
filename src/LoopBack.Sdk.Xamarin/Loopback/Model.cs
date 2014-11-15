@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using LoopBack.Sdk.Xamarin.Extensions;
 using LoopBack.Sdk.Xamarin.Remoting;
 using Newtonsoft.Json.Linq;
 
 namespace LoopBack.Sdk.Xamarin.Loopback
 {
-    /// <summary>
-    ///  A local representative of a single model instance on the server. The data is
-    ///  immediately accessible locally, but can be saved, destroyed, etc.from the
-    /// server easily.
-    /// </summary>
     public class Model : RemoteClass
     {
         private readonly Dictionary<string, object> _overflow = new Dictionary<string, object>();
@@ -117,9 +111,9 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         /// </summary>
         /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
         /// <param name="onError">The callback to invoke when the execution finished with error</param>
-        public async Task Destroy(Action onSuccess, Action<Exception> onError)
+        public void Destroy(Action onSuccess, Action<Exception> onError)
         {
-            await InvokeMethod("remove", ToDictionary(), responseContent => { onSuccess(); }, onError);
+            InvokeMethod("remove", ToDictionary(), responseContent => { onSuccess(); }, onError);
         }
     }
 }
