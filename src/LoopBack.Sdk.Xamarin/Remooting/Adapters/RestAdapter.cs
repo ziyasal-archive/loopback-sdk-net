@@ -21,7 +21,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
     public class RestAdapter : AdapterBase
     {
         private static string TAG = "remoting.RestAdapter";
-
+        private readonly IContext _context;
         /// <summary>
         /// </summary>
         /// <param name="context"></param>
@@ -29,14 +29,14 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         public RestAdapter(IContext context, string url)
             : base(url)
         {
-            _Context = context;
+            _context = context;
             Contract = new RestContract();
         }
 
         public RestAdapter(string url)
             : base(url)
         {
-            _Context = new RestContext("loopback-xamarin/1.0");
+            _context = new RestContext("loopback-xamarin/1.0");
             Contract = new RestContract();
         }
 
@@ -50,7 +50,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         /// </summary>
         public HttpClient Client { get; private set; }
 
-        private IContext _Context { get; set; }
+
 
         public override void Connect(string url)
         {
@@ -62,7 +62,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             {
                 Client = new HttpClient(new NativeMessageHandler());
                 Client.DefaultRequestHeaders.Add("Accept", "application/json");
-                Client.DefaultRequestHeaders.Add("User-Agent", _Context.UserAgent);
+                Client.DefaultRequestHeaders.Add("User-Agent", _context.UserAgent);
             }
         }
 
@@ -304,15 +304,5 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
 
             return result;
         }
-    }
-
-    public class RestContext : IContext
-    {
-        public RestContext(string UserAgent)
-        {
-            this.UserAgent = UserAgent;
-        }
-
-        public string UserAgent { get; set; }
     }
 }

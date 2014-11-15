@@ -51,6 +51,7 @@
     <Compile Include="Loopback\Model.cs" />
     <Compile Include="Loopback\ModelRepository.cs" />
     <Compile Include="Loopback\User.cs" />
+    <Compile Include="Remooting\Adapters\RestContext.cs" />
     <Compile Include="Remooting\Adapters\RestContract.cs" />
     <Compile Include="Remooting\Adapters\RestContractItem.cs" />
     <Compile Include="Common\IContext.cs" />
