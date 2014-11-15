@@ -1,5 +1,4 @@
-﻿using System;
-using LoopBack.Sdk.Xamarin.Common;
+﻿using LoopBack.Sdk.Xamarin.Common;
 using LoopBack.Sdk.Xamarin.Remooting;
 using LoopBack.Sdk.Xamarin.Remooting.Adapters;
 
@@ -9,11 +8,6 @@ namespace LoopBack.Sdk.Xamarin.Loopback
     {
         public RestRepository(string className)
             : base(className)
-        {
-        }
-
-        public RestRepository(string className, Type classType)
-            : base(className, classType)
         {
         }
 

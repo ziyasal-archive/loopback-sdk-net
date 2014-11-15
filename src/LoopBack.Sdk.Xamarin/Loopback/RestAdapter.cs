@@ -81,7 +81,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         public virtual ModelRepository<T> CreateRepository<T>(string name, string nameForRestUrl, Type modelClass)
             where T : Model
         {
-            var repository = new ModelRepository<T>(name, nameForRestUrl, modelClass);
+            var repository = new ModelRepository<T>(name, nameForRestUrl);
             AttachModelRepository(repository);
             return repository;
         }

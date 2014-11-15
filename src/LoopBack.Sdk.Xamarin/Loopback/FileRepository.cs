@@ -15,8 +15,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
 
         public Container Container { get; set; }
 
-        public FileRepository()
-            : base("file", typeof(File))
+        public FileRepository() : base("file")
         {
         }
 

@@ -14,6 +14,10 @@ namespace LoopBack.Sdk.Xamarin.Loopback
     /// <typeparam name="T"></typeparam>
     public class ModelRepository<T> : RestRepository<T> where T : Model
     {
+        /// <summary>
+        /// Creates a new Repository, associating it with the named remote class.
+        /// </summary>
+        /// <param name="className">The remote class name.</param>
         public ModelRepository(string className) : this(className, null)
         {
         }
@@ -22,19 +26,9 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         /// Creates a new Repository, associating it with the named remote class.
         /// </summary>
         /// <param name="className">The remote class name.</param>
-        /// <param name="modelClass">The Model class. It must have a public no-argument constructor.</param>
-        public ModelRepository(string className, Type modelClass) : this(className, null, modelClass)
-        {
-        }
-
-        /// <summary>
-        /// Creates a new Repository, associating it with the named remote class.
-        /// </summary>
-        /// <param name="className">The remote class name.</param>
         /// <param name="nameForRestUrl">The pluralized class name to use in REST transport. Use <code>null</code> for the default value, which is the plural form of className.</param>
-        /// <param name="modelClass">The Model class. It must have a public no-argument constructor.</param>
-        public ModelRepository(string className, string nameForRestUrl, Type modelClass)
-            : base(className, modelClass ?? typeof(Model))
+        public ModelRepository(string className, string nameForRestUrl)
+            : base(className)
         {
             NameForRestUrl = nameForRestUrl ?? className.Pluralize();//It uses Humanizer
         }

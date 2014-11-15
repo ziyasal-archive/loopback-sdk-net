@@ -10,8 +10,6 @@ namespace LoopBack.Sdk.Xamarin.Remooting
     /// </summary>
     public class RemoteRepository<T> : IRemoteRepository where T : RemoteClass
     {
-        private readonly Type _classType;
-
         private string _className;
 
         /// <summary>
@@ -35,25 +33,12 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         /// </summary>
         /// <param name="className">The remote class name</param>
         public RemoteRepository(string className)
-            : this(className, null)
-        {
-        }
-
-
-        /// <summary>
-        /// Creates a new Repository, associating it with the named remote class.
-        /// </summary>
-        /// <param name="className">The remote class name.</param>
-        /// <param name="classType"></param>
-        public RemoteRepository(string className, Type classType)
         {
             if (string.IsNullOrEmpty(className))
             {
                 throw new ArgumentException("Class name cannot be null or empty.");
             }
             ClassName = className;
-
-            _classType = classType ?? typeof(RemoteClass);
         }
 
 

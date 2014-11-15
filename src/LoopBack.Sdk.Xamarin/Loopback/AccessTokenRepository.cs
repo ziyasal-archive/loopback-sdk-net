@@ -2,7 +2,7 @@
 {
     public class AccessTokenRepository : ModelRepository<AccessToken>
     {
-        public AccessTokenRepository() : base("accessToken", typeof (AccessToken))
+        public AccessTokenRepository() : base("accessToken")
         {
 
         }

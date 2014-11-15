@@ -12,11 +12,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         {
         }
 
-        public ContainerRepository(string className, Type classType) : base(className, classType)
-        {
-        }
-
-        public ContainerRepository() : base("container", typeof(Container))
+        public ContainerRepository() : base("container")
         {
         }
 

@@ -81,9 +81,8 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         /// Creates a new UserRepository, associating it with the static {T} user class and the user class name.
         /// </summary>
         /// <param name="className">The remote class name.</param>
-        /// <param name="userClass">The User (sub)class. It must have a public no-argument constructor.</param>
-        public UserRepository(string className, Type userClass)
-            : this(className, null, userClass)
+        public UserRepository(string className)
+            : this(className, null)
         {
 
         }
@@ -93,15 +92,14 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         /// </summary>
         /// <param name="className">The remote class name.</param>
         /// <param name="nameForRestUrl">The pluralized class name to use in REST transport. Use <code>null</code> for the default value, which is the plural form of className.</param>
-        /// <param name="userClass">The User (sub)class. It must have a public no-argument constructor.</param>
-        public UserRepository(string className, string nameForRestUrl, Type userClass)
-            : base(className, nameForRestUrl, userClass)
+        public UserRepository(string className, string nameForRestUrl)
+            : base(className, nameForRestUrl)
         {
 
         }
 
         public UserRepository()
-            : base("user", typeof(User))
+            : base("user")
         {
         }
 
