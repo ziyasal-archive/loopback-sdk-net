@@ -49,11 +49,11 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
         /// </summary>
         /// <param name="item">The item to add to this contract.</param>
         /// <param name="method">The method the item should represent.</param>
-        public void AddItem(RestContractItem item, String method)
+        public void AddItem(RestContractItem item, string method)
         {
             if (item == null || string.IsNullOrEmpty(method))
             {
-                throw new ArgumentNullException("Neither item nor method can be null");
+                throw new ArgumentException("Neither item nor method can be null");
             }
 
             Items.Add(method, item);
@@ -67,7 +67,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
         {
             if (contract == null)
             {
-                throw new ArgumentNullException("Contract cannot be null");
+                throw new ArgumentNullException("contract", "Contract cannot be null");
             }
 
             Items.AddRange(contract.Items);
@@ -146,7 +146,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
         /// <param name="method">The method to resolve.</param>
         /// <param name="parameters">Pattern parameters. Can be <code>null</code>.</param>
         /// <returns>The complete, resolved URL.</returns>
-        public String GetUrlForMethod(string method, Dictionary<string, object> parameters = null)
+        public string GetUrlForMethod(string method, Dictionary<string, object> parameters = null)
         {
             if (string.IsNullOrEmpty(method))
             {

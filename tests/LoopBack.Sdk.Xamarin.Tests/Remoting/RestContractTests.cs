@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
-using LoopBack.Sdk.Xamarin.Common;
 using LoopBack.Sdk.Xamarin.Remoting;
 using LoopBack.Sdk.Xamarin.Remoting.Adapters;
+using LoopBack.Sdk.Xamarin.Shared;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 

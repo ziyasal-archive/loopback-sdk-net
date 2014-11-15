@@ -1,4 +1,4 @@
-using LoopBack.Sdk.Xamarin.Common;
+using LoopBack.Sdk.Xamarin.Shared;
 
 namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
 {

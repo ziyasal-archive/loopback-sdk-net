@@ -1,6 +1,6 @@
 ﻿using System;
-using LoopBack.Sdk.Xamarin.Common;
 using LoopBack.Sdk.Xamarin.Remoting;
+using LoopBack.Sdk.Xamarin.Shared;
 
 namespace LoopBack.Sdk.Xamarin.Loopback
 {

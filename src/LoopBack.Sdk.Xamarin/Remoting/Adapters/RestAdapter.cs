@@ -4,8 +4,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using LoopBack.Sdk.Xamarin.Common;
 using LoopBack.Sdk.Xamarin.Extensions;
+using LoopBack.Sdk.Xamarin.Shared;
 using ModernHttpClient;
 using Newtonsoft.Json;
 
@@ -92,6 +92,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
                 async response => { await BinaryCallback(onSuccess, onError, response); });
         }
 
+
         public override void InvokeInstanceMethod(string method,
             Dictionary<string, object> constructorParameters,
             Dictionary<string, object> parameters,
@@ -102,13 +103,6 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
                 async response => { await Callback(onSuccess, onError, response); });
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="method"></param>
-        /// <param name="constructorParameters"></param>
-        /// <param name="parameters"></param>
-        /// <param name="onSuccess"></param>
-        /// <param name="onError"></param>
         public override void InvokeInstanceMethod(string method,
             Dictionary<string, object> constructorParameters,
             Dictionary<string, object> parameters,
@@ -241,31 +235,31 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
             HttpContent content;
             switch (parameterEncoding)
             {
-                case ParameterEncoding.FORM_URL:
-                    var listOfParams =
-                        parameters.Select(pair => new KeyValuePair<string, string>(pair.Key, pair.Value.ToString()))
-                            .AsEnumerable();
-                    content = new FormUrlEncodedContent(listOfParams);
+            case ParameterEncoding.FORM_URL:
+                var listOfParams =
+                    parameters.Select(pair => new KeyValuePair<string, string>(pair.Key, pair.Value.ToString()))
+                        .AsEnumerable();
+                content = new FormUrlEncodedContent(listOfParams);
+                request.Content = content;
+                break;
+            case ParameterEncoding.JSON:
+                Client.DefaultRequestHeaders.Accept.Clear();
+                Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                if (!skipBody && parameters != null)
+                {
+                    content = new StringContent(JsonConvert.SerializeObject(parameters));
                     request.Content = content;
-                    break;
-                case ParameterEncoding.JSON:
-                    Client.DefaultRequestHeaders.Accept.Clear();
-                    Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    if (!skipBody && parameters != null)
-                    {
-                        content = new StringContent(JsonConvert.SerializeObject(parameters));
-                        request.Content = content;
-                        request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                    }
+                    request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                }
 
-                    break;
-                case ParameterEncoding.FORM_MULTIPART:
-                    //TODO:
-                    content = new MultipartFormDataContent("");
-                    request.Content = content;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException("parameterEncoding");
+                break;
+            case ParameterEncoding.FORM_MULTIPART:
+                //TODO:
+                content = new MultipartFormDataContent("");
+                request.Content = content;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException("parameterEncoding");
             }
 
             responseHandler(await Client.SendAsync(request));

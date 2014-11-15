@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using LoopBack.Sdk.Xamarin.Common;
 using LoopBack.Sdk.Xamarin.Extensions;
 using LoopBack.Sdk.Xamarin.Remoting.Adapters;
+using LoopBack.Sdk.Xamarin.Shared;
 using Newtonsoft.Json.Linq;
 
 namespace LoopBack.Sdk.Xamarin.Loopback
