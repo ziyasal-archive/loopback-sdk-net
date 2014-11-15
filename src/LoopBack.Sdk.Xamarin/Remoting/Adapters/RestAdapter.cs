@@ -32,6 +32,15 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
         {
             _context = context;
             Contract = new RestContract();
+            AddUserAgentHeaderToHttpClient();
+        }
+
+        private void AddUserAgentHeaderToHttpClient()
+        {
+            if (Client != null)
+            {
+                Client.DefaultRequestHeaders.Add("User-Agent", _context.UserAgent);
+            }
         }
 
         public RestAdapter(string url)
@@ -39,6 +48,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
         {
             _context = new RestContext("loopback-xamarin/1.0");
             Contract = new RestContract();
+            AddUserAgentHeaderToHttpClient();
         }
 
         /// <summary>
@@ -61,7 +71,6 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
             {
                 Client = new HttpClient(new NativeMessageHandler());
                 Client.DefaultRequestHeaders.Add("Accept", "application/json");
-                Client.DefaultRequestHeaders.Add("User-Agent", _context.UserAgent);
             }
         }
 

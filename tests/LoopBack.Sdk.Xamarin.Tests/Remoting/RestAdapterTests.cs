@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using LoopBack.Sdk.Xamarin.Remoting;
 using LoopBack.Sdk.Xamarin.Remoting.Adapters;
+using LoopBack.Sdk.Xamarin.Shared;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
@@ -14,16 +15,16 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remoting
 
         protected override void FinalizeSetUp()
         {
-            _adapter = CreateAdapter();
+            _adapter = CreateAdapter(new RestContext("loopback-xamarin/1.0"));
             _testClass = new RemoteRepository<SimpleClass>("SimpleClass")
             {
                 Adapter = _adapter
             };
         }
 
-        private RestAdapter CreateAdapter()
+        private RestAdapter CreateAdapter(IContext context)
         {
-            return new RestAdapter(null, REST_SERVER_URL);
+            return new RestAdapter(context, REST_SERVER_URL);
         }
 
         [Test]
@@ -48,7 +49,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remoting
         [Test]
         public void PrototypeGet_Test()
         {
-            RemoteClass test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object) "somename"));
+            RemoteClass test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object)"somename"));
             test.InvokeMethod("getName", null, response =>
             {
                 var data = JObject.Parse(response);
@@ -75,47 +76,47 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remoting
         {
             RemoteClass test =
                 _testClass.CreateObject(TestUtil.BuildParameters("name",
-                    (object) TestUtil.BuildParameters("somekey", (object) "somevalue")));
-            test.InvokeMethod("greet", TestUtil.BuildParameters("other", (object) "othername"), response =>
-            {
-                var data = JObject.Parse(response);
-                var token = data["data"];
-                token.Should().NotBeNull();
-                token.ToString().ShouldBeEquivalentTo("Hi, othername!");
-            }, exception => { });
+                    (object)TestUtil.BuildParameters("somekey", (object)"somevalue")));
+            test.InvokeMethod("greet", TestUtil.BuildParameters("other", (object)"othername"), response =>
+           {
+               var data = JObject.Parse(response);
+               var token = data["data"];
+               token.Should().NotBeNull();
+               token.ToString().ShouldBeEquivalentTo("Hi, othername!");
+           }, exception => { });
         }
 
         [Test]
         public void SimpleClassGet_Test()
         {
             _adapter.InvokeInstanceMethod("SimpleClass.prototype.getName",
-                TestUtil.BuildParameters("name", (object) "somename"), null, response =>
-                {
-                    var data = JObject.Parse(response);
-                    var token = data["data"];
-                    token.Should().NotBeNull();
-                    token.ToString().ShouldBeEquivalentTo("somename");
-                }, exception => { });
+                TestUtil.BuildParameters("name", (object)"somename"), null, response =>
+               {
+                   var data = JObject.Parse(response);
+                   var token = data["data"];
+                   token.Should().NotBeNull();
+                   token.ToString().ShouldBeEquivalentTo("somename");
+               }, exception => { });
         }
 
         [Test]
         public void SimpleClassTransform_Test()
         {
             _adapter.InvokeInstanceMethod("SimpleClass.prototype.greet",
-                TestUtil.BuildParameters("name", (object) "somename"),
-                TestUtil.BuildParameters("other", (object) "othername"), response =>
-                {
-                    var data = JObject.Parse(response);
-                    var token = data["data"];
-                    token.Should().NotBeNull();
-                    token.ToString().ShouldBeEquivalentTo("Hi, othername!");
-                }, exception => { });
+                TestUtil.BuildParameters("name", (object)"somename"),
+                TestUtil.BuildParameters("other", (object)"othername"), response =>
+               {
+                   var data = JObject.Parse(response);
+                   var token = data["data"];
+                   token.Should().NotBeNull();
+                   token.ToString().ShouldBeEquivalentTo("Hi, othername!");
+               }, exception => { });
         }
 
         [Test]
         public void Transform_Test()
         {
-            _adapter.InvokeStaticMethod("simple.transform", TestUtil.BuildParameters("str", (object) "somevalue"),
+            _adapter.InvokeStaticMethod("simple.transform", TestUtil.BuildParameters("str", (object)"somevalue"),
                 response =>
                 {
                     var data = JObject.Parse(response);

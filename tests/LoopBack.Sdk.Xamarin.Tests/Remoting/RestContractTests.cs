@@ -16,7 +16,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remoting
 
         protected override void FinalizeSetUp()
         {
-            _adapter = CreateAdapter();
+            _adapter = CreateAdapter(new RestContext("loopback-xamarin/1.0"));
 
             var contract = _adapter.Contract;
 
@@ -24,8 +24,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remoting
             contract.AddItem(new RestContractItem("/contract/customizedTransform", "GET"), "contract.transform");
             contract.AddItem(new RestContractItem("/contract/geopoint", "GET"), "contract.geopoint");
             contract.AddItem(new RestContractItem("/contract/list", "GET"), "contract.list");
-            contract.AddItem(new RestContractItem("/ContractClass/:name/getName", "POST"),
-                "ContractClass.prototype.getName");
+            contract.AddItem(new RestContractItem("/ContractClass/:name/getName", "POST"), "ContractClass.prototype.getName");
             contract.AddItem(new RestContractItem("/ContractClass/:name/greet", "POST"), "ContractClass.prototype.greet");
             contract.AddItem(new RestContractItem("/contract/binary", "GET"), "contract.binary");
 
@@ -35,7 +34,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remoting
             };
         }
 
-        private RestAdapter CreateAdapter(IContext context = null)
+        private RestAdapter CreateAdapter(IContext context)
         {
             return new RestAdapter(context, REST_SERVER_URL);
         }
@@ -73,7 +72,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remoting
                 //contentType.ShouldBeEquivalentTo("application/octet-stream");
 
                 // The values are hard-coded in test-server/contract.js
-                Assert.Equals(new byte[] {1, 2, 3}, bytes);
+                Assert.Equals(new byte[] { 1, 2, 3 }, bytes);
             }, exception => { });
         }
 
@@ -118,7 +117,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remoting
                     }
                 }
             };
-            _adapter.InvokeStaticMethod("contract.list", TestUtil.BuildParameters("filter", (object) filter),
+            _adapter.InvokeStaticMethod("contract.list", TestUtil.BuildParameters("filter", (object)filter),
                 response =>
                 {
                     var data = JObject.Parse(response);
@@ -147,7 +146,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remoting
                 {"lat", 10},
                 {"lng", 20}
             };
-            _adapter.InvokeStaticMethod("contract.geopoint", TestUtil.BuildParameters("here", (object) parameters),
+            _adapter.InvokeStaticMethod("contract.geopoint", TestUtil.BuildParameters("here", (object)parameters),
                 response =>
                 {
                     var data = JObject.Parse(response);
@@ -160,7 +159,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remoting
         [Test]
         public void PrototypeGet_Test()
         {
-            RemoteClass test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object) "somename"));
+            RemoteClass test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object)"somename"));
             test.InvokeMethod("getName", null, response =>
             {
                 var data = JObject.Parse(response);
@@ -186,35 +185,35 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remoting
         [Test]
         public void PrototypeTransform_Test()
         {
-            RemoteClass test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object) "somename"));
-            test.InvokeMethod("greet", TestUtil.BuildParameters("other", (object) "othername"), response =>
-            {
-                var data = JObject.Parse(response);
-                var token = data["data"];
-                token.Should().NotBeNull();
-                token.ToString().ShouldBeEquivalentTo("Hi, othername!");
-            }, exception => { });
+            RemoteClass test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object)"somename"));
+            test.InvokeMethod("greet", TestUtil.BuildParameters("other", (object)"othername"), response =>
+           {
+               var data = JObject.Parse(response);
+               var token = data["data"];
+               token.Should().NotBeNull();
+               token.ToString().ShouldBeEquivalentTo("Hi, othername!");
+           }, exception => { });
         }
 
         [Test]
         public void TestClassGet_Test()
         {
             _adapter.InvokeStaticMethod("ContractClass.prototype.getName",
-                TestUtil.BuildParameters("name", (object) "somename"), response =>
-                {
-                    var data = JObject.Parse(response);
-                    var token = data["data"];
-                    token.Should().NotBeNull();
-                    token.ToString().ShouldBeEquivalentTo("somename");
-                }, exception => { });
+                TestUtil.BuildParameters("name", (object)"somename"), response =>
+               {
+                   var data = JObject.Parse(response);
+                   var token = data["data"];
+                   token.Should().NotBeNull();
+                   token.ToString().ShouldBeEquivalentTo("somename");
+               }, exception => { });
         }
 
         [Test]
         public void TestClassTransform_Test()
         {
             _adapter.InvokeInstanceMethod("ContractClass.prototype.greet",
-                TestUtil.BuildParameters("name", (object) "somename"),
-                TestUtil.BuildParameters("other", (object) "othername"),
+                TestUtil.BuildParameters("name", (object)"somename"),
+                TestUtil.BuildParameters("other", (object)"othername"),
                 response =>
                 {
                     var data = JObject.Parse(response);
@@ -227,7 +226,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remoting
         [Test]
         public void Transform_Test()
         {
-            _adapter.InvokeStaticMethod("contract.transform", TestUtil.BuildParameters("str", (object) "somevalue"),
+            _adapter.InvokeStaticMethod("contract.transform", TestUtil.BuildParameters("str", (object)"somevalue"),
                 response =>
                 {
                     var data = JObject.Parse(response);
