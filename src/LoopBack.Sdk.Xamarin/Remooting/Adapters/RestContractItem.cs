@@ -5,7 +5,7 @@
     /// </summary>
     public class RestContractItem
     {
-        private readonly Adapter.ParameterEncoding _parameterEncoding;
+        private readonly AdapterBase.ParameterEncoding _parameterEncoding;
         private readonly string _pattern;
         private readonly string _verb;
 
@@ -24,11 +24,11 @@
         /// <param name="pattern">The pattern corresponding to this route, e.g. <code>"/widgets/:id"</code>. </param>
         /// <param name="verb">The verb corresponding to this route, e.g. <code>"GET"</code>.</param>
         public RestContractItem(string pattern, string verb)
-            : this(pattern, verb, Adapter.ParameterEncoding.JSON)
+            : this(pattern, verb, AdapterBase.ParameterEncoding.JSON)
         {
         }
 
-        private RestContractItem(string pattern, string verb, Adapter.ParameterEncoding parameterEncoding)
+        private RestContractItem(string pattern, string verb, AdapterBase.ParameterEncoding parameterEncoding)
         {
             _pattern = pattern;
             _verb = verb;
@@ -53,7 +53,7 @@
 
         /// <summary>
         /// </summary>
-        public virtual Adapter.ParameterEncoding ParameterEncoding
+        public virtual AdapterBase.ParameterEncoding ParameterEncoding
         {
             get { return _parameterEncoding; }
         }
@@ -66,7 +66,7 @@
         /// <returns>The <see cref="RestContractItem"/> created.</returns>
         public static RestContractItem CreateMultipart(string pattern, string verb)
         {
-            return new RestContractItem(pattern, verb, Adapter.ParameterEncoding.FORM_MULTIPART);
+            return new RestContractItem(pattern, verb, AdapterBase.ParameterEncoding.FORM_MULTIPART);
         }
     }
 }

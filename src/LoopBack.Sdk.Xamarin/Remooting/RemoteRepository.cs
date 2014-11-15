@@ -17,7 +17,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         /// for static methods on this prototype and all methods on all instances of
         /// this prototype.
         /// </summary>
-        public Adapter Adapter { get; set; }
+        public AdapterBase Adapter { get; set; }
 
         /// <summary>
         /// The name given to this prototype on the server.

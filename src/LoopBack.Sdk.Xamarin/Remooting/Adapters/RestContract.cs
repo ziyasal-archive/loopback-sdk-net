@@ -122,11 +122,11 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         }
 
         /// <summary>
-        /// Gets the <see cref="Adapter.ParameterEncoding"/> for the given method.
+        /// Gets the <see cref="AdapterBase.ParameterEncoding"/> for the given method.
         /// </summary>
         /// <param name="method">The method to resolve.</param>
         /// <returns>The parameter encoding.</returns>
-        public Adapter.ParameterEncoding GetParameterEncodingForMethod(string method)
+        public AdapterBase.ParameterEncoding GetParameterEncodingForMethod(string method)
         {
             if (string.IsNullOrEmpty(method))
             {
@@ -137,10 +137,10 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             {
                 var item = Items[method];
 
-                return item != null ? item.ParameterEncoding : Adapter.ParameterEncoding.JSON;
+                return item != null ? item.ParameterEncoding : AdapterBase.ParameterEncoding.JSON;
             }
 
-            return Adapter.ParameterEncoding.JSON;
+            return AdapterBase.ParameterEncoding.JSON;
         }
 
         /// <summary>

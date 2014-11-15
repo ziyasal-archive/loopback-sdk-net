@@ -9,7 +9,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
     /// encapsulate information consistent to all networked operations, such as base
     /// URL, port, etc.
     /// </summary>
-    public abstract class Adapter
+    public abstract class AdapterBase
     {
         public enum ParameterEncoding
         {
@@ -21,7 +21,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         /// <summary>
         /// Creates a new, disconnected Adapter.
         /// </summary>
-        protected Adapter()
+        protected AdapterBase()
             : this(null)
         {
         }
@@ -30,7 +30,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         /// Creates a new Adapter, connecting it to `url`.
         /// </summary>
         /// <param name="url">The URL to connect to.</param>
-        protected Adapter(string url)
+        protected AdapterBase(string url)
         {
             if (!string.IsNullOrEmpty(url))
             {

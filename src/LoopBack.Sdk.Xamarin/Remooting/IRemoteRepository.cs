@@ -4,7 +4,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
 {
     public interface IRemoteRepository
     {
-        Adapter Adapter { get; set; }
+        AdapterBase Adapter { get; set; }
 
         string ClassName { get; }
     }

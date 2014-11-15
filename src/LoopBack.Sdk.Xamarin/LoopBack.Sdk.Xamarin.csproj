@@ -45,7 +45,7 @@
     <Compile Include="Loopback\RestRepository.cs" />
     <Compile Include="Loopback\UserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Remooting\Adapters\Adapter.cs" />
+    <Compile Include="Remooting\Adapters\AdapterBase.cs" />
     <Compile Include="Remooting\Adapters\RestAdapter.cs" />
     <Compile Include="Loopback\AccessToken.cs" />
     <Compile Include="Loopback\Model.cs" />

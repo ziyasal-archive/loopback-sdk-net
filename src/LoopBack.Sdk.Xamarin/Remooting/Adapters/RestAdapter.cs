@@ -7,21 +7,20 @@ using System.Threading.Tasks;
 using LoopBack.Sdk.Xamarin.Common;
 using ModernHttpClient;
 using Newtonsoft.Json;
-using System.ServiceModel.Security.Tokens;
 
 namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
 {
     /// <summary>
-    /// A specific <see cref="Adapter"/> implementation for RESTful servers.
+    /// A specific <see cref="AdapterBase"/> implementation for RESTful servers.
     ///
-    /// In addition to implementing the <see cref="Adapter"/> interface,
+    /// In addition to implementing the <see cref="AdapterBase"/> interface,
     /// <code>RestAdapter</code> contains a single <see cref="RestContract"/> to map
     /// remote methods to custom HTTP routes. This is only required if the HTTP
     /// settings have been customized on the server. When in doubt, try without.
     ///
     /// <see cref="RestContract"/>
     /// </summary>
-    public class RestAdapter : Adapter
+    public class RestAdapter : AdapterBase
     {
         private static string TAG = "remoting.RestAdapter";
         private HttpClient _httpClient;
