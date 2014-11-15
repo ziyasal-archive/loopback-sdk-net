@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using LoopBack.Sdk.Xamarin.Extensions;
 
-namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
+namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
 {
     /// <summary>
     ///     A contract specifies how remote method names map to HTTP routes.

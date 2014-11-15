@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using LoopBack.Sdk.Xamarin.Extensions;
-using LoopBack.Sdk.Xamarin.Remooting.Adapters;
+using LoopBack.Sdk.Xamarin.Remoting.Adapters;
 
-namespace LoopBack.Sdk.Xamarin.Remooting
+namespace LoopBack.Sdk.Xamarin.Remoting
 {
     /// <summary>
     ///     A local representative of remote model repository, it provides access to static methods like

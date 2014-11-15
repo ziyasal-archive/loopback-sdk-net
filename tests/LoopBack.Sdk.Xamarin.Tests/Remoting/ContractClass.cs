@@ -1,6 +1,6 @@
-﻿using LoopBack.Sdk.Xamarin.Remooting;
+﻿using LoopBack.Sdk.Xamarin.Remoting;
 
-namespace LoopBack.Sdk.Xamarin.Tests.Remooting
+namespace LoopBack.Sdk.Xamarin.Tests.Remoting
 {
     public class ContractClass : RemoteClass
     {

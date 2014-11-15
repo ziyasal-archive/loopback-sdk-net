@@ -1,6 +1,6 @@
 using LoopBack.Sdk.Xamarin.Common;
 
-namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
+namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
 {
     public class RestContext : IContext
     {

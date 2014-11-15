@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using LoopBack.Sdk.Xamarin.Extensions;
 using Newtonsoft.Json;
 
-namespace LoopBack.Sdk.Xamarin.Remooting
+namespace LoopBack.Sdk.Xamarin.Remoting
 {
     /// <summary>
     ///     A local representative of a single virtual object. The behavior of this

@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
 using LoopBack.Sdk.Xamarin.Common;
-using LoopBack.Sdk.Xamarin.Remooting;
-using LoopBack.Sdk.Xamarin.Remooting.Adapters;
+using LoopBack.Sdk.Xamarin.Remoting;
+using LoopBack.Sdk.Xamarin.Remoting.Adapters;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
-namespace LoopBack.Sdk.Xamarin.Tests.Remooting
+namespace LoopBack.Sdk.Xamarin.Tests.Remoting
 {
     public class RestContractTests : TestBase
     {

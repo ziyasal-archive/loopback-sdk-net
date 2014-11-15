@@ -9,15 +9,14 @@ using LoopBack.Sdk.Xamarin.Extensions;
 using ModernHttpClient;
 using Newtonsoft.Json;
 
-namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
+namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
 {
     /// <summary>
     ///     A specific <see cref="AdapterBase" /> implementation for RESTful servers.
     ///     In addition to implementing the <see cref="AdapterBase" /> interface,
     ///     <code>RestAdapter</code> contains a single <see cref="RestContract" /> to map
     ///     remote methods to custom HTTP routes. This is only required if the HTTP
-    ///     settings have been customized on the server. When in doubt, try without.
-    ///     <see cref="RestContract" />
+    ///     settings have been customized on the server. When in doubt, try without. <see cref="RestContract" />
     /// </summary>
     public class RestAdapter : AdapterBase
     {

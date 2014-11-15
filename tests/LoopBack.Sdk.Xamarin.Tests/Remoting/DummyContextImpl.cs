@@ -1,6 +1,6 @@
 using LoopBack.Sdk.Xamarin.Common;
 
-namespace LoopBack.Sdk.Xamarin.Tests.Remooting
+namespace LoopBack.Sdk.Xamarin.Tests.Remoting
 {
     public class DummyContextImpl : IContext
     {

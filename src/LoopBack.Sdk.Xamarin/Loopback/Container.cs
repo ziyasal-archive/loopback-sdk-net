@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using LoopBack.Sdk.Xamarin.Remooting;
+using LoopBack.Sdk.Xamarin.Remoting;
 using PCLStorage;
 
 namespace LoopBack.Sdk.Xamarin.Loopback

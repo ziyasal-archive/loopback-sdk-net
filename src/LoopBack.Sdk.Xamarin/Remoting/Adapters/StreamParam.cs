@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
+namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
 {
     /// <summary>
     ///     A request parameter that is a (binary) stream.

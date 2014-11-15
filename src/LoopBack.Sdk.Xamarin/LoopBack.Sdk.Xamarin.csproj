@@ -45,20 +45,20 @@
     <Compile Include="Loopback\RestRepository.cs" />
     <Compile Include="Loopback\UserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Remooting\Adapters\AdapterBase.cs" />
-    <Compile Include="Remooting\Adapters\RestAdapter.cs" />
+    <Compile Include="Remoting\Adapters\AdapterBase.cs" />
+    <Compile Include="Remoting\Adapters\RestAdapter.cs" />
     <Compile Include="Loopback\AccessToken.cs" />
     <Compile Include="Loopback\Model.cs" />
     <Compile Include="Loopback\ModelRepository.cs" />
     <Compile Include="Loopback\User.cs" />
-    <Compile Include="Remooting\Adapters\RestContext.cs" />
-    <Compile Include="Remooting\Adapters\RestContract.cs" />
-    <Compile Include="Remooting\Adapters\RestContractItem.cs" />
+    <Compile Include="Remoting\Adapters\RestContext.cs" />
+    <Compile Include="Remoting\Adapters\RestContract.cs" />
+    <Compile Include="Remoting\Adapters\RestContractItem.cs" />
     <Compile Include="Common\IContext.cs" />
-    <Compile Include="Remooting\Adapters\StreamParam.cs" />
-    <Compile Include="Remooting\IRemoteRepository.cs" />
-    <Compile Include="Remooting\RemoteRepository.cs" />
-    <Compile Include="Remooting\RemoteClass.cs" />
+    <Compile Include="Remoting\Adapters\StreamParam.cs" />
+    <Compile Include="Remoting\IRemoteRepository.cs" />
+    <Compile Include="Remoting\RemoteRepository.cs" />
+    <Compile Include="Remoting\RemoteClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">

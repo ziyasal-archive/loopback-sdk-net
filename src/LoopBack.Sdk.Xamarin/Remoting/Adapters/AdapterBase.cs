@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
+namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
 {
     /// <summary>
     ///     The entry point to all networking accomplished with LoopBack. Adapters

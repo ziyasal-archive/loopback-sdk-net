@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Humanizer;
 using LoopBack.Sdk.Xamarin.Extensions;
-using LoopBack.Sdk.Xamarin.Remooting.Adapters;
+using LoopBack.Sdk.Xamarin.Remoting.Adapters;
 using Newtonsoft.Json.Linq;
 
 namespace LoopBack.Sdk.Xamarin.Loopback

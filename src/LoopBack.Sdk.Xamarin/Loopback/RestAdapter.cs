@@ -1,13 +1,13 @@
 ﻿using System;
 using LoopBack.Sdk.Xamarin.Common;
-using LoopBack.Sdk.Xamarin.Remooting;
+using LoopBack.Sdk.Xamarin.Remoting;
 
 namespace LoopBack.Sdk.Xamarin.Loopback
 {
     /// <summary>
     ///     An extension to the vanilla <see cref="RestAdapter" /> to make working with <see cref="Model" /> s easier.
     /// </summary>
-    public class RestAdapter : Remooting.Adapters.RestAdapter
+    public class RestAdapter : Remoting.Adapters.RestAdapter
     {
         public static string SHARED_PREFERENCES_NAME = "RestAdapter";
         public static string PROPERTY_ACCESS_TOKEN = "accessToken";

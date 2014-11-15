@@ -1,6 +1,6 @@
 ﻿using LoopBack.Sdk.Xamarin.Common;
-using LoopBack.Sdk.Xamarin.Remooting;
-using LoopBack.Sdk.Xamarin.Remooting.Adapters;
+using LoopBack.Sdk.Xamarin.Remoting;
+using LoopBack.Sdk.Xamarin.Remoting.Adapters;
 
 namespace LoopBack.Sdk.Xamarin.Loopback
 {

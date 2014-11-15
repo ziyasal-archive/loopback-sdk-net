@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using LoopBack.Sdk.Xamarin.Remooting;
+using LoopBack.Sdk.Xamarin.Remoting;
 using Newtonsoft.Json;
 using PCLStorage;
 

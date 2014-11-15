@@ -1,4 +1,4 @@
-﻿namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
+﻿namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
 {
     /// <summary>
     ///     A single item within a larger SLRESTContract, encapsulation a single route's verb and pattern, e.g. GET

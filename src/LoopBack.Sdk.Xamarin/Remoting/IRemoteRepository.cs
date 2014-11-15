@@ -1,6 +1,6 @@
-﻿using LoopBack.Sdk.Xamarin.Remooting.Adapters;
+﻿using LoopBack.Sdk.Xamarin.Remoting.Adapters;
 
-namespace LoopBack.Sdk.Xamarin.Remooting
+namespace LoopBack.Sdk.Xamarin.Remoting
 {
     public interface IRemoteRepository
     {

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using LoopBack.Sdk.Xamarin.Remooting;
+using LoopBack.Sdk.Xamarin.Remoting;
 
 namespace LoopBack.Sdk.Xamarin.Loopback
 {

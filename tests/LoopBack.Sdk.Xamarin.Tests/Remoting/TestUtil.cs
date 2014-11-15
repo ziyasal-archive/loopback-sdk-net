@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LoopBack.Sdk.Xamarin.Tests.Remooting
+namespace LoopBack.Sdk.Xamarin.Tests.Remoting
 {
     public static class TestUtil
     {
