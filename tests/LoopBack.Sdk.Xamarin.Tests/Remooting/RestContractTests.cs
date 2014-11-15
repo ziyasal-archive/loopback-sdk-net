@@ -41,37 +41,6 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
         }
 
         [Test]
-        public void BinaryResponseBody()
-        {
-            _adapter.InvokeStaticMethod("contract.binary", null, (bytes, contentType) =>
-            {
-                //TODO: Fix
-                //contentType.ShouldBeEquivalentTo("application/octet-stream");
-
-                // The values are hard-coded in test-server/contract.js
-                Assert.Equals(new byte[] { 1, 2, 3 }, bytes);
-            }, exception => { });
-        }
-
-        [Test]
-        public void CustomRequestHeader_Test()
-        {
-            RestAdapter customAdapter = CreateAdapter(new DummyContextImpl("loopback-xamarin/1.0"));
-
-            customAdapter.Client.DefaultRequestHeaders.Add("Authorization", "auth-token");
-
-            customAdapter.Contract.AddItem(new RestContractItem("/contract/get-auth", "GET"),
-                "contract.getAuthorizationHeader");
-            customAdapter.InvokeStaticMethod("contract.getAuthorizationHeader", new Dictionary<string, object>(),
-                response =>
-                {
-                    var data = JObject.Parse(response);
-                    data.Should().NotBeNull();
-                    data["data"].ToString().ShouldBeEquivalentTo("auth-token");
-                }, exception => { });
-        }
-
-        [Test]
         public void AddItemsFromContract_Test()
         {
             var parent = new RestContract();
@@ -93,6 +62,37 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
 
             newRoute.ShouldBeEquivalentTo("/new/route");
             newRouteVerb.ShouldBeEquivalentTo("POST");
+        }
+
+        [Test]
+        public void BinaryResponseBody()
+        {
+            _adapter.InvokeStaticMethod("contract.binary", null, (bytes, contentType) =>
+            {
+                //TODO: Fix
+                //contentType.ShouldBeEquivalentTo("application/octet-stream");
+
+                // The values are hard-coded in test-server/contract.js
+                Assert.Equals(new byte[] {1, 2, 3}, bytes);
+            }, exception => { });
+        }
+
+        [Test]
+        public void CustomRequestHeader_Test()
+        {
+            var customAdapter = CreateAdapter(new DummyContextImpl("loopback-xamarin/1.0"));
+
+            customAdapter.Client.DefaultRequestHeaders.Add("Authorization", "auth-token");
+
+            customAdapter.Contract.AddItem(new RestContractItem("/contract/get-auth", "GET"),
+                "contract.getAuthorizationHeader");
+            customAdapter.InvokeStaticMethod("contract.getAuthorizationHeader", new Dictionary<string, object>(),
+                response =>
+                {
+                    var data = JObject.Parse(response);
+                    data.Should().NotBeNull();
+                    data["data"].ToString().ShouldBeEquivalentTo("auth-token");
+                }, exception => { });
         }
 
         [Test]
@@ -118,7 +118,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
                     }
                 }
             };
-            _adapter.InvokeStaticMethod("contract.list", TestUtil.BuildParameters("filter", (object)filter),
+            _adapter.InvokeStaticMethod("contract.list", TestUtil.BuildParameters("filter", (object) filter),
                 response =>
                 {
                     var data = JObject.Parse(response);
@@ -147,7 +147,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
                 {"lat", 10},
                 {"lng", 20}
             };
-            _adapter.InvokeStaticMethod("contract.geopoint", TestUtil.BuildParameters("here", (object)parameters),
+            _adapter.InvokeStaticMethod("contract.geopoint", TestUtil.BuildParameters("here", (object) parameters),
                 response =>
                 {
                     var data = JObject.Parse(response);
@@ -160,7 +160,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
         [Test]
         public void PrototypeGet_Test()
         {
-            RemoteClass test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object)"somename"));
+            RemoteClass test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object) "somename"));
             test.InvokeMethod("getName", null, response =>
             {
                 var data = JObject.Parse(response);
@@ -186,35 +186,35 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
         [Test]
         public void PrototypeTransform_Test()
         {
-            RemoteClass test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object)"somename"));
-            test.InvokeMethod("greet", TestUtil.BuildParameters("other", (object)"othername"), response =>
-           {
-               var data = JObject.Parse(response);
-               var token = data["data"];
-               token.Should().NotBeNull();
-               token.ToString().ShouldBeEquivalentTo("Hi, othername!");
-           }, exception => { });
+            RemoteClass test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object) "somename"));
+            test.InvokeMethod("greet", TestUtil.BuildParameters("other", (object) "othername"), response =>
+            {
+                var data = JObject.Parse(response);
+                var token = data["data"];
+                token.Should().NotBeNull();
+                token.ToString().ShouldBeEquivalentTo("Hi, othername!");
+            }, exception => { });
         }
 
         [Test]
         public void TestClassGet_Test()
         {
             _adapter.InvokeStaticMethod("ContractClass.prototype.getName",
-                TestUtil.BuildParameters("name", (object)"somename"), response =>
-               {
-                   var data = JObject.Parse(response);
-                   var token = data["data"];
-                   token.Should().NotBeNull();
-                   token.ToString().ShouldBeEquivalentTo("somename");
-               }, exception => { });
+                TestUtil.BuildParameters("name", (object) "somename"), response =>
+                {
+                    var data = JObject.Parse(response);
+                    var token = data["data"];
+                    token.Should().NotBeNull();
+                    token.ToString().ShouldBeEquivalentTo("somename");
+                }, exception => { });
         }
 
         [Test]
         public void TestClassTransform_Test()
         {
             _adapter.InvokeInstanceMethod("ContractClass.prototype.greet",
-                TestUtil.BuildParameters("name", (object)"somename"),
-                TestUtil.BuildParameters("other", (object)"othername"),
+                TestUtil.BuildParameters("name", (object) "somename"),
+                TestUtil.BuildParameters("other", (object) "othername"),
                 response =>
                 {
                     var data = JObject.Parse(response);
@@ -227,7 +227,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
         [Test]
         public void Transform_Test()
         {
-            _adapter.InvokeStaticMethod("contract.transform", TestUtil.BuildParameters("str", (object)"somevalue"),
+            _adapter.InvokeStaticMethod("contract.transform", TestUtil.BuildParameters("str", (object) "somevalue"),
                 response =>
                 {
                     var data = JObject.Parse(response);

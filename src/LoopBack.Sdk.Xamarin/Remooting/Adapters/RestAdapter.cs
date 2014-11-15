@@ -23,6 +23,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
     {
         private static string TAG = "remoting.RestAdapter";
         private readonly IContext _context;
+
         /// <summary>
         /// </summary>
         /// <param name="context"></param>
@@ -50,8 +51,6 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         ///     The underlying HTTP client. This allows subclasses to add  custom headers like Authorization.
         /// </summary>
         public HttpClient Client { get; private set; }
-
-
 
         public override void Connect(string url)
         {
