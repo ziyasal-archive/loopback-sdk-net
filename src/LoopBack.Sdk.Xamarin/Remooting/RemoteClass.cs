@@ -6,25 +6,14 @@ using Newtonsoft.Json;
 namespace LoopBack.Sdk.Xamarin.Remooting
 {
     /// <summary>
-    ///  A local representative of a single virtual object. The behavior of this
-    /// object is defined through a model defined on the server, and the identity
-    /// of this instance is defined through its `creationParameters`.
+    ///     A local representative of a single virtual object. The behavior of this
+    ///     object is defined through a model defined on the server, and the identity
+    ///     of this instance is defined through its `creationParameters`.
     /// </summary>
     public class RemoteClass
     {
         /// <summary>
-        /// The creation parameters this object was created from.
-        /// </summary>
-        public Dictionary<string, object> CreationParameters { get; set; }
-
-        /// <summary>
-        /// The Repository this object was created from
-        /// </summary>
-        [JsonIgnore]
-        public IRemoteRepository RemoteRepository { get; set; }
-
-        /// <summary>
-        /// Creates a new object not attached to any repository.
+        ///     Creates a new object not attached to any repository.
         /// </summary>
         public RemoteClass()
             : this(null, null)
@@ -32,7 +21,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         }
 
         /// <summary>
-        /// Creates a new object from the given repository and parameters.
+        ///     Creates a new object from the given repository and parameters.
         /// </summary>
         /// <param name="repository">The repository this object should inherit from</param>
         /// <param name="creationParameters">The creationParameters of the new object</param>
@@ -43,7 +32,18 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         }
 
         /// <summary>
-        /// Converts the object into a <see cref="Dictionary{TKey,TValue}"></see>
+        ///     The creation parameters this object was created from.
+        /// </summary>
+        public Dictionary<string, object> CreationParameters { get; set; }
+
+        /// <summary>
+        ///     The Repository this object was created from
+        /// </summary>
+        [JsonIgnore]
+        public IRemoteRepository RemoteRepository { get; set; }
+
+        /// <summary>
+        ///     Converts the object into a <see cref="Dictionary{TKey,TValue}"></see>
         /// </summary>
         /// <returns></returns>
         protected virtual Dictionary<string, object> ToDictionary()
@@ -52,7 +52,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         }
 
         /// <summary>
-        /// Invokes a remotable method exposed within instances of this class on the server.
+        ///     Invokes a remotable method exposed within instances of this class on the server.
         /// </summary>
         /// <param name="method">The method to invoke (without the repository), e.g. <code>doSomething</code></param>
         /// <param name="parameters">The parameters to invoke with.</param>
@@ -73,7 +73,8 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         }
 
         /// <summary>
-        /// Invokes a remotable method exposed within instances of this class on the server, parses the response as binary data.
+        ///     Invokes a remotable method exposed within instances of this class on the server, parses the response as binary
+        ///     data.
         /// </summary>
         /// <param name="method">The method to invoke (without the repository), e.g. <code>doSomething</code></param>
         /// <param name="parameters">The parameters to invoke with.</param>

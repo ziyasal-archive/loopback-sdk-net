@@ -7,8 +7,6 @@ namespace LoopBack.Sdk.Xamarin.Tests
     [TestFixture]
     public class TestBase
     {
-        private MockRepository _mockRepository;
-
         [SetUp]
         public void Setup()
         {
@@ -31,6 +29,8 @@ namespace LoopBack.Sdk.Xamarin.Tests
             }
             FinalizeTearDown();
         }
+
+        private MockRepository _mockRepository;
 
         protected Mock<T> MockFor<T>() where T : class
         {

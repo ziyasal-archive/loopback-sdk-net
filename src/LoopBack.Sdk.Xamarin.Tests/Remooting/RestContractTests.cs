@@ -10,7 +10,6 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
     public class RestContractTests : TestBase
     {
         public string REST_SERVER_URL = "http://localhost:3001";
-
         private RestAdapter _adapter;
         private RemoteRepository<ContractClass> _testClass;
 
@@ -18,13 +17,14 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
         {
             _adapter = CreateAdapter();
 
-            RestContract contract = _adapter.Contract;
+            var contract = _adapter.Contract;
 
             contract.AddItem(new RestContractItem("/contract/customizedGetSecret", "GET"), "contract.getSecret");
             contract.AddItem(new RestContractItem("/contract/customizedTransform", "GET"), "contract.transform");
             contract.AddItem(new RestContractItem("/contract/geopoint", "GET"), "contract.geopoint");
             contract.AddItem(new RestContractItem("/contract/list", "GET"), "contract.list");
-            contract.AddItem(new RestContractItem("/ContractClass/:name/getName", "POST"), "ContractClass.prototype.getName");
+            contract.AddItem(new RestContractItem("/ContractClass/:name/getName", "POST"),
+                "ContractClass.prototype.getName");
             contract.AddItem(new RestContractItem("/ContractClass/:name/greet", "POST"), "ContractClass.prototype.greet");
             contract.AddItem(new RestContractItem("/contract/binary", "GET"), "contract.binary");
 
@@ -34,16 +34,48 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
             };
         }
 
-        private Xamarin.Remooting.Adapters.RestAdapter CreateAdapter()
+        private RestAdapter CreateAdapter()
         {
-            return new Xamarin.Remooting.Adapters.RestAdapter(null, REST_SERVER_URL);
+            return new RestAdapter(null, REST_SERVER_URL);
+        }
+
+        [Test]
+        public void BinaryResponseBody()
+        {
+            _adapter.InvokeStaticMethod("contract.binary", null, (bytes, contentType) =>
+            {
+                //TODO: Fix
+                //contentType.ShouldBeEquivalentTo("application/octet-stream");
+
+                // The values are hard-coded in test-server/contract.js
+                Assert.Equals(new byte[] {1, 2, 3}, bytes);
+            }, exception => { });
+        }
+
+        [Test]
+        public void CustomRequestHeader_Test()
+        {
+            RestAdapter customAdapter = new Loopback.RestAdapter(new DummyContextImpl("loopback-xamarin/1.0"),
+                REST_SERVER_URL);
+
+            customAdapter.Client.DefaultRequestHeaders.Add("Authorization", "auth-token");
+
+            customAdapter.Contract.AddItem(new RestContractItem("/contract/get-auth", "GET"),
+                "contract.getAuthorizationHeader");
+            customAdapter.InvokeStaticMethod("contract.getAuthorizationHeader", new Dictionary<string, object>(),
+                response =>
+                {
+                    var data = JObject.Parse(response);
+                    data.Should().NotBeNull();
+                    data["data"].ToString().ShouldBeEquivalentTo("auth-token");
+                }, exception => { });
         }
 
         [Test]
         public void ddItemsFromContract_Test()
         {
-            RestContract parent = new RestContract();
-            RestContract child = new RestContract();
+            var parent = new RestContract();
+            var child = new RestContract();
 
             parent.AddItem(new RestContractItem("/wrong/route", "OOPS"), "wrong.route");
             child.AddItem(new RestContractItem("/test/route", "GET"), "test.route");
@@ -64,138 +96,6 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
         }
 
         [Test]
-        public void Get_Test()
-        {
-            _adapter.InvokeStaticMethod("contract.getSecret", null, response =>
-           {
-               JObject data = JObject.Parse(response);
-               JToken token = data["data"];
-               token.Should().NotBeNull();
-               token.ToString().ShouldBeEquivalentTo("shhh!");
-           }, exception =>
-           {
-
-           });
-        }
-
-        [Test]
-        public void Transform_Test()
-        {
-            _adapter.InvokeStaticMethod("contract.transform", TestUtil.BuildParameters("str", (object)"somevalue"), response =>
-           {
-               JObject data = JObject.Parse(response);
-               JToken token = data["data"];
-               token.Should().NotBeNull();
-               token.ToString().ShouldBeEquivalentTo("transformed: somevalue");
-           }, exception =>
-           {
-
-           });
-        }
-
-        [Test]
-        public void TestClassGet_Test()
-        {
-            _adapter.InvokeStaticMethod("ContractClass.prototype.getName", TestUtil.BuildParameters("name", (object)"somename"), response =>
-            {
-                JObject data = JObject.Parse(response);
-                JToken token = data["data"];
-                token.Should().NotBeNull();
-                token.ToString().ShouldBeEquivalentTo("somename");
-            }, exception =>
-            {
-
-            });
-        }
-
-        [Test]
-        public void TestClassTransform_Test()
-        {
-            _adapter.InvokeInstanceMethod("ContractClass.prototype.greet",
-                TestUtil.BuildParameters("name", (object)"somename"),
-                TestUtil.BuildParameters("other", (object)"othername"),
-                response =>
-                {
-                    JObject data = JObject.Parse(response);
-                    JToken token = data["data"];
-                    token.Should().NotBeNull();
-                    token.ToString().ShouldBeEquivalentTo("Hi, othername!");
-                }, exception =>
-            {
-
-            });
-        }
-
-        [Test]
-        public void PrototypeStatic_Test()
-        {
-            _testClass.InvokeStaticMethod("getFavoritePerson", null,
-                response =>
-                {
-                    JObject data = JObject.Parse(response);
-                    JToken token = data["data"];
-                    token.Should().NotBeNull();
-                    token.ToString().ShouldBeEquivalentTo("You");
-                }, exception =>
-            {
-
-            });
-        }
-
-        [Test]
-        public void PrototypeGet_Test()
-        {
-            RemoteClass test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object)"somename"));
-            test.InvokeMethod("getName", null, response =>
-            {
-                JObject data = JObject.Parse(response);
-                JToken token = data["data"];
-                token.Should().NotBeNull();
-                token.ToString().ShouldBeEquivalentTo("somename");
-            }, exception =>
-            {
-
-            });
-        }
-
-        [Test]
-        public void PrototypeTransform_Test()
-        {
-            RemoteClass test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object)"somename"));
-            test.InvokeMethod("greet", TestUtil.BuildParameters("other", (object)"othername"), response =>
-            {
-                JObject data = JObject.Parse(response);
-                JToken token = data["data"];
-                token.Should().NotBeNull();
-                token.ToString().ShouldBeEquivalentTo("Hi, othername!");
-            }, exception =>
-            {
-
-            });
-        }
-
-
-        [Test]
-        public void NestedParameterObjectsAreFlattened_Test()
-        {
-            Dictionary<string, object> parameters = new Dictionary<string, object>
-            {
-                {"lat", 10},
-                {"lng", 20}
-            };
-            _adapter.InvokeStaticMethod("contract.geopoint", TestUtil.BuildParameters("here", (object)parameters), response =>
-            {
-                JObject data = JObject.Parse(response);
-                data.Should().NotBeNull();
-                data["lat"].ToString().ShouldBeEquivalentTo("10");
-                data["lng"].ToString().ShouldBeEquivalentTo("20");
-            }, exception =>
-            {
-
-            });
-        }
-
-        [Test]
         public void DeeplyNestedParameterObjectsAreFlattened_Test()
         {
             // In this test, we do not check for the exact value of query-string,
@@ -204,61 +104,137 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
             // This way the test stays relevant (and passing) even if
             // the query-string format changes in the future.
 
-            Dictionary<string, object> filter = new Dictionary<string, object>
+            var filter = new Dictionary<string, object>
             {
-                {"where", new Dictionary<string,object>
                 {
-                    {"age",new Dictionary<string,object>
+                    "where", new Dictionary<string, object>
                     {
-                        {"gt",21}
-                    }}
-                }}
+                        {
+                            "age", new Dictionary<string, object>
+                            {
+                                {"gt", 21}
+                            }
+                        }
+                    }
+                }
             };
-            _adapter.InvokeStaticMethod("contract.list", TestUtil.BuildParameters("filter", (object)filter), response =>
-            {
-                JObject data = JObject.Parse(response);
-                data.Should().NotBeNull();
-                data["data"].ToString().ShouldBeEquivalentTo("{\"where\":{\"age\":{\"gt\":21}}}");
-            }, exception =>
-            {
-
-            });
+            _adapter.InvokeStaticMethod("contract.list", TestUtil.BuildParameters("filter", (object) filter),
+                response =>
+                {
+                    var data = JObject.Parse(response);
+                    data.Should().NotBeNull();
+                    data["data"].ToString().ShouldBeEquivalentTo("{\"where\":{\"age\":{\"gt\":21}}}");
+                }, exception => { });
         }
 
         [Test]
-        public void CustomRequestHeader_Test()
+        public void Get_Test()
         {
-            RestAdapter customAdapter = new Loopback.RestAdapter(new DummyContextImpl("loopback-xamarin/1.0"), REST_SERVER_URL);
-
-            customAdapter.Client.DefaultRequestHeaders.Add("Authorization", "auth-token");
-
-            customAdapter.Contract.AddItem(new RestContractItem("/contract/get-auth", "GET"), "contract.getAuthorizationHeader");
-            customAdapter.InvokeStaticMethod("contract.getAuthorizationHeader", new Dictionary<string, object>(), response =>
+            _adapter.InvokeStaticMethod("contract.getSecret", null, response =>
             {
-                JObject data = JObject.Parse(response);
-                data.Should().NotBeNull();
-                data["data"].ToString().ShouldBeEquivalentTo("auth-token");
-            }, exception =>
-            {
-
-            });
-
+                var data = JObject.Parse(response);
+                var token = data["data"];
+                token.Should().NotBeNull();
+                token.ToString().ShouldBeEquivalentTo("shhh!");
+            }, exception => { });
         }
 
         [Test]
-        public void BinaryResponseBody()
+        public void NestedParameterObjectsAreFlattened_Test()
         {
-            _adapter.InvokeStaticMethod("contract.binary", null, (bytes, contentType) =>
+            var parameters = new Dictionary<string, object>
             {
-                //TODO: Fix
-                //contentType.ShouldBeEquivalentTo("application/octet-stream");
+                {"lat", 10},
+                {"lng", 20}
+            };
+            _adapter.InvokeStaticMethod("contract.geopoint", TestUtil.BuildParameters("here", (object) parameters),
+                response =>
+                {
+                    var data = JObject.Parse(response);
+                    data.Should().NotBeNull();
+                    data["lat"].ToString().ShouldBeEquivalentTo("10");
+                    data["lng"].ToString().ShouldBeEquivalentTo("20");
+                }, exception => { });
+        }
 
-                // The values are hard-coded in test-server/contract.js
-                Assert.Equals(new byte[] { 1, 2, 3 }, bytes);
-            }, exception =>
+        [Test]
+        public void PrototypeGet_Test()
+        {
+            RemoteClass test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object) "somename"));
+            test.InvokeMethod("getName", null, response =>
             {
+                var data = JObject.Parse(response);
+                var token = data["data"];
+                token.Should().NotBeNull();
+                token.ToString().ShouldBeEquivalentTo("somename");
+            }, exception => { });
+        }
 
-            });
+        [Test]
+        public void PrototypeStatic_Test()
+        {
+            _testClass.InvokeStaticMethod("getFavoritePerson", null,
+                response =>
+                {
+                    var data = JObject.Parse(response);
+                    var token = data["data"];
+                    token.Should().NotBeNull();
+                    token.ToString().ShouldBeEquivalentTo("You");
+                }, exception => { });
+        }
+
+        [Test]
+        public void PrototypeTransform_Test()
+        {
+            RemoteClass test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object) "somename"));
+            test.InvokeMethod("greet", TestUtil.BuildParameters("other", (object) "othername"), response =>
+            {
+                var data = JObject.Parse(response);
+                var token = data["data"];
+                token.Should().NotBeNull();
+                token.ToString().ShouldBeEquivalentTo("Hi, othername!");
+            }, exception => { });
+        }
+
+        [Test]
+        public void TestClassGet_Test()
+        {
+            _adapter.InvokeStaticMethod("ContractClass.prototype.getName",
+                TestUtil.BuildParameters("name", (object) "somename"), response =>
+                {
+                    var data = JObject.Parse(response);
+                    var token = data["data"];
+                    token.Should().NotBeNull();
+                    token.ToString().ShouldBeEquivalentTo("somename");
+                }, exception => { });
+        }
+
+        [Test]
+        public void TestClassTransform_Test()
+        {
+            _adapter.InvokeInstanceMethod("ContractClass.prototype.greet",
+                TestUtil.BuildParameters("name", (object) "somename"),
+                TestUtil.BuildParameters("other", (object) "othername"),
+                response =>
+                {
+                    var data = JObject.Parse(response);
+                    var token = data["data"];
+                    token.Should().NotBeNull();
+                    token.ToString().ShouldBeEquivalentTo("Hi, othername!");
+                }, exception => { });
+        }
+
+        [Test]
+        public void Transform_Test()
+        {
+            _adapter.InvokeStaticMethod("contract.transform", TestUtil.BuildParameters("str", (object) "somevalue"),
+                response =>
+                {
+                    var data = JObject.Parse(response);
+                    var token = data["data"];
+                    token.Should().NotBeNull();
+                    token.ToString().ShouldBeEquivalentTo("transformed: somevalue");
+                }, exception => { });
         }
     }
 }

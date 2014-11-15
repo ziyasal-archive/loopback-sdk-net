@@ -29,11 +29,12 @@ namespace LoopBack.Sdk.Xamarin.Common
         {
             return JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
         }
+
         public static T ToObject<T>(this Dictionary<string, object> source, T instance) where T : class
         {
-            Type someObjectType = instance.GetType();
+            var someObjectType = instance.GetType();
 
-            foreach (KeyValuePair<string, object> item in source)
+            foreach (var item in source)
             {
                 someObjectType.GetRuntimeProperty(item.Key).SetValue(instance, item.Value, null);
             }
@@ -73,12 +74,13 @@ namespace LoopBack.Sdk.Xamarin.Common
             return dictionary;
         }
 
-        private static void AddPropertyToDictionary<T>(PropertyInfo property, object source, Dictionary<string, T> dictionary)
+        private static void AddPropertyToDictionary<T>(PropertyInfo property, object source,
+            Dictionary<string, T> dictionary)
         {
             var value = property.GetValue(source, null);
             if (IsOfType<T>(value))
             {
-                dictionary.Add(property.Name, (T)value);
+                dictionary.Add(property.Name, (T) value);
             }
         }
 

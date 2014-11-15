@@ -18,7 +18,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
 
         public RestAdapter GetRestAdapter()
         {
-            return (RestAdapter)Adapter;
+            return (RestAdapter) Adapter;
         }
 
         protected IContext GetApplicationContext()

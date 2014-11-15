@@ -6,30 +6,13 @@ using LoopBack.Sdk.Xamarin.Remooting.Adapters;
 namespace LoopBack.Sdk.Xamarin.Remooting
 {
     /// <summary>
-    ///  A local representative of remote model repository, it provides access to static methods like <pre>User.findById()</pre>
+    ///     A local representative of remote model repository, it provides access to static methods like
+    ///     <pre>User.findById()</pre>
     /// </summary>
     public class RemoteRepository<T> : IRemoteRepository where T : RemoteClass
     {
-        private string _className;
-
         /// <summary>
-        /// The Adapter that should be used for invoking methods, both
-        /// for static methods on this prototype and all methods on all instances of
-        /// this prototype.
-        /// </summary>
-        public AdapterBase Adapter { get; set; }
-
-        /// <summary>
-        /// The name given to this prototype on the server.
-        /// </summary>
-        public string ClassName
-        {
-            get { return _className; }
-            private set { _className = value; }
-        }
-
-        /// <summary>
-        /// Creates a new Repository, associating it with the named remote class.
+        ///     Creates a new Repository, associating it with the named remote class.
         /// </summary>
         /// <param name="className">The remote class name</param>
         public RemoteRepository(string className)
@@ -41,12 +24,23 @@ namespace LoopBack.Sdk.Xamarin.Remooting
             ClassName = className;
         }
 
+        /// <summary>
+        ///     The Adapter that should be used for invoking methods, both
+        ///     for static methods on this prototype and all methods on all instances of
+        ///     this prototype.
+        /// </summary>
+        public AdapterBase Adapter { get; set; }
 
         /// <summary>
-        /// Creates a new <see cref="RemoteClass"/> as a virtual instance of this remote class.
+        ///     The name given to this prototype on the server.
+        /// </summary>
+        public string ClassName { get; private set; }
+
+        /// <summary>
+        ///     Creates a new <see cref="RemoteClass" /> as a virtual instance of this remote class.
         /// </summary>
         /// <param name="creationParameters">The creation parameters of the new object</param>
-        /// <returns>A new <see cref="RemoteClass"/> based on this prototype.</returns>
+        /// <returns>A new <see cref="RemoteClass" /> based on this prototype.</returns>
         public virtual T CreateObject(Dictionary<string, object> creationParameters)
         {
             T objectToCreate;
@@ -56,7 +50,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting
             }
             catch (Exception e)
             {
-                ArgumentException ex = new ArgumentException("", e);
+                var ex = new ArgumentException("", e);
 
                 throw ex;
             }
@@ -72,37 +66,38 @@ namespace LoopBack.Sdk.Xamarin.Remooting
         }
 
         /// <summary>
-        /// Invokes a remotable method exposed statically within this class on the server.
+        ///     Invokes a remotable method exposed statically within this class on the server.
         /// </summary>
         /// <param name="method">The method to invoke (without the class name), e.g. <code>"doSomething"</code>.</param>
         /// <param name="parameters">The parameters to invoke with.</param>
         /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
         /// <param name="onError">The callback to invoke when the execution finished with error</param>
-        public void InvokeStaticMethod(string method, Dictionary<string, object> parameters, Action<string> onSuccess, Action<Exception> onError)
+        public void InvokeStaticMethod(string method, Dictionary<string, object> parameters, Action<string> onSuccess,
+            Action<Exception> onError)
         {
             if (Adapter == null)
             {
                 throw new ArgumentException("No adapter set");
             }
-            string path = _className + "." + method;
+            var path = ClassName + "." + method;
             Adapter.InvokeStaticMethod(path, parameters, onSuccess, onError);
         }
 
         /// <summary>
-        /// Invokes a remotable method exposed statically within this class on the server, parses the response as binary data.,
+        ///     Invokes a remotable method exposed statically within this class on the server, parses the response as binary data.,
         /// </summary>
         /// <param name="method">The method to invoke (without the class name), e.g. <code>"doSomething"</code>.</param>
         /// <param name="parameters">The parameters to invoke with.</param>
         /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
         /// <param name="onError">The callback to invoke when the execution finished with error</param>
         public void InvokeStaticMethod(string method,
-                                  Dictionary<string, object> parameters, Action<byte[], string> onSuccess, Action<Exception> onError)
+            Dictionary<string, object> parameters, Action<byte[], string> onSuccess, Action<Exception> onError)
         {
             if (Adapter == null)
             {
                 throw new ArgumentException("No adapter set");
             }
-            string path = _className + "." + method;
+            var path = ClassName + "." + method;
             Adapter.InvokeStaticMethod(path, parameters, onSuccess, onError);
         }
     }

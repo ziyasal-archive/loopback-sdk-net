@@ -5,7 +5,7 @@ using System.IO;
 namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
 {
     /// <summary>
-    /// A request parameter that is a (binary) stream.
+    ///     A request parameter that is a (binary) stream.
     /// </summary>
     public class StreamParam
     {

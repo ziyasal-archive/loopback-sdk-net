@@ -11,64 +11,58 @@ using Newtonsoft.Json;
 namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
 {
     /// <summary>
-    /// A specific <see cref="AdapterBase"/> implementation for RESTful servers.
-    ///
-    /// In addition to implementing the <see cref="AdapterBase"/> interface,
-    /// <code>RestAdapter</code> contains a single <see cref="RestContract"/> to map
-    /// remote methods to custom HTTP routes. This is only required if the HTTP
-    /// settings have been customized on the server. When in doubt, try without.
-    ///
-    /// <see cref="RestContract"/>
+    ///     A specific <see cref="AdapterBase" /> implementation for RESTful servers.
+    ///     In addition to implementing the <see cref="AdapterBase" /> interface,
+    ///     <code>RestAdapter</code> contains a single <see cref="RestContract" /> to map
+    ///     remote methods to custom HTTP routes. This is only required if the HTTP
+    ///     settings have been customized on the server. When in doubt, try without.
+    ///     <see cref="RestContract" />
     /// </summary>
     public class RestAdapter : AdapterBase
     {
         private static string TAG = "remoting.RestAdapter";
-        private HttpClient _httpClient;
 
         /// <summary>
-        /// This adapter's <see cref="RestContract">adapter</see>, a custom contract for fine-grained route configuration.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="url"></param>
+        public RestAdapter(IContext context, string url)
+            : base(url)
+        {
+            _Context = context;
+            Contract = new RestContract();
+        }
+
+        public RestAdapter(string url)
+            : base(url)
+        {
+            _Context = new RestContext("loopback-xamarin/1.0");
+            Contract = new RestContract();
+        }
+
+        /// <summary>
+        ///     This adapter's <see cref="RestContract">adapter</see>, a custom contract for fine-grained route configuration.
         /// </summary>
         public RestContract Contract { get; set; }
 
         /// <summary>
-        /// The underlying HTTP client. This allows subclasses to add  custom headers like Authorization.
+        ///     The underlying HTTP client. This allows subclasses to add  custom headers like Authorization.
         /// </summary>
-        public HttpClient Client
-        {
-            get { return _httpClient; }
-        }
+        public HttpClient Client { get; private set; }
 
-		IContext _Context { get; set; }
-
-        /// <summary>
-        /// </summary>
-		/// <param name = "context"></param>
-        /// <param name="url"></param>
-        public RestAdapter(IContext context, string url)
-			: base(url)
-        {
-			_Context = context;
-            Contract = new RestContract();
-        }
-
-		public RestAdapter(string url)
-			: base(url)
-		{
-			_Context = new RestContext ("loopback-xamarin/1.0");
-			Contract = new RestContract();
-		}
+        private IContext _Context { get; set; }
 
         public override void Connect(string url)
         {
             if (string.IsNullOrEmpty(url))
             {
-                _httpClient = null;
+                Client = null;
             }
             else
             {
-                _httpClient = new HttpClient(new NativeMessageHandler());
-                _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
-				_httpClient.DefaultRequestHeaders.Add("User-Agent", _Context.UserAgent);
+                Client = new HttpClient(new NativeMessageHandler());
+                Client.DefaultRequestHeaders.Add("Accept", "application/json");
+                Client.DefaultRequestHeaders.Add("User-Agent", _Context.UserAgent);
             }
         }
 
@@ -82,12 +76,9 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             Action<string> onSuccess,
             Action<Exception> onError)
         {
-            InvokeStaticMethodImpl(method, parameters, async response =>
-            {
-                await Callback(onSuccess, onError, response);
-            });
+            InvokeStaticMethodImpl(method, parameters,
+                async response => { await Callback(onSuccess, onError, response); });
         }
-
 
         public override void InvokeStaticMethod(string method,
             Dictionary<string, object> parameters,
@@ -98,10 +89,8 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             //Client.DefaultRequestHeaders.Accept.Clear();
             //Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/octet-stream"));
 
-            InvokeStaticMethodImpl(method, parameters, async response =>
-            {
-                await BinaryCallback(onSuccess, onError, response);
-            });
+            InvokeStaticMethodImpl(method, parameters,
+                async response => { await BinaryCallback(onSuccess, onError, response); });
         }
 
         public override void InvokeInstanceMethod(string method,
@@ -110,10 +99,8 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             Action<string> onSuccess,
             Action<Exception> onError)
         {
-            InvokeInstanceMethodImpl(method, constructorParameters, parameters, async response =>
-            {
-                await Callback(onSuccess, onError, response);
-            });
+            InvokeInstanceMethodImpl(method, constructorParameters, parameters,
+                async response => { await Callback(onSuccess, onError, response); });
         }
 
         /// <summary>
@@ -218,9 +205,10 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             Request(path, verb, combinedParameters, parameterEncoding, httpHandler);
         }
 
-        private async void Request(string path, string verb, Dictionary<string, object> parameters, ParameterEncoding parameterEncoding, Action<HttpResponseMessage> responseHandler)
+        private async void Request(string path, string verb, Dictionary<string, object> parameters,
+            ParameterEncoding parameterEncoding, Action<HttpResponseMessage> responseHandler)
         {
-            bool skipBody = false;
+            var skipBody = false;
             if (!IsConnected())
             {
                 throw new Exception("Adapter not connected");
@@ -235,10 +223,11 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             {
                 if ("GET".Equals(verb) || "HEAD".Equals(verb) || "DELETE".Equals(verb))
                 {
-                    Dictionary<string, object> flattenParameters = FlattenParameters(parameters);
+                    var flattenParameters = FlattenParameters(parameters);
 
-                    List<string> keyValues = new List<string>(flattenParameters.Count);
-                    keyValues.AddRange(flattenParameters.Select(param => string.Format("{0}={1}", param.Key, param.Value)));
+                    var keyValues = new List<string>(flattenParameters.Count);
+                    keyValues.AddRange(
+                        flattenParameters.Select(param => string.Format("{0}={1}", param.Key, param.Value)));
                     path += "?" + string.Join("&", keyValues);
                     skipBody = true;
                 }
@@ -246,10 +235,10 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
 
             //TODO: AFNetworking . Paul Betts, says "modernhttpclient" solves general needs.
             //TODO: Dispose HttpClient
-            _httpClient.BaseAddress = new Uri(Url);
+            Client.BaseAddress = new Uri(Url);
 
-            HttpMethod method = new HttpMethod(verb);
-            HttpRequestMessage request = new HttpRequestMessage(method, path);
+            var method = new HttpMethod(verb);
+            var request = new HttpRequestMessage(method, path);
             HttpContent content;
             switch (parameterEncoding)
             {
@@ -261,8 +250,8 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
                     request.Content = content;
                     break;
                 case ParameterEncoding.JSON:
-                    _httpClient.DefaultRequestHeaders.Accept.Clear();
-                    _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    Client.DefaultRequestHeaders.Accept.Clear();
+                    Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     if (!skipBody && parameters != null)
                     {
                         content = new StringContent(JsonConvert.SerializeObject(parameters));
@@ -287,21 +276,22 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         {
             return FlattenParameters(null, parameters);
         }
+
         private Dictionary<string, object> FlattenParameters(string keyPrefix, Dictionary<string, object> parameters)
         {
             // This method converts nested maps into a flat list
             //   Input:  { "here": { "lat": 10, "lng": 20 }
             //   Output: { "here[lat]": 10, "here[lng]": 20 }
 
-            Dictionary<string, object> result = new Dictionary<string, object>();
+            var result = new Dictionary<string, object>();
 
-            foreach (KeyValuePair<string, object> entry in parameters)
+            foreach (var entry in parameters)
             {
-                string key = keyPrefix != null
-                        ? keyPrefix + "[" + entry.Key + "]"
-                        : entry.Key;
+                var key = keyPrefix != null
+                    ? keyPrefix + "[" + entry.Key + "]"
+                    : entry.Key;
 
-                Dictionary<string, object> value = entry.Value as Dictionary<string, object>;
+                var value = entry.Value as Dictionary<string, object>;
                 if (value != null)
                 {
                     result.AddRange(FlattenParameters(key, value));
@@ -316,20 +306,13 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         }
     }
 
-	public class RestContext : IContext {
+    public class RestContext : IContext
+    {
+        public RestContext(string UserAgent)
+        {
+            this.UserAgent = UserAgent;
+        }
 
-		string _UserAgent;
-		public string UserAgent {
-			get {
-				return _UserAgent;
-			}
-			set {
-				_UserAgent = value;
-			}
-		}
-
-		public RestContext(string UserAgent) {
-			_UserAgent = UserAgent;
-		}
-	}
+        public string UserAgent { get; set; }
+    }
 }

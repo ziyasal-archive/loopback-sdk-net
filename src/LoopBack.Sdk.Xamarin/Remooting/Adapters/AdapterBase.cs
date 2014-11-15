@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using LoopBack.Sdk.Xamarin.Common;
 
 namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
 {
     /// <summary>
-    /// The entry point to all networking accomplished with LoopBack. Adapters
-    /// encapsulate information consistent to all networked operations, such as base
-    /// URL, port, etc.
+    ///     The entry point to all networking accomplished with LoopBack. Adapters
+    ///     encapsulate information consistent to all networked operations, such as base
+    ///     URL, port, etc.
     /// </summary>
     public abstract class AdapterBase
     {
@@ -19,7 +18,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         }
 
         /// <summary>
-        /// Creates a new, disconnected Adapter.
+        ///     Creates a new, disconnected Adapter.
         /// </summary>
         protected AdapterBase()
             : this(null)
@@ -27,7 +26,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         }
 
         /// <summary>
-        /// Creates a new Adapter, connecting it to `url`.
+        ///     Creates a new Adapter, connecting it to `url`.
         /// </summary>
         /// <param name="url">The URL to connect to.</param>
         protected AdapterBase(string url)
@@ -42,19 +41,19 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         public string Url { get; set; }
 
         /// <summary>
-        /// Connects the Adapter to `url`.
+        ///     Connects the Adapter to `url`.
         /// </summary>
         /// <param name="url">The URL to connect to.</param>
         public abstract void Connect(string url);
 
         /// <summary>
-        /// Gets whether this adapter is connected to a server.
+        ///     Gets whether this adapter is connected to a server.
         /// </summary>
         /// <returns> <code>true</code> if connected, <code>false</code> otherwise.</returns>
         public abstract bool IsConnected();
 
         /// <summary>
-        /// Invokes a remotable method exposed statically on the server.
+        ///     Invokes a remotable method exposed statically on the server.
         /// </summary>
         /// <param name="method">The method to invoke, e.g. <code>"module.doSomething"</code>.</param>
         /// <param name="parameters">The parameters to invoke with.</param>
@@ -66,7 +65,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             Action<Exception> onError);
 
         /// <summary>
-        /// Invokes a remotable method exposed statically on the server, parses the response as binary data.
+        ///     Invokes a remotable method exposed statically on the server, parses the response as binary data.
         /// </summary>
         /// <param name="method">The method to invoke, e.g. <code>"module.doSomething"</code>.</param>
         /// <param name="parameters">The parameters to invoke with.</param>
@@ -81,14 +80,14 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         }
 
         /// <summary>
-        /// Invokes a remotable method exposed within a prototype on the server.
-        ///<p>
-        /// This should be thought of as a two-step process. First, the server loads
-        /// or creates an object with the appropriate type. Then and only then is
-        /// the method invoked on that object. The two parameter dictionaries
-        /// correspond to these two steps: `creationParameters` for the former, and
-        /// `parameters` for the latter.
-        /// </p>
+        ///     Invokes a remotable method exposed within a prototype on the server.
+        ///     <p>
+        ///         This should be thought of as a two-step process. First, the server loads
+        ///         or creates an object with the appropriate type. Then and only then is
+        ///         the method invoked on that object. The two parameter dictionaries
+        ///         correspond to these two steps: `creationParameters` for the former, and
+        ///         `parameters` for the latter.
+        ///     </p>
         /// </summary>
         /// <param name="method">method The method to invoke, e.g. <code>"MyClass.prototype.doSomething"</code>.</param>
         /// <param name="constructorParameters">The parameters the virtual object should be created with.</param>
@@ -101,16 +100,15 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             Action<string> onSuccess,
             Action<Exception> onError);
 
-
         /// <summary>
-        /// Invokes a remotable method exposed within a prototype on the server, parses the response as binary data.
-        ///<p>
-        /// This should be thought of as a two-step process. First, the server loads
-        /// or creates an object with the appropriate type. Then and only then is
-        /// the method invoked on that object. The two parameter dictionaries
-        /// correspond to these two steps: `creationParameters` for the former, and
-        /// `parameters` for the latter.
-        /// </p>
+        ///     Invokes a remotable method exposed within a prototype on the server, parses the response as binary data.
+        ///     <p>
+        ///         This should be thought of as a two-step process. First, the server loads
+        ///         or creates an object with the appropriate type. Then and only then is
+        ///         the method invoked on that object. The two parameter dictionaries
+        ///         correspond to these two steps: `creationParameters` for the former, and
+        ///         `parameters` for the latter.
+        ///     </p>
         /// </summary>
         /// <param name="method">method The method to invoke, e.g. <code>"MyClass.prototype.doSomething"</code>.</param>
         /// <param name="constructorParameters">The parameters the virtual object should be created with.</param>

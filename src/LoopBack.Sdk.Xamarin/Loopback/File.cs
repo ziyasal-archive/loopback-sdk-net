@@ -10,12 +10,12 @@ namespace LoopBack.Sdk.Xamarin.Loopback
     public class File : RemoteClass
     {
         /// <summary>
-        /// The name of the file, e.g. "image.gif"
+        ///     The name of the file, e.g. "image.gif"
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// The URL of the file.
+        ///     The URL of the file.
         /// </summary>
         public string Url { get; set; }
 
@@ -23,7 +23,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         public Container ContainerRef { get; set; }
 
         /// <summary>
-        /// Name of the container this file belongs to.
+        ///     Name of the container this file belongs to.
         /// </summary>
         /// <returns>The container name</returns>
         public string GetContainer()
@@ -32,7 +32,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         }
 
         /// <summary>
-        /// Download content of this file.
+        ///     Download content of this file.
         /// </summary>
         /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
         /// <param name="onError">The callback to invoke when the execution finished with error</param>
@@ -42,7 +42,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         }
 
         /// <summary>
-        /// Download content of this file to a local file.
+        ///     Download content of this file to a local file.
         /// </summary>
         /// <param name="localFile">Path to the local file.</param>
         /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
@@ -66,29 +66,25 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         }
 
         /// <summary>
-        /// Delete this file.
+        ///     Delete this file.
         /// </summary>
         /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
         /// <param name="onError">The callback to invoke when the execution finished with error</param>
         public void Delete(Action onSuccess, Action<Exception> onError)
         {
-            InvokeMethod("delete", GetCommonParams(), responseContent =>
-            {
-                onSuccess();
-            }, onError);
+            InvokeMethod("delete", GetCommonParams(), responseContent => { onSuccess(); }, onError);
         }
 
-
         /// <summary>
-        /// Download content of this file.
+        ///     Download content of this file.
         /// </summary>
         /// <returns></returns>
         private Dictionary<string, object> GetCommonParams()
         {
-            Dictionary<string, object> result = new Dictionary<string, object>
+            var result = new Dictionary<string, object>
             {
-                { "container",GetContainer()},
-                {"name",Name}
+                {"container", GetContainer()},
+                {"name", Name}
             };
 
             return result;
