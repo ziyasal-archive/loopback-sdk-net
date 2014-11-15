@@ -207,11 +207,6 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
                 throw new Exception("Adapter not connected");
             }
 
-
-            //TODO:
-            //http://stackoverflow.com/questions/3981564/cannot-send-a-content-body-with-this-verb-type
-            //http://stackoverflow.com/questions/2064281/sending-post-data-with-get-request-valid
-
             if (parameters != null)
             {
                 if ("GET".Equals(verb) || "HEAD".Equals(verb) || "DELETE".Equals(verb))
