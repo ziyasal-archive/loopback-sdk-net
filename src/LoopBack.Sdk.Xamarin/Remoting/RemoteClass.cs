@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using LoopBack.Sdk.Xamarin.Extensions;
 using Newtonsoft.Json;
 
@@ -58,7 +59,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting
         /// <param name="parameters">The parameters to invoke with.</param>
         /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
         /// <param name="onError">The callback to invoke when the execution finished with error</param>
-        public void InvokeMethod(string method,
+        public async Task InvokeMethod(string method,
             Dictionary<string, object> parameters,
             Action<string> onSuccess,
             Action<Exception> onError)
@@ -69,7 +70,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting
                 throw new ArgumentException("Repository adapter cannot be null");
             }
             var path = RemoteRepository.ClassName + ".prototype." + method;
-            adapter.InvokeInstanceMethod(path, CreationParameters, parameters, onSuccess, onError);
+            await adapter.InvokeInstanceMethod(path, CreationParameters, parameters, onSuccess, onError);
         }
 
         /// <summary>
@@ -80,7 +81,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting
         /// <param name="parameters">The parameters to invoke with.</param>
         /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
         /// <param name="onError">The callback to invoke when the execution finished with error</param>
-        public void InvokeMethod(string method, Dictionary<string, object> parameters,
+        public async Task InvokeMethod(string method, Dictionary<string, object> parameters,
             Action<byte[], string> onSuccess,
             Action<Exception> onError)
         {
@@ -91,7 +92,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting
             }
             var path = RemoteRepository.ClassName + ".prototype." + method;
 
-            adapter.InvokeInstanceMethod(path, CreationParameters, parameters, onSuccess, onError);
+            await adapter.InvokeInstanceMethod(path, CreationParameters, parameters, onSuccess, onError);
         }
     }
 }
