@@ -32,8 +32,8 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Common\DictionaryExtensions.cs" />
-    <Compile Include="Common\StringExtensions.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Loopback\AccessTokenRepository.cs" />
     <Compile Include="Loopback\Container.cs" />
     <Compile Include="Loopback\ContainerRepository.cs" />

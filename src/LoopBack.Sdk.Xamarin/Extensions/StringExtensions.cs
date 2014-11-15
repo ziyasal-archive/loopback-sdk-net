@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LoopBack.Sdk.Xamarin.Common
+namespace LoopBack.Sdk.Xamarin.Extensions
 {
     public static class StringExtensions
     {

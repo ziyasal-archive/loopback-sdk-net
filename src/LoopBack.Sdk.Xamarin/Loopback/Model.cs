@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LoopBack.Sdk.Xamarin.Common;
+using LoopBack.Sdk.Xamarin.Extensions;
 using LoopBack.Sdk.Xamarin.Remooting;
 using Newtonsoft.Json.Linq;
 

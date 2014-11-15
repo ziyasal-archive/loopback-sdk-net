@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Newtonsoft.Json;
 
-namespace LoopBack.Sdk.Xamarin.Common
+namespace LoopBack.Sdk.Xamarin.Extensions
 {
     public static class DictionaryExtensions
     {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LoopBack.Sdk.Xamarin.Common;
+using LoopBack.Sdk.Xamarin.Extensions;
 using Newtonsoft.Json;
 
 namespace LoopBack.Sdk.Xamarin.Remooting

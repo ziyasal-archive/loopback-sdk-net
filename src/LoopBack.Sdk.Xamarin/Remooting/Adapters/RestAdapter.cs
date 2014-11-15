@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using LoopBack.Sdk.Xamarin.Common;
+using LoopBack.Sdk.Xamarin.Extensions;
 using ModernHttpClient;
 using Newtonsoft.Json;
 
