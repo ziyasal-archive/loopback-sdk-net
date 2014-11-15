@@ -21,23 +21,21 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         /// <summary>
         /// Creates a new, disconnected Adapter.
         /// </summary>
-        /// <param name="context"></param>
-        protected Adapter(IContext context)
-            : this(context, null)
+        protected Adapter()
+            : this(null)
         {
         }
 
         /// <summary>
         /// Creates a new Adapter, connecting it to `url`.
         /// </summary>
-        /// <param name="context"></param>
         /// <param name="url">The URL to connect to.</param>
-        protected Adapter(IContext context, string url)
+        protected Adapter(string url)
         {
             if (!string.IsNullOrEmpty(url))
             {
                 Url = url;
-                Connect(context, url);
+                Connect(url);
             }
         }
 
@@ -46,9 +44,8 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
         /// <summary>
         /// Connects the Adapter to `url`.
         /// </summary>
-        /// <param name="context"></param>
         /// <param name="url">The URL to connect to.</param>
-        public abstract void Connect(IContext context, string url);
+        public abstract void Connect(string url);
 
         /// <summary>
         /// Gets whether this adapter is connected to a server.

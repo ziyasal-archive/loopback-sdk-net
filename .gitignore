@@ -105,3 +105,4 @@ UpgradeLog*.XML
 #Node Modules
 node_modules/
 LoopBack.Sdk.Xamarin.sln.ide/
+*.cs~
