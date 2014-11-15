@@ -228,7 +228,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
         [Test]
         public void CustomRequestHeader_Test()
         {
-            RestAdapter customAdapter = new Loopback.RestAdapter(new DummyContextImpl(), REST_SERVER_URL);
+            RestAdapter customAdapter = new Loopback.RestAdapter(new DummyContextImpl("loopback-xamarin/1.0"), REST_SERVER_URL);
 
             customAdapter.Client.DefaultRequestHeaders.Add("Authorization", "auth-token");
 
