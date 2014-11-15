@@ -89,7 +89,7 @@
     <Compile Include="Remooting\RestContractTests.cs" />
     <Compile Include="Remooting\SimpleClass.cs" />
     <Compile Include="Remooting\DummyContextImpl.cs" />
-    <Compile Include="Remooting\TestingHelper.cs" />
+    <Compile Include="Remooting\TestUtil.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="ModelRepositoryTests.cs" />
     <Compile Include="Extensions\NunitExtensions.cs" />

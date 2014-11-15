@@ -9,7 +9,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
     /// </summary>
     public class User : Model
     {
-        public User(Repository<User> repository, Dictionary<string, object> creationParamerters)
+        public User(RemoteRepository<User> repository, Dictionary<string, object> creationParamerters)
             : base(repository, creationParamerters)
         {
 

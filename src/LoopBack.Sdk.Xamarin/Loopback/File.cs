@@ -7,7 +7,7 @@ using PCLStorage;
 
 namespace LoopBack.Sdk.Xamarin.Loopback
 {
-    public class File : VirtualObject
+    public class File : RemoteClass
     {
         /// <summary>
         /// The name of the file, e.g. "image.gif"

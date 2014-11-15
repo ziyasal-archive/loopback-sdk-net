@@ -39,7 +39,7 @@
     <Compile Include="Loopback\ContainerRepository.cs" />
     <Compile Include="Loopback\File.cs" />
     <Compile Include="Loopback\FileRepository.cs" />
-    <Compile Include="Loopback\ISharedReferencesService.cs" />
+    <Compile Include="Common\ISharedReferencesService.cs" />
     <Compile Include="Loopback\LocalInstallation.cs" />
     <Compile Include="Loopback\RestAdapter.cs" />
     <Compile Include="Loopback\RestRepository.cs" />
@@ -55,9 +55,9 @@
     <Compile Include="Remooting\Adapters\RestContractItem.cs" />
     <Compile Include="Common\IContext.cs" />
     <Compile Include="Remooting\Adapters\StreamParam.cs" />
-    <Compile Include="Remooting\IRepository.cs" />
-    <Compile Include="Remooting\Repository.cs" />
-    <Compile Include="Remooting\VirtualObject.cs" />
+    <Compile Include="Remooting\IRemoteRepository.cs" />
+    <Compile Include="Remooting\RemoteRepository.cs" />
+    <Compile Include="Remooting\RemoteClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">

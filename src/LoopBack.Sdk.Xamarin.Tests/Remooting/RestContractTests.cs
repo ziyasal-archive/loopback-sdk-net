@@ -11,8 +11,8 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
     {
         public string REST_SERVER_URL = "http://localhost:3001";
 
-        private Xamarin.Remooting.Adapters.RestAdapter _adapter;
-        private Repository<ContractClass> _testClass;
+        private RestAdapter _adapter;
+        private RemoteRepository<ContractClass> _testClass;
 
         protected override void FinalizeSetUp()
         {
@@ -28,7 +28,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
             contract.AddItem(new RestContractItem("/ContractClass/:name/greet", "POST"), "ContractClass.prototype.greet");
             contract.AddItem(new RestContractItem("/contract/binary", "GET"), "contract.binary");
 
-            _testClass = new Repository<ContractClass>("ContractClass")
+            _testClass = new RemoteRepository<ContractClass>("ContractClass")
             {
                 Adapter = _adapter
             };
@@ -81,7 +81,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
         [Test]
         public void Transform_Test()
         {
-            _adapter.InvokeStaticMethod("contract.transform", TestingHelper.BuildParameters("str", (object)"somevalue"), response =>
+            _adapter.InvokeStaticMethod("contract.transform", TestUtil.BuildParameters("str", (object)"somevalue"), response =>
            {
                JObject data = JObject.Parse(response);
                JToken token = data["data"];
@@ -96,7 +96,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
         [Test]
         public void TestClassGet_Test()
         {
-            _adapter.InvokeStaticMethod("ContractClass.prototype.getName", TestingHelper.BuildParameters("name", (object)"somename"), response =>
+            _adapter.InvokeStaticMethod("ContractClass.prototype.getName", TestUtil.BuildParameters("name", (object)"somename"), response =>
             {
                 JObject data = JObject.Parse(response);
                 JToken token = data["data"];
@@ -112,8 +112,8 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
         public void TestClassTransform_Test()
         {
             _adapter.InvokeInstanceMethod("ContractClass.prototype.greet",
-                TestingHelper.BuildParameters("name", (object)"somename"),
-                TestingHelper.BuildParameters("other", (object)"othername"),
+                TestUtil.BuildParameters("name", (object)"somename"),
+                TestUtil.BuildParameters("other", (object)"othername"),
                 response =>
                 {
                     JObject data = JObject.Parse(response);
@@ -145,7 +145,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
         [Test]
         public void PrototypeGet_Test()
         {
-            VirtualObject test = _testClass.CreateObject(TestingHelper.BuildParameters("name", (object)"somename"));
+            RemoteClass test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object)"somename"));
             test.InvokeMethod("getName", null, response =>
             {
                 JObject data = JObject.Parse(response);
@@ -161,8 +161,8 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
         [Test]
         public void PrototypeTransform_Test()
         {
-            VirtualObject test = _testClass.CreateObject(TestingHelper.BuildParameters("name", (object)"somename"));
-            test.InvokeMethod("greet", TestingHelper.BuildParameters("other", (object)"othername"), response =>
+            RemoteClass test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object)"somename"));
+            test.InvokeMethod("greet", TestUtil.BuildParameters("other", (object)"othername"), response =>
             {
                 JObject data = JObject.Parse(response);
                 JToken token = data["data"];
@@ -183,7 +183,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
                 {"lat", 10},
                 {"lng", 20}
             };
-            _adapter.InvokeStaticMethod("contract.geopoint", TestingHelper.BuildParameters("here", (object)parameters), response =>
+            _adapter.InvokeStaticMethod("contract.geopoint", TestUtil.BuildParameters("here", (object)parameters), response =>
             {
                 JObject data = JObject.Parse(response);
                 data.Should().NotBeNull();
@@ -214,7 +214,7 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remooting
                     }}
                 }}
             };
-            _adapter.InvokeStaticMethod("contract.list", TestingHelper.BuildParameters("filter", (object)filter), response =>
+            _adapter.InvokeStaticMethod("contract.list", TestUtil.BuildParameters("filter", (object)filter), response =>
             {
                 JObject data = JObject.Parse(response);
                 data.Should().NotBeNull();

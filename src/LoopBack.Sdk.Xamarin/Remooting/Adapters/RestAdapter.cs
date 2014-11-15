@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Reflection;
 using System.Threading.Tasks;
-using Humanizer;
 using LoopBack.Sdk.Xamarin.Common;
 using ModernHttpClient;
 using Newtonsoft.Json;
@@ -88,7 +83,10 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             Action<string> onSuccess,
             Action<Exception> onError)
         {
-            InvokeStaticMethodImpl(method, parameters, response => { Callback(onSuccess, onError, response); });
+            InvokeStaticMethodImpl(method, parameters, async response =>
+            {
+                await Callback(onSuccess, onError, response);
+            });
         }
 
 
@@ -113,9 +111,9 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             Action<string> onSuccess,
             Action<Exception> onError)
         {
-            InvokeInstanceMethodImpl(method, constructorParameters, parameters, response =>
+            InvokeInstanceMethodImpl(method, constructorParameters, parameters, async response =>
             {
-                Callback(onSuccess, onError, response);
+                await Callback(onSuccess, onError, response);
             });
         }
 
@@ -136,15 +134,14 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
                 async response => { await BinaryCallback(onSuccess, onError, response); });
         }
 
-        private static void Callback(Action<string> onSuccess, Action<Exception> onError,
+        private async Task Callback(Action<string> onSuccess, Action<Exception> onError,
             HttpResponseMessage response)
         {
             try
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    Task<string> task = response.Content.ReadAsStringAsync();
-                    onSuccess(task.Result);
+                    onSuccess(await response.Content.ReadAsStringAsync());
                 }
             }
             catch (Exception exception)
@@ -153,7 +150,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             }
         }
 
-        private static async Task BinaryCallback(Action<byte[], string> onSuccess, Action<Exception> onError,
+        private async Task BinaryCallback(Action<byte[], string> onSuccess, Action<Exception> onError,
             HttpResponseMessage response)
         {
             try
@@ -222,11 +219,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
             Request(path, verb, combinedParameters, parameterEncoding, httpHandler);
         }
 
-        private void Request(string path,
-            string verb,
-            Dictionary<string, object> parameters,
-            ParameterEncoding parameterEncoding,
-            Action<HttpResponseMessage> responseHandler)
+        private async void Request(string path, string verb, Dictionary<string, object> parameters, ParameterEncoding parameterEncoding, Action<HttpResponseMessage> responseHandler)
         {
             bool skipBody = false;
             if (!IsConnected())
@@ -288,8 +281,7 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
                     throw new ArgumentOutOfRangeException("parameterEncoding");
             }
 
-            Task<HttpResponseMessage> message = Client.SendAsync(request);
-            responseHandler(message.Result);
+            responseHandler(await Client.SendAsync(request));
         }
 
         private Dictionary<string, object> FlattenParameters(Dictionary<string, object> parameters)
@@ -306,13 +298,14 @@ namespace LoopBack.Sdk.Xamarin.Remooting.Adapters
 
             foreach (KeyValuePair<string, object> entry in parameters)
             {
-                String key = keyPrefix != null
+                string key = keyPrefix != null
                         ? keyPrefix + "[" + entry.Key + "]"
                         : entry.Key;
 
-                if (entry.Value is Dictionary<string, object>)
+                Dictionary<string, object> value = entry.Value as Dictionary<string, object>;
+                if (value != null)
                 {
-                    result.AddRange(FlattenParameters(key, (Dictionary<string, object>)entry.Value));
+                    result.AddRange(FlattenParameters(key, value));
                 }
                 else
                 {

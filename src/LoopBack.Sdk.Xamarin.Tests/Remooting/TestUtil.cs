@@ -2,7 +2,7 @@
 
 namespace LoopBack.Sdk.Xamarin.Tests.Remooting
 {
-    public static class TestingHelper
+    public static class TestUtil
     {
         public static Dictionary<string, T> BuildParameters<T>(string name, T value)
         {

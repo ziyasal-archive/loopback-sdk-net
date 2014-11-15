@@ -5,7 +5,7 @@ using PCLStorage;
 
 namespace LoopBack.Sdk.Xamarin.Loopback
 {
-    public class Container : VirtualObject
+    public class Container : RemoteClass
     {
         public virtual string Name { set; get; }
 
@@ -68,7 +68,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         {
             get
             {
-                RestAdapter adapter = ((RestAdapter)Repository.Adapter);
+                RestAdapter adapter = ((RestAdapter)RemoteRepository.Adapter);
                 FileRepository repo = adapter.CreateRepository<FileRepository, File>();
                 repo.Container = this;
                 return repo;
