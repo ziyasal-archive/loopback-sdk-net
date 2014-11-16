@@ -27,7 +27,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting
         /// <param name="creationParameters">The creationParameters of the new object</param>
         public RemoteClass(IRemoteRepository repository, Dictionary<string, object> creationParameters)
         {
-            RemoteRepository = repository;
+            Repository = repository;
             CreationParameters = creationParameters;
         }
 
@@ -40,7 +40,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting
         ///     The Repository this object was created from
         /// </summary>
         [JsonIgnore]
-        public IRemoteRepository RemoteRepository { get; set; }
+        public IRemoteRepository Repository { get; set; }
 
         /// <summary>
         ///     Converts the object into a <see cref="Dictionary{TKey,TValue}"></see>
@@ -63,12 +63,12 @@ namespace LoopBack.Sdk.Xamarin.Remoting
             Action<string> onSuccess,
             Action<Exception> onError)
         {
-            var adapter = RemoteRepository.Adapter;
+            var adapter = Repository.Adapter;
             if (adapter == null)
             {
                 throw new ArgumentException("Repository adapter cannot be null");
             }
-            var path = RemoteRepository.RemoteClassName + ".prototype." + method;
+            var path = Repository.RemoteClassName + ".prototype." + method;
             adapter.InvokeInstanceMethod(path, CreationParameters, parameters, onSuccess, onError);
         }
 
@@ -84,12 +84,12 @@ namespace LoopBack.Sdk.Xamarin.Remoting
             Action<byte[], string> onSuccess,
             Action<Exception> onError)
         {
-            var adapter = RemoteRepository.Adapter;
+            var adapter = Repository.Adapter;
             if (adapter == null)
             {
                 throw new ArgumentException("Repository adapter cannot be null");
             }
-            var path = RemoteRepository.RemoteClassName + ".prototype." + method;
+            var path = Repository.RemoteClassName + ".prototype." + method;
 
             adapter.InvokeInstanceMethod(path, CreationParameters, parameters, onSuccess, onError);
         }

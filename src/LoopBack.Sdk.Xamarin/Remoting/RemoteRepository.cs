@@ -54,7 +54,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting
 
                 throw ex;
             }
-            objectToCreate.RemoteRepository = this;
+            objectToCreate.Repository = this;
 
             if (creationParameters != null)
             {

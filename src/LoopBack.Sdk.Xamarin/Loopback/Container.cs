@@ -13,7 +13,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         {
             get
             {
-                var adapter = ((RestAdapter) RemoteRepository.Adapter);
+                var adapter = ((RestAdapter) Repository.Adapter);
                 var repo = adapter.CreateRepository<FileRepository, File>();
                 repo.Container = this;
                 return repo;
