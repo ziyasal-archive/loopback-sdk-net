@@ -39,6 +39,7 @@
     <Compile Include="Loopback\ContainerRepository.cs" />
     <Compile Include="Loopback\File.cs" />
     <Compile Include="Loopback\FileRepository.cs" />
+    <Compile Include="Shared\ILogger.cs" />
     <Compile Include="Shared\ISharedReferencesService.cs" />
     <Compile Include="Loopback\LocalInstallation.cs" />
     <Compile Include="Loopback\RestAdapter.cs" />

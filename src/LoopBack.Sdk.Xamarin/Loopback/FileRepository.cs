@@ -36,16 +36,16 @@ namespace LoopBack.Sdk.Xamarin.Loopback
             const string basePath = "/containers/:container";
 
 
-            contract.AddItem(new RestContractItem(basePath + "/files/:name", "GET"), ClassName + ".get");
+            contract.AddItem(new RestContractItem(basePath + "/files/:name", "GET"), RemoteClassName + ".get");
 
-            contract.AddItem(new RestContractItem(basePath + "/files", "GET"), ClassName + ".getAll");
+            contract.AddItem(new RestContractItem(basePath + "/files", "GET"), RemoteClassName + ".getAll");
 
-            contract.AddItem(RestContractItem.CreateMultipart(basePath + "/upload", "POST"), ClassName + ".upload");
+            contract.AddItem(RestContractItem.CreateMultipart(basePath + "/upload", "POST"), RemoteClassName + ".upload");
 
             contract.AddItem(new RestContractItem(basePath + "/download/:name", "GET"),
-                ClassName + ".prototype.download");
+                RemoteClassName + ".prototype.download");
 
-            contract.AddItem(new RestContractItem(basePath + "/files/:name", "DELETE"), ClassName + ".prototype.delete");
+            contract.AddItem(new RestContractItem(basePath + "/files/:name", "DELETE"), RemoteClassName + ".prototype.delete");
 
             return contract;
         }

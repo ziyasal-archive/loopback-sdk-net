@@ -5,6 +5,6 @@ namespace LoopBack.Sdk.Xamarin.Remoting
     public interface IRemoteRepository
     {
         AdapterBase Adapter { get; set; }
-        string ClassName { get; }
+        string RemoteClassName { get; }
     }
 }

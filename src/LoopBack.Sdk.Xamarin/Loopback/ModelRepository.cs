@@ -18,23 +18,23 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         /// <summary>
         ///     Creates a new Repository, associating it with the named remote class.
         /// </summary>
-        /// <param name="className">The remote class name.</param>
-        public ModelRepository(string className) : this(className, null)
+        /// <param name="remoteClassName">The remote class name.</param>
+        public ModelRepository(string remoteClassName) : this(remoteClassName, null)
         {
         }
 
         /// <summary>
         ///     Creates a new Repository, associating it with the named remote class.
         /// </summary>
-        /// <param name="className">The remote class name.</param>
+        /// <param name="remoteClassName">The remote class name.</param>
         /// <param name="nameForRestUrl">
         ///     The pluralized class name to use in REST transport. Use <code>null</code> for the default
         ///     value, which is the plural form of className.
         /// </param>
-        public ModelRepository(string className, string nameForRestUrl)
-            : base(className)
+        public ModelRepository(string remoteClassName, string nameForRestUrl)
+            : base(remoteClassName)
         {
-            NameForRestUrl = nameForRestUrl ?? className.Pluralize(); //It uses Humanizer
+            NameForRestUrl = nameForRestUrl ?? remoteClassName.Pluralize(); //It uses Humanizer
         }
 
         /// <summary>
@@ -44,19 +44,19 @@ namespace LoopBack.Sdk.Xamarin.Loopback
 
         /// <summary>
         ///     Creates a <see cref="RestContract" /> representing this model type's custom  routes.Used to extend an
-        ///     <see cref="Adapter" /> to support this model type.
+        ///     <see cref="AdapterBase" /> to support this model type.
         /// </summary>
         /// <returns>A <see cref="RestContract" /> for this model type.</returns>
         public override RestContract CreateContract()
         {
             var contract = base.CreateContract();
 
-            contract.AddItem(new RestContractItem("/" + NameForRestUrl, "POST"), ClassName + ".prototype.create");
-            contract.AddItem(new RestContractItem("/" + NameForRestUrl + "/:id", "PUT"), ClassName + ".prototype.save");
+            contract.AddItem(new RestContractItem("/" + NameForRestUrl, "POST"), RemoteClassName + ".prototype.create");
+            contract.AddItem(new RestContractItem("/" + NameForRestUrl + "/:id", "PUT"), RemoteClassName + ".prototype.save");
             contract.AddItem(new RestContractItem("/" + NameForRestUrl + "/:id", "DELETE"),
-                ClassName + ".prototype.remove");
-            contract.AddItem(new RestContractItem("/" + NameForRestUrl + "/:id", "GET"), ClassName + ".findById");
-            contract.AddItem(new RestContractItem("/" + NameForRestUrl, "GET"), ClassName + ".all");
+                RemoteClassName + ".prototype.remove");
+            contract.AddItem(new RestContractItem("/" + NameForRestUrl + "/:id", "GET"), RemoteClassName + ".findById");
+            contract.AddItem(new RestContractItem("/" + NameForRestUrl, "GET"), RemoteClassName + ".all");
 
             return contract;
         }

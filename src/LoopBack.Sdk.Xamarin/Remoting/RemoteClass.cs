@@ -68,7 +68,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting
             {
                 throw new ArgumentException("Repository adapter cannot be null");
             }
-            var path = RemoteRepository.ClassName + ".prototype." + method;
+            var path = RemoteRepository.RemoteClassName + ".prototype." + method;
             adapter.InvokeInstanceMethod(path, CreationParameters, parameters, onSuccess, onError);
         }
 
@@ -89,7 +89,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting
             {
                 throw new ArgumentException("Repository adapter cannot be null");
             }
-            var path = RemoteRepository.ClassName + ".prototype." + method;
+            var path = RemoteRepository.RemoteClassName + ".prototype." + method;
 
             adapter.InvokeInstanceMethod(path, CreationParameters, parameters, onSuccess, onError);
         }

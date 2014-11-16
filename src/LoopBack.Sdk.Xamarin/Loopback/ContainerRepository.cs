@@ -8,7 +8,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
 {
     public class ContainerRepository : RestRepository<Container>
     {
-        public ContainerRepository(string className) : base(className)
+        public ContainerRepository(string remoteClassName) : base(remoteClassName)
         {
         }
 
@@ -28,13 +28,13 @@ namespace LoopBack.Sdk.Xamarin.Loopback
 
 
             var basePath = "/" + GetNameForRestUrl();
-            contract.AddItem(new RestContractItem(basePath, "POST"), ClassName + ".create");
+            contract.AddItem(new RestContractItem(basePath, "POST"), RemoteClassName + ".create");
 
-            contract.AddItem(new RestContractItem(basePath, "GET"), ClassName + ".getAll");
+            contract.AddItem(new RestContractItem(basePath, "GET"), RemoteClassName + ".getAll");
 
-            contract.AddItem(new RestContractItem(basePath + "/:name", "GET"), ClassName + ".get");
+            contract.AddItem(new RestContractItem(basePath + "/:name", "GET"), RemoteClassName + ".get");
 
-            contract.AddItem(new RestContractItem(basePath + "/:name", "DELETE"), ClassName + ".prototype.remove");
+            contract.AddItem(new RestContractItem(basePath + "/:name", "DELETE"), RemoteClassName + ".prototype.remove");
 
             return contract;
         }

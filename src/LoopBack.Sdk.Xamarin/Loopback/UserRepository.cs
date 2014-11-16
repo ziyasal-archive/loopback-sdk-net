@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 namespace LoopBack.Sdk.Xamarin.Loopback
 {
     /// <summary>
-    ///     * A base class implementing <see cref="ModelRepository{T}" /> for the built-in User type.
+    ///    A base class implementing <see cref="ModelRepository{T}" /> for the built-in User type.
     ///     <pre>
     ///         <code>UserRepository{MyUser} userRepo = new UserRepository{MyUser}("user", typeof(MyUser));
     ///  </code>
@@ -49,22 +49,22 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         /// <summary>
         ///     Creates a new UserRepository, associating it with the static {T} user class and the user class name.
         /// </summary>
-        /// <param name="className">The remote class name.</param>
-        public UserRepository(string className)
-            : this(className, null)
+        /// <param name="remoteClassName">The remote class name.</param>
+        public UserRepository(string remoteClassName)
+            : this(remoteClassName, null)
         {
         }
 
         /// <summary>
         ///     Creates a new UserRepository, associating it with the static {T} user class and the user class name.
         /// </summary>
-        /// <param name="className">The remote class name.</param>
+        /// <param name="remoteClassName">The remote class name.</param>
         /// <param name="nameForRestUrl">
         ///     The pluralized class name to use in REST transport. Use <code>null</code> for the default
         ///     value, which is the plural form of className.
         /// </param>
-        public UserRepository(string className, string nameForRestUrl)
-            : base(className, nameForRestUrl)
+        public UserRepository(string remoteClassName, string nameForRestUrl)
+            : base(remoteClassName, nameForRestUrl)
         {
         }
 
@@ -115,7 +115,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
 
         /// <summary>
         ///     Creates a <see cref="RestContract" /> representing the user type's custom
-        ///     routes. Used to extend an <see cref="Adapter" /> to support user. Calls
+        ///     routes. Used to extend an <see cref="AdapterBase" /> to support user. Calls
         ///     super <see cref="ModelRepository{T}" /> createContract first.
         /// </summary>
         /// <returns>A <see cref="RestContract" /> for this model type.</returns>
@@ -123,9 +123,8 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         {
             var contract = base.CreateContract();
 
-            contract.AddItem(new RestContractItem("/" + NameForRestUrl + "/login?include=user", "POST"),
-                ClassName + ".login");
-            contract.AddItem(new RestContractItem("/" + NameForRestUrl + "/logout", "POST"), ClassName + ".logout");
+            contract.AddItem(new RestContractItem("/" + NameForRestUrl + "/login?include=user", "POST"), RemoteClassName + ".login");
+            contract.AddItem(new RestContractItem("/" + NameForRestUrl + "/logout", "POST"), RemoteClassName + ".logout");
             return contract;
         }
 
@@ -136,7 +135,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         /// <param name="password">user password</param>
         /// <param name="parameters">optional parameters</param>
         /// <returns>A new {T} user instance.</returns>
-        public T CreateUser(String email, String password, Dictionary<string, object> parameters)
+        public T CreateUser(string email, string password, Dictionary<string, object> parameters)
         {
             var allParams = new Dictionary<string, object>();
             allParams.AddRange(parameters);
@@ -154,11 +153,13 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         /// <param name="password">user password</param>
         /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
         /// <param name="onError">The callback to invoke when the execution finished with error</param>
-        public void LoginUSer(string email, string password, Action<AccessToken, T> onSuccess, Action<Exception> onError)
+        public void LoginUser(string email, string password, Action<AccessToken, T> onSuccess, Action<Exception> onError)
         {
-            var parameters = new Dictionary<string, object>();
-            parameters.Add("email", email);
-            parameters.Add("password", password);
+            var parameters = new Dictionary<string, object>
+            {
+                {"email", email},
+                { "password", password}
+            };
 
             InvokeStaticMethod("login", parameters, response =>
             {

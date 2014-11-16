@@ -14,14 +14,14 @@ namespace LoopBack.Sdk.Xamarin.Remoting
         /// <summary>
         ///     Creates a new Repository, associating it with the named remote class.
         /// </summary>
-        /// <param name="className">The remote class name</param>
-        public RemoteRepository(string className)
+        /// <param name="remoteClassName">The remote class name</param>
+        public RemoteRepository(string remoteClassName)
         {
-            if (string.IsNullOrEmpty(className))
+            if (string.IsNullOrEmpty(remoteClassName))
             {
                 throw new ArgumentException("Class name cannot be null or empty.");
             }
-            ClassName = className;
+            RemoteClassName = remoteClassName;
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting
         /// <summary>
         ///     The name given to this prototype on the server.
         /// </summary>
-        public string ClassName { get; private set; }
+        public string RemoteClassName { get; private set; }
 
         /// <summary>
         ///     Creates a new <see cref="RemoteClass" /> as a virtual instance of this remote class.
@@ -79,7 +79,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting
             {
                 throw new ArgumentException("No adapter set");
             }
-            var path = ClassName + "." + method;
+            var path = RemoteClassName + "." + method;
             Adapter.InvokeStaticMethod(path, parameters, onSuccess, onError);
         }
 
@@ -97,7 +97,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting
             {
                 throw new ArgumentException("No adapter set");
             }
-            var path = ClassName + "." + method;
+            var path = RemoteClassName + "." + method;
             Adapter.InvokeStaticMethod(path, parameters, onSuccess, onError);
         }
     }

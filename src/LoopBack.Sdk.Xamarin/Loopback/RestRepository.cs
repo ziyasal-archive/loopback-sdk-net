@@ -6,8 +6,8 @@ namespace LoopBack.Sdk.Xamarin.Loopback
 {
     public class RestRepository<T> : RemoteRepository<T> where T : RemoteClass
     {
-        public RestRepository(string className)
-            : base(className)
+        public RestRepository(string remoteClassName)
+            : base(remoteClassName)
         {
         }
 
