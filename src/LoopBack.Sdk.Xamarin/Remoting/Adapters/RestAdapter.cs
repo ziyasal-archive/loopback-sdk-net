@@ -21,7 +21,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
     public class RestAdapter : AdapterBase
     {
         private static string TAG = "remoting.RestAdapter";
-        private readonly IContext _context;
+        public virtual IContext ApplicationContext { get; protected set; }
 
         /// <summary>
         /// </summary>
@@ -30,7 +30,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
         public RestAdapter(IContext context, string url)
             : base(url)
         {
-            _context = context;
+            ApplicationContext = context;
             Contract = new RestContract();
             AddUserAgentHeaderToHttpClient();
         }
@@ -39,14 +39,14 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
         {
             if (Client != null)
             {
-                Client.DefaultRequestHeaders.Add("User-Agent", _context.UserAgent);
+                Client.DefaultRequestHeaders.Add("User-Agent", ApplicationContext.UserAgent);
             }
         }
 
         public RestAdapter(string url)
             : base(url)
         {
-            _context = new RestContext("loopback-xamarin/1.0");
+            ApplicationContext = new RestContext("loopback-xamarin/1.0");
             Contract = new RestContract();
             AddUserAgentHeaderToHttpClient();
         }
@@ -79,46 +79,35 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
             return Client != null;
         }
 
-        public override void InvokeStaticMethod(string method,
+        public override async Task InvokeStaticMethod(string method,
             Dictionary<string, object> parameters,
             Action<string> onSuccess,
             Action<Exception> onError)
         {
-            InvokeStaticMethodImpl(method, parameters,
+            await InvokeStaticMethodImpl(method, parameters,
                 async response => { await Callback(onSuccess, onError, response); });
         }
 
-        public override void InvokeStaticMethod(string method,
-            Dictionary<string, object> parameters,
-            Action<byte[], string> onSuccess,
-            Action<Exception> onError)
+        public override async Task InvokeStaticMethod(string method, Dictionary<string, object> parameters, Action<byte[], string> onSuccess, Action<Exception> onError)
         {
             //TODO: Fix
             //Client.DefaultRequestHeaders.Accept.Clear();
             //Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/octet-stream"));
 
-            InvokeStaticMethodImpl(method, parameters,
+            await InvokeStaticMethodImpl(method, parameters,
                 async response => { await BinaryCallback(onSuccess, onError, response); });
         }
 
 
-        public override void InvokeInstanceMethod(string method,
-            Dictionary<string, object> constructorParameters,
-            Dictionary<string, object> parameters,
-            Action<string> onSuccess,
-            Action<Exception> onError)
+        public override async Task InvokeInstanceMethod(string method, Dictionary<string, object> constructorParameters, Dictionary<string, object> parameters, Action<string> onSuccess, Action<Exception> onError)
         {
-            InvokeInstanceMethodImpl(method, constructorParameters, parameters,
+            await InvokeInstanceMethodImpl(method, constructorParameters, parameters,
                 async response => { await Callback(onSuccess, onError, response); });
         }
 
-        public override void InvokeInstanceMethod(string method,
-            Dictionary<string, object> constructorParameters,
-            Dictionary<string, object> parameters,
-            Action<byte[], string> onSuccess,
-            Action<Exception> onError)
+        public override async Task InvokeInstanceMethod(string method, Dictionary<string, object> constructorParameters, Dictionary<string, object> parameters, Action<byte[], string> onSuccess, Action<Exception> onError)
         {
-            InvokeInstanceMethodImpl(method, constructorParameters, parameters,
+            await InvokeInstanceMethodImpl(method, constructorParameters, parameters,
                 async response => { await BinaryCallback(onSuccess, onError, response); });
         }
 
@@ -164,7 +153,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
             }
         }
 
-        private void InvokeStaticMethodImpl(string method,
+        private async Task InvokeStaticMethodImpl(string method,
             Dictionary<string, object> parameters,
             Action<HttpResponseMessage> httpHandler)
         {
@@ -177,10 +166,10 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
             var path = Contract.GetUrlForMethod(method, parameters);
             var parameterEncoding = Contract.GetParameterEncodingForMethod(method);
 
-            Request(path, verb, parameters, parameterEncoding, httpHandler);
+            await Request(path, verb, parameters, parameterEncoding, httpHandler);
         }
 
-        private void InvokeInstanceMethodImpl(string method,
+        private async Task InvokeInstanceMethodImpl(string method,
             Dictionary<string, object> constructorParameters,
             Dictionary<string, object> parameters,
             Action<HttpResponseMessage> httpHandler)
@@ -204,10 +193,10 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
             var path = Contract.GetUrlForMethod(method, combinedParameters);
             var parameterEncoding = Contract.GetParameterEncodingForMethod(method);
 
-            Request(path, verb, combinedParameters, parameterEncoding, httpHandler);
+            await Request(path, verb, combinedParameters, parameterEncoding, httpHandler);
         }
 
-        private async void Request(string path, string verb, Dictionary<string, object> parameters,
+        private async Task Request(string path, string verb, Dictionary<string, object> parameters,
             ParameterEncoding parameterEncoding, Action<HttpResponseMessage> responseHandler)
         {
             var skipBody = false;

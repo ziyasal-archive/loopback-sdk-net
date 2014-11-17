@@ -35,16 +35,16 @@
         /// <summary>
         ///     he pattern corresponding to this route, e.g. <code>"/widgets/:id"</code>.
         /// </summary>
-        public virtual string Pattern { get; }
+        public virtual string Pattern { get; private set; }
 
         /// <summary>
         ///     The verb corresponding to this route, e.g. <code>"GET"</code>.
         /// </summary>
-        public virtual string Verb { get; }
+        public virtual string Verb { get; private set; }
 
         /// <summary>
         /// </summary>
-        public virtual AdapterBase.ParameterEncoding ParameterEncoding { get; }
+        public virtual AdapterBase.ParameterEncoding ParameterEncoding { get; private set; }
 
         /// <summary>
         ///     Creates a new item encapsulating a route that expects multi-part request (e.g. file upload).

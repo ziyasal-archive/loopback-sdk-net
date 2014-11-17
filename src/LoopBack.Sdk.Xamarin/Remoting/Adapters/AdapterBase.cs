@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
 {
@@ -59,7 +60,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
         /// <param name="parameters">The parameters to invoke with.</param>
         /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
         /// <param name="onError">The callback to invoke when the execution finished with error</param>
-        public abstract void InvokeStaticMethod(string method,
+        public abstract Task InvokeStaticMethod(string method,
             Dictionary<string, object> parameters,
             Action<string> onSuccess,
             Action<Exception> onError);
@@ -71,7 +72,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
         /// <param name="parameters">The parameters to invoke with.</param>
         /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
         /// <param name="onError">The callback to invoke when the execution finished with error</param>
-        public virtual void InvokeStaticMethod(string method,
+        public virtual Task InvokeStaticMethod(string method,
             Dictionary<string, object> parameters,
             Action<byte[], string> onSuccess,
             Action<Exception> onError)
@@ -94,7 +95,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
         /// <param name="parameters">The parameters to invoke with.</param>
         /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
         /// <param name="onError">The callback to invoke when the execution finished with error</param>
-        public abstract void InvokeInstanceMethod(string method,
+        public abstract Task InvokeInstanceMethod(string method,
             Dictionary<string, object> constructorParameters,
             Dictionary<string, object> parameters,
             Action<string> onSuccess,
@@ -115,7 +116,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
         /// <param name="parameters">The parameters to invoke with.</param>
         /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
         /// <param name="onError">The callback to invoke when the execution finished with error</param>
-        public virtual void InvokeInstanceMethod(string method,
+        public virtual Task InvokeInstanceMethod(string method,
             Dictionary<string, object> constructorParameters,
             Dictionary<string, object> parameters,
             Action<byte[], string> onSuccess,

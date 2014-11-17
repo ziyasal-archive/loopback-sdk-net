@@ -108,3 +108,4 @@ LoopBack.Sdk.Xamarin.sln.ide/
 *.cs~
 
 *.csproj~
+.idea/

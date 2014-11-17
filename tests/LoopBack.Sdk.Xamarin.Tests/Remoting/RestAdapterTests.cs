@@ -35,9 +35,9 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remoting
         }
 
         [Test]
-        public void Get_Test()
+        public async void Get_Test()
         {
-            _adapter.InvokeStaticMethod("simple.getSecret", null, response =>
+           await _adapter.InvokeStaticMethod("simple.getSecret", null, response =>
             {
                 var data = JObject.Parse(response);
                 var token = data["data"];
@@ -47,10 +47,10 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remoting
         }
 
         [Test]
-        public void PrototypeGet_Test()
+        public async void PrototypeGet_Test()
         {
             RemoteClass test = _testClass.CreateObject(TestUtil.BuildParameters("name", (object)"somename"));
-            test.InvokeMethod("getName", null, response =>
+            await test.InvokeMethod("getName", null, response =>
             {
                 var data = JObject.Parse(response);
                 var token = data["data"];
@@ -60,9 +60,9 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remoting
         }
 
         [Test]
-        public void PrototypeStatic_Test()
+        public async void PrototypeStatic_Test()
         {
-            _testClass.InvokeStaticMethod("getFavoritePerson", null, response =>
+            await _testClass.InvokeStaticMethod("getFavoritePerson", null, response =>
             {
                 var data = JObject.Parse(response);
                 var token = data["data"];
@@ -72,12 +72,11 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remoting
         }
 
         [Test]
-        public void PrototypeTransform_Test()
+        public async void PrototypeTransform_Test()
         {
-            RemoteClass test =
-                _testClass.CreateObject(TestUtil.BuildParameters("name",
+            RemoteClass test =_testClass.CreateObject(TestUtil.BuildParameters("name",
                     (object)TestUtil.BuildParameters("somekey", (object)"somevalue")));
-            test.InvokeMethod("greet", TestUtil.BuildParameters("other", (object)"othername"), response =>
+            await test.InvokeMethod("greet", TestUtil.BuildParameters("other", (object)"othername"), response =>
            {
                var data = JObject.Parse(response);
                var token = data["data"];
@@ -87,36 +86,36 @@ namespace LoopBack.Sdk.Xamarin.Tests.Remoting
         }
 
         [Test]
-        public void SimpleClassGet_Test()
+        public async void SimpleClassGet_Test()
         {
-            _adapter.InvokeInstanceMethod("SimpleClass.prototype.getName",
+            await _adapter.InvokeInstanceMethod("SimpleClass.prototype.getName",
                 TestUtil.BuildParameters("name", (object)"somename"), null, response =>
-               {
-                   var data = JObject.Parse(response);
-                   var token = data["data"];
-                   token.Should().NotBeNull();
-                   token.ToString().ShouldBeEquivalentTo("somename");
-               }, exception => { });
+                {
+                    var data = JObject.Parse(response);
+                    var token = data["data"];
+                    token.Should().NotBeNull();
+                    token.ToString().ShouldBeEquivalentTo("somename");
+                }, exception => { });
         }
 
         [Test]
-        public void SimpleClassTransform_Test()
+        public async void SimpleClassTransform_Test()
         {
-            _adapter.InvokeInstanceMethod("SimpleClass.prototype.greet",
+            await _adapter.InvokeInstanceMethod("SimpleClass.prototype.greet",
                 TestUtil.BuildParameters("name", (object)"somename"),
                 TestUtil.BuildParameters("other", (object)"othername"), response =>
-               {
-                   var data = JObject.Parse(response);
-                   var token = data["data"];
-                   token.Should().NotBeNull();
-                   token.ToString().ShouldBeEquivalentTo("Hi, othername!");
-               }, exception => { });
+                {
+                    var data = JObject.Parse(response);
+                    var token = data["data"];
+                    token.Should().NotBeNull();
+                    token.ToString().ShouldBeEquivalentTo("Hi, othername!");
+                }, exception => { });
         }
 
         [Test]
-        public void Transform_Test()
+        public async void Transform_Test()
         {
-            _adapter.InvokeStaticMethod("simple.transform", TestUtil.BuildParameters("str", (object)"somevalue"),
+           await _adapter.InvokeStaticMethod("simple.transform", TestUtil.BuildParameters("str", (object)"somevalue"),
                 response =>
                 {
                     var data = JObject.Parse(response);

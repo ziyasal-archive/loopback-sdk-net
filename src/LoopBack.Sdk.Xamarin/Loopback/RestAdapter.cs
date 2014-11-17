@@ -20,7 +20,6 @@ namespace LoopBack.Sdk.Xamarin.Loopback
                 throw new ArgumentNullException("context", "context must be not null");
             }
 
-            ApplicationContext = context;
             AccessToken = LoadAccessToken();
         }
 
@@ -36,7 +35,6 @@ namespace LoopBack.Sdk.Xamarin.Loopback
             }
         }
 
-        public virtual IContext ApplicationContext { get; }
 
         public virtual void ClearAccessToken()
         {

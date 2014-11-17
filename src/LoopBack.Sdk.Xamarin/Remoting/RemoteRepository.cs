@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using LoopBack.Sdk.Xamarin.Extensions;
 using LoopBack.Sdk.Xamarin.Remoting.Adapters;
 
@@ -72,7 +73,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting
         /// <param name="parameters">The parameters to invoke with.</param>
         /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
         /// <param name="onError">The callback to invoke when the execution finished with error</param>
-        public void InvokeStaticMethod(string method, Dictionary<string, object> parameters, Action<string> onSuccess,
+        public async Task InvokeStaticMethod(string method, Dictionary<string, object> parameters, Action<string> onSuccess,
             Action<Exception> onError)
         {
             if (Adapter == null)
@@ -80,7 +81,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting
                 throw new ArgumentException("No adapter set");
             }
             var path = RemoteClassName + "." + method;
-            Adapter.InvokeStaticMethod(path, parameters, onSuccess, onError);
+            await Adapter.InvokeStaticMethod(path, parameters, onSuccess, onError);
         }
 
         /// <summary>
@@ -90,7 +91,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting
         /// <param name="parameters">The parameters to invoke with.</param>
         /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
         /// <param name="onError">The callback to invoke when the execution finished with error</param>
-        public void InvokeStaticMethod(string method,
+        public async Task InvokeStaticMethod(string method,
             Dictionary<string, object> parameters, Action<byte[], string> onSuccess, Action<Exception> onError)
         {
             if (Adapter == null)
@@ -98,7 +99,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting
                 throw new ArgumentException("No adapter set");
             }
             var path = RemoteClassName + "." + method;
-            Adapter.InvokeStaticMethod(path, parameters, onSuccess, onError);
+            await Adapter.InvokeStaticMethod(path, parameters, onSuccess, onError);
         }
     }
 }
