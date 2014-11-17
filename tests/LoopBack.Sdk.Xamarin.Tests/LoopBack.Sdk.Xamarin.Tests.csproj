@@ -84,7 +84,6 @@
     <Compile Include="Remoting\TestUtil.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="Extensions\NunitExtensions.cs" />
-    <Compile Include="Extensions\MoqExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
