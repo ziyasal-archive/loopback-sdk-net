@@ -1,25 +1,9 @@
 ﻿<Properties GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="LoopBack.Sdk.Xamarin/Remooting/Adapters/RestAdapter.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Loopback.Sdk.Xamarin\MyClass.cs">
     <Files>
-      <File FileName="LoopBack.Sdk.Xamarin/packages.config" Line="1" Column="1" />
-      <File FileName="LoopBack.Sdk.Xamarin/Loopback/AccessToken.cs" Line="1" Column="1" />
-      <File FileName="LoopBack.Sdk.Xamarin/Loopback/AccessTokenRepository.cs" Line="2" Column="2" />
-      <File FileName="LoopBack.Sdk.Xamarin/Loopback/RestAdapter.cs" Line="33" Column="33" />
-      <File FileName="LoopBack.Sdk.Xamarin/Remooting/Adapters/Adapter.cs" Line="1" Column="1" />
-      <File FileName="LoopBack.Sdk.Xamarin/Remooting/Adapters/RestAdapter.cs" Line="39" Column="39" />
-      <File FileName="LoopBack.Sdk.Xamarin/Common/IContext.cs" Line="6" Column="6" />
-      <File FileName="LoopBack.Sdk.Xamarin/LoopBack.Sdk.Xamarin.csproj" Line="1" Column="1" />
-      <File FileName="LoopBack.Sdk.Xamarin.Tests/Remooting/RestAdapterTests.cs" Line="3" Column="3" />
-      <File FileName="LoopBack.Sdk.Xamarin.Tests/Remooting/DummyContextImpl.cs" Line="2" Column="2" />
-      <File FileName="LoopBack.Sdk.Xamarin.Tests/Remooting/RestContractTests.cs" Line="108" Column="108" />
-      <File FileName="LoopBack.Sdk.Xamarin/Remooting/Adapters/RestContract.cs" Line="1" Column="1" />
+      <File FileName="Loopback.Sdk.Xamarin\MyClass.cs" Line="1" Column="1" />
     </Files>
-    <Pads>
-      <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True" selected="True" />
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

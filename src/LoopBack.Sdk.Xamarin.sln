@@ -3,21 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.22310.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopBack.Sdk.Xamarin", "LoopBack.Sdk.Xamarin\LoopBack.Sdk.Xamarin.csproj", "{851D16E6-3D7C-4916-8864-CED6E589E0A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loopback.Sdk.Xamarin", "Loopback.Sdk.Xamarin\Loopback.Sdk.Xamarin.csproj", "{428A9D3D-873D-4298-BA37-26C0BDA7777E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "iOS", "iOS", "{F7CF319E-8FAD-4C92-B710-7B44944F2431}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loopback.Sdk.Xamarin.Test", "..\tests\Loopback.Sdk.Xamarin.Test\Loopback.Sdk.Xamarin.Test.csproj", "{57FB7E2C-BD70-4F27-853F-80DD90974E98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopBack.Sdk.Xamarin.iOS", "LoopBack.Sdk.Xamarin.iOS\LoopBack.Sdk.Xamarin.iOS.csproj", "{AE870694-E42F-420A-836A-BE3810046425}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loopback.Sdk.Xamarin.iOS", "Loopback.Sdk.Xamarin.iOS\Loopback.Sdk.Xamarin.iOS.csproj", "{E86D9127-36F2-4F09-B4F3-FDA9EDFD3E1E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Android", "Android", "{942CC7B1-268F-4057-BF27-318119852C63}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loopback.Sdk.Xamarin.Android", "Loopback.Sdk.Xamarin.Android\Loopback.Sdk.Xamarin.Android.csproj", "{32709181-B9B2-483D-AAF9-3CFD3E6BA1FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopBack.Sdk.Xamarin.Android", "LoopBack.Sdk.Xamarin.Android\LoopBack.Sdk.Xamarin.Android.csproj", "{4E186C99-329B-40AD-AACA-EA6499F9B0E0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loopback.Sdk.Xamarin.Android.Test", "..\tests\Loopback.Sdk.Xamarin.Android.Test\Loopback.Sdk.Xamarin.Android.Test.csproj", "{61E40545-43F0-449D-910A-486DFD2C9CBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopBack.Sdk.Xamarin.Android.Tests", "..\tests\LoopBack.Sdk.Xamarin.Android.Tests\LoopBack.Sdk.Xamarin.Android.Tests.csproj", "{3EDAD87D-137D-4C38-B793-6CCB1734F785}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loopback.Sdk.Xamarin.iOS.Test", "..\tests\Loopback.Sdk.Xamarin.iOS.Test\Loopback.Sdk.Xamarin.iOS.Test.csproj", "{3A5CAD17-7653-4DD4-82D4-892BC0D4785B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopBack.Sdk.Xamarin.iOS.Tests", "..\tests\LoopBack.Sdk.Xamarin.iOS.Tests\LoopBack.Sdk.Xamarin.iOS.Tests.csproj", "{D96E613E-21AA-4F50-94BA-5FB1DD911B34}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "iOS", "iOS", "{08778368-881B-4667-A238-850FCE6EDD95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoopBack.Sdk.Xamarin.Tests", "..\tests\LoopBack.Sdk.Xamarin.Tests\LoopBack.Sdk.Xamarin.Tests.csproj", "{B3E1D691-AD02-4A3A-A0A6-0BDBEAA4919F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Android", "Android", "{3EA163A0-18AC-4D31-B3AD-A8359981F389}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,41 +25,41 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{851D16E6-3D7C-4916-8864-CED6E589E0A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{851D16E6-3D7C-4916-8864-CED6E589E0A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{851D16E6-3D7C-4916-8864-CED6E589E0A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{851D16E6-3D7C-4916-8864-CED6E589E0A5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AE870694-E42F-420A-836A-BE3810046425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE870694-E42F-420A-836A-BE3810046425}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE870694-E42F-420A-836A-BE3810046425}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE870694-E42F-420A-836A-BE3810046425}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4E186C99-329B-40AD-AACA-EA6499F9B0E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E186C99-329B-40AD-AACA-EA6499F9B0E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E186C99-329B-40AD-AACA-EA6499F9B0E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E186C99-329B-40AD-AACA-EA6499F9B0E0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3EDAD87D-137D-4C38-B793-6CCB1734F785}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3EDAD87D-137D-4C38-B793-6CCB1734F785}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3EDAD87D-137D-4C38-B793-6CCB1734F785}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3EDAD87D-137D-4C38-B793-6CCB1734F785}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D96E613E-21AA-4F50-94BA-5FB1DD911B34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D96E613E-21AA-4F50-94BA-5FB1DD911B34}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D96E613E-21AA-4F50-94BA-5FB1DD911B34}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D96E613E-21AA-4F50-94BA-5FB1DD911B34}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B3E1D691-AD02-4A3A-A0A6-0BDBEAA4919F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B3E1D691-AD02-4A3A-A0A6-0BDBEAA4919F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B3E1D691-AD02-4A3A-A0A6-0BDBEAA4919F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B3E1D691-AD02-4A3A-A0A6-0BDBEAA4919F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{428A9D3D-873D-4298-BA37-26C0BDA7777E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{428A9D3D-873D-4298-BA37-26C0BDA7777E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{428A9D3D-873D-4298-BA37-26C0BDA7777E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{428A9D3D-873D-4298-BA37-26C0BDA7777E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57FB7E2C-BD70-4F27-853F-80DD90974E98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57FB7E2C-BD70-4F27-853F-80DD90974E98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57FB7E2C-BD70-4F27-853F-80DD90974E98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57FB7E2C-BD70-4F27-853F-80DD90974E98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E86D9127-36F2-4F09-B4F3-FDA9EDFD3E1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E86D9127-36F2-4F09-B4F3-FDA9EDFD3E1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E86D9127-36F2-4F09-B4F3-FDA9EDFD3E1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E86D9127-36F2-4F09-B4F3-FDA9EDFD3E1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32709181-B9B2-483D-AAF9-3CFD3E6BA1FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32709181-B9B2-483D-AAF9-3CFD3E6BA1FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32709181-B9B2-483D-AAF9-3CFD3E6BA1FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32709181-B9B2-483D-AAF9-3CFD3E6BA1FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61E40545-43F0-449D-910A-486DFD2C9CBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61E40545-43F0-449D-910A-486DFD2C9CBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61E40545-43F0-449D-910A-486DFD2C9CBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61E40545-43F0-449D-910A-486DFD2C9CBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A5CAD17-7653-4DD4-82D4-892BC0D4785B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A5CAD17-7653-4DD4-82D4-892BC0D4785B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A5CAD17-7653-4DD4-82D4-892BC0D4785B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A5CAD17-7653-4DD4-82D4-892BC0D4785B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{AE870694-E42F-420A-836A-BE3810046425} = {F7CF319E-8FAD-4C92-B710-7B44944F2431}
-		{4E186C99-329B-40AD-AACA-EA6499F9B0E0} = {942CC7B1-268F-4057-BF27-318119852C63}
-		{3EDAD87D-137D-4C38-B793-6CCB1734F785} = {942CC7B1-268F-4057-BF27-318119852C63}
-		{D96E613E-21AA-4F50-94BA-5FB1DD911B34} = {F7CF319E-8FAD-4C92-B710-7B44944F2431}
+		{E86D9127-36F2-4F09-B4F3-FDA9EDFD3E1E} = {08778368-881B-4667-A238-850FCE6EDD95}
+		{32709181-B9B2-483D-AAF9-3CFD3E6BA1FC} = {3EA163A0-18AC-4D31-B3AD-A8359981F389}
+		{61E40545-43F0-449D-910A-486DFD2C9CBD} = {3EA163A0-18AC-4D31-B3AD-A8359981F389}
+		{3A5CAD17-7653-4DD4-82D4-892BC0D4785B} = {08778368-881B-4667-A238-850FCE6EDD95}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = LoopBack.Sdk.Xamarin\LoopBack.Sdk.Xamarin.csproj
+		StartupItem = Loopback.Sdk.Xamarin\Loopback.Sdk.Xamarin.csproj
 	EndGlobalSection
 EndGlobal

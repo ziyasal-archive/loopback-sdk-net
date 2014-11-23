@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using LoopBack.Sdk.Xamarin.Extensions;
+using Loopback.Sdk.Xamarin.Extensions;
 
-namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
+namespace Loopback.Sdk.Xamarin.Remoting.Adapters
 {
     /// <summary>
     ///     A contract specifies how remote method names map to HTTP routes.
@@ -37,66 +37,6 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
         protected Dictionary<string, RestContractItem> Items { get; set; }
 
         /// <summary>
-        ///     Adds a single item to this contract. The item can be shared among
-        ///     Similarly, each item can be used for more than one method, like so:
-        ///     <pre>
-        ///         <code>
-        ///  RestContractItem upsert = new RestContractItem("/widgets/:id", "PUT");
-        ///  contract.AddItem(upsert, "widgets.create");
-        ///  contract.AddItem(upsert, "widgets.update");
-        ///  </code>
-        ///     </pre>
-        /// </summary>
-        /// <param name="item">The item to add to this contract.</param>
-        /// <param name="method">The method the item should represent.</param>
-        public void AddItem(RestContractItem item, string method)
-        {
-            if (item == null || string.IsNullOrEmpty(method))
-            {
-                throw new ArgumentException("Neither item nor method can be null");
-            }
-
-            Items.Add(method, item);
-        }
-
-        /// <summary>
-        ///     Adds all items from contract.
-        /// </summary>
-        /// <param name="contract">The <see cref="RestContract">contract</see> to copy from.</param>
-        public void AddItemsFromContract(RestContract contract)
-        {
-            if (contract == null)
-            {
-                throw new ArgumentNullException("contract", "Contract cannot be null");
-            }
-
-            Items.AddRange(contract.Items);
-        }
-
-        /// <summary>
-        ///     Returns the custom pattern representing the given method string, or
-        ///     <code>null</code> if no custom pattern exists.
-        /// </summary>
-        /// <param name="method">The method to resolve.</param>
-        /// <returns>The custom pattern if one exists, <code>null</code> otherwise.</returns>
-        public string GetPatternForMethod(string method)
-        {
-            if (string.IsNullOrEmpty(method))
-            {
-                throw new ArgumentNullException("method", "Method cannot be null");
-            }
-
-            if (Items.ContainsKey(method))
-            {
-                var item = Items[method];
-
-                return item != null ? item.Pattern : null;
-            }
-
-            return null;
-        }
-
-        /// <summary>
         ///     Gets the HTTP verb for the given method string.
         /// </summary>
         /// <param name="method">The method to resolve.</param>
@@ -116,6 +56,29 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
             }
 
             return defaultVerb;
+        }
+
+        /// <summary>
+        ///     Resolves a specific method, replacing pattern fragments with the optional parameters as appropriate.
+        /// </summary>
+        /// <param name="method">The method to resolve.</param>
+        /// <param name="parameters">Pattern parameters. Can be <code>null</code>.</param>
+        /// <returns>The complete, resolved URL.</returns>
+        public string GetUrlForMethod(string method, Dictionary<string, object> parameters = null)
+        {
+            if (string.IsNullOrEmpty(method))
+            {
+                throw new ArgumentNullException("method", "Method cannot be null");
+            }
+
+            var pattern = GetPatternForMethod(method);
+
+            if (pattern != null)
+            {
+                return GetUrl(pattern, parameters);
+            }
+
+            return GetUrlForMethodWithoutItem(method);
         }
 
         /// <summary>
@@ -141,26 +104,26 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
         }
 
         /// <summary>
-        ///     Resolves a specific method, replacing pattern fragments with the optional parameters as appropriate.
+        ///     Returns the custom pattern representing the given method string, or
+        ///     <code>null</code> if no custom pattern exists.
         /// </summary>
         /// <param name="method">The method to resolve.</param>
-        /// <param name="parameters">Pattern parameters. Can be <code>null</code>.</param>
-        /// <returns>The complete, resolved URL.</returns>
-        public string GetUrlForMethod(string method, Dictionary<string, object> parameters = null)
+        /// <returns>The custom pattern if one exists, <code>null</code> otherwise.</returns>
+        public string GetPatternForMethod(string method)
         {
             if (string.IsNullOrEmpty(method))
             {
                 throw new ArgumentNullException("method", "Method cannot be null");
             }
 
-            var pattern = GetPatternForMethod(method);
-
-            if (pattern != null)
+            if (Items.ContainsKey(method))
             {
-                return GetUrl(pattern, parameters);
+                var item = Items[method];
+
+                return item != null ? item.Pattern : null;
             }
 
-            return GetUrlForMethodWithoutItem(method);
+            return null;
         }
 
         /// <summary>
@@ -203,11 +166,52 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
             foreach (var entry in parameters)
             {
                 var key = ":" + entry.Key;
-                var value = entry.Value.ToString();
-                url = url.Replace(key, value);
+                var value = entry.Value;
+
+                if (value != null)
+                {
+                    url = url.Replace(key, value.ToString());
+                }
             }
 
             return url;
+        }
+
+        /// <summary>
+        ///     Adds a single item to this contract. The item can be shared among
+        ///     Similarly, each item can be used for more than one method, like so:
+        ///     <pre>
+        ///         <code>
+        ///  RestContractItem item = new RestContractItem("/widgets/:id", "PUT");
+        ///  contract.AddItem(item, "widgets.create");
+        ///  contract.AddItem(item, "widgets.update");
+        ///  </code>
+        ///     </pre>
+        /// </summary>
+        /// <param name="item">The item to add to this contract.</param>
+        /// <param name="method">The method the item should represent.</param>
+        public void AddItem(RestContractItem item, string method)
+        {
+            if (item == null || string.IsNullOrEmpty(method))
+            {
+                throw new ArgumentException("Neither item nor method can be null");
+            }
+
+            Items.Add(method, item);
+        }
+
+        /// <summary>
+        ///     Adds all items from contract.
+        /// </summary>
+        /// <param name="contract">The <see cref="RestContract">contract</see> to copy from.</param>
+        public void AddItemsFromContract(RestContract contract)
+        {
+            if (contract == null)
+            {
+                throw new ArgumentNullException("contract", "Contract cannot be null");
+            }
+
+            Items.AddRange(contract.Items);
         }
     }
 }

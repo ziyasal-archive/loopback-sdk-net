@@ -4,25 +4,18 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using LoopBack.Sdk.Xamarin.Extensions;
-using LoopBack.Sdk.Xamarin.Shared;
+using Loopback.Sdk.Xamarin.Extensions;
+using Loopback.Sdk.Xamarin.Shared;
 using ModernHttpClient;
 using Newtonsoft.Json;
 
-namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
+namespace Loopback.Sdk.Xamarin.Remoting.Adapters
 {
     /// <summary>
     ///     A specific <see cref="AdapterBase" /> implementation for RESTful servers.
-    ///     In addition to implementing the <see cref="AdapterBase" /> interface,
-    ///     <code>RestAdapter</code> contains a single <see cref="RestContract" /> to map
-    ///     remote methods to custom HTTP routes. This is only required if the HTTP
-    ///     settings have been customized on the server. When in doubt, try without. <see cref="RestContract" />
     /// </summary>
-    public class RestAdapter : AdapterBase
+    public class RestAdapter : AdapterBase, IRemotingRestAdapter
     {
-        private static string TAG = "remoting.RestAdapter";
-        public virtual IContext ApplicationContext { get; protected set; }
-
         /// <summary>
         /// </summary>
         /// <param name="context"></param>
@@ -32,15 +25,8 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
         {
             ApplicationContext = context;
             Contract = new RestContract();
-            AddUserAgentHeaderToHttpClient();
-        }
 
-        private void AddUserAgentHeaderToHttpClient()
-        {
-            if (Client != null)
-            {
-                Client.DefaultRequestHeaders.Add("User-Agent", ApplicationContext.UserAgent);
-            }
+            AttchContextToClient();
         }
 
         public RestAdapter(string url)
@@ -48,18 +34,20 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
         {
             ApplicationContext = new RestContext("loopback-xamarin/1.0");
             Contract = new RestContract();
-            AddUserAgentHeaderToHttpClient();
+            AttchContextToClient();
         }
 
-        /// <summary>
-        ///     This adapter's <see cref="RestContract">adapter</see>, a custom contract for fine-grained route configuration.
-        /// </summary>
-        public RestContract Contract { get; set; }
+        public virtual IContext ApplicationContext { get; protected set; }
 
         /// <summary>
         ///     The underlying HTTP client. This allows subclasses to add  custom headers like Authorization.
         /// </summary>
         public HttpClient Client { get; private set; }
+
+        /// <summary>
+        ///     This adapter's <see cref="RestContract">adapter</see>, a custom contract for fine-grained route configuration.
+        /// </summary>
+        public RestContract Contract { get; set; }
 
         public override void Connect(string url)
         {
@@ -69,6 +57,7 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
             }
             else
             {
+                //TODO: AFNetworking? According to Paul Betts "modernhttpclient" solves general needs.
                 Client = new HttpClient(new NativeMessageHandler());
                 Client.DefaultRequestHeaders.Add("Accept", "application/json");
             }
@@ -79,100 +68,28 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
             return Client != null;
         }
 
-        public override async Task InvokeStaticMethod(string method,
-            Dictionary<string, object> parameters,
-            Action<string> onSuccess,
-            Action<Exception> onError)
+        public override async Task<RemotingResponse> InvokeInstanceMethod(string method,
+            Dictionary<string, object> constructorParameters, Dictionary<string, object> parameters)
         {
-            await InvokeStaticMethodImpl(method, parameters,
-                async response => { await Callback(onSuccess, onError, response); });
+            return await InvokeInstanceMethodImpl(method, constructorParameters, parameters);
         }
 
-        public override async Task InvokeStaticMethod(string method, Dictionary<string, object> parameters, Action<byte[], string> onSuccess, Action<Exception> onError)
+        public override async Task<RemotingResponse> InvokeStaticMethod(string method,
+            Dictionary<string, object> parameters)
         {
-            //TODO: Fix
-            //Client.DefaultRequestHeaders.Accept.Clear();
-            //Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/octet-stream"));
-
-            await InvokeStaticMethodImpl(method, parameters,
-                async response => { await BinaryCallback(onSuccess, onError, response); });
+            return await InvokeStaticMethodImpl(method, parameters);
         }
 
-
-        public override async Task InvokeInstanceMethod(string method, Dictionary<string, object> constructorParameters, Dictionary<string, object> parameters, Action<string> onSuccess, Action<Exception> onError)
+        private void AttchContextToClient()
         {
-            await InvokeInstanceMethodImpl(method, constructorParameters, parameters,
-                async response => { await Callback(onSuccess, onError, response); });
-        }
-
-        public override async Task InvokeInstanceMethod(string method, Dictionary<string, object> constructorParameters, Dictionary<string, object> parameters, Action<byte[], string> onSuccess, Action<Exception> onError)
-        {
-            await InvokeInstanceMethodImpl(method, constructorParameters, parameters,
-                async response => { await BinaryCallback(onSuccess, onError, response); });
-        }
-
-        private async Task Callback(Action<string> onSuccess, Action<Exception> onError,
-            HttpResponseMessage response)
-        {
-            try
+            if (Client != null)
             {
-                if (response.IsSuccessStatusCode)
-                {
-                    onSuccess(await response.Content.ReadAsStringAsync());
-                }
-            }
-            catch (Exception exception)
-            {
-                onError(exception);
+                Client.DefaultRequestHeaders.Add("User-Agent", ApplicationContext.UserAgent);
             }
         }
 
-        private async Task BinaryCallback(Action<byte[], string> onSuccess, Action<Exception> onError,
-            HttpResponseMessage response)
-        {
-            try
-            {
-                if (response.IsSuccessStatusCode)
-                {
-                    string contentType = null;
-
-                    foreach (var header in response.Headers)
-                    {
-                        if (header.Key.Equals("content-type"))
-                        {
-                            contentType = header.Value.First();
-                        }
-                    }
-
-                    onSuccess(await response.Content.ReadAsByteArrayAsync(), contentType);
-                }
-            }
-            catch (Exception exception)
-            {
-                onError(exception);
-            }
-        }
-
-        private async Task InvokeStaticMethodImpl(string method,
-            Dictionary<string, object> parameters,
-            Action<HttpResponseMessage> httpHandler)
-        {
-            if (Contract == null)
-            {
-                throw new InvalidOperationException("Invalid contract");
-            }
-
-            var verb = Contract.GetVerbForMethod(method);
-            var path = Contract.GetUrlForMethod(method, parameters);
-            var parameterEncoding = Contract.GetParameterEncodingForMethod(method);
-
-            await Request(path, verb, parameters, parameterEncoding, httpHandler);
-        }
-
-        private async Task InvokeInstanceMethodImpl(string method,
-            Dictionary<string, object> constructorParameters,
-            Dictionary<string, object> parameters,
-            Action<HttpResponseMessage> httpHandler)
+        private async Task<RemotingResponse> InvokeInstanceMethodImpl(string method,
+            Dictionary<string, object> constructorParameters, Dictionary<string, object> parameters)
         {
             if (Contract == null)
             {
@@ -191,13 +108,62 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
 
             var verb = Contract.GetVerbForMethod(method);
             var path = Contract.GetUrlForMethod(method, combinedParameters);
+            
             var parameterEncoding = Contract.GetParameterEncodingForMethod(method);
 
-            await Request(path, verb, combinedParameters, parameterEncoding, httpHandler);
+            return await HandleResponse(await Request(path, verb, combinedParameters, parameterEncoding));
         }
 
-        private async Task Request(string path, string verb, Dictionary<string, object> parameters,
-            ParameterEncoding parameterEncoding, Action<HttpResponseMessage> responseHandler)
+        private async Task<RemotingResponse> InvokeStaticMethodImpl(string method, Dictionary<string, object> parameters)
+        {
+            if (Contract == null)
+            {
+                throw new InvalidOperationException("Invalid contract");
+            }
+
+            var verb = Contract.GetVerbForMethod(method);
+            var path = Contract.GetUrlForMethod(method, parameters);
+            var parameterEncoding = Contract.GetParameterEncodingForMethod(method);
+
+            var result = new RemotingResponse();
+            try
+            {
+                var response = await Request(path, verb, parameters, parameterEncoding);
+                if (response.IsSuccessStatusCode)
+                {
+                    result.Raw = response;
+                    result.Content = await response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception exception)
+            {
+                result.Exception = exception;
+            }
+
+            return await HandleResponse(await Request(path, verb, parameters, parameterEncoding));
+        }
+
+        private async Task<RemotingResponse> HandleResponse(HttpResponseMessage response)
+        {
+            var result = new RemotingResponse();
+            try
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    result.Raw = response;
+                    result.Content = await response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception exception)
+            {
+                result.Exception = exception;
+            }
+
+            return result;
+        }
+
+        private async Task<HttpResponseMessage> Request(string path, string verb, Dictionary<string, object> parameters,
+            ParameterEncoding parameterEncoding)
         {
             var skipBody = false;
             if (!IsConnected())
@@ -214,48 +180,56 @@ namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
                     var keyValues = new List<string>(flattenParameters.Count);
                     keyValues.AddRange(
                         flattenParameters.Select(param => string.Format("{0}={1}", param.Key, param.Value)));
-                    path += "?" + string.Join("&", keyValues);
+
+                    if (keyValues.Count > 0)
+                    {
+                        path += "?" + string.Join("&", keyValues);
+                    }
+
                     skipBody = true;
                 }
             }
 
-            //TODO: AFNetworking . Paul Betts, says "modernhttpclient" solves general needs.
-            //TODO: Dispose HttpClient
-            Client.BaseAddress = new Uri(Url);
-
             var method = new HttpMethod(verb);
-            var request = new HttpRequestMessage(method, path);
+
+            if (!path.StartsWith("/") && !Url.EndsWith("/"))
+            {
+                path = string.Format("/{0}", path);
+            }
+
+            var request = new HttpRequestMessage(method, new Uri(Url + path));
             HttpContent content;
             switch (parameterEncoding)
             {
-            case ParameterEncoding.FORM_URL:
-                var listOfParams =
-                    parameters.Select(pair => new KeyValuePair<string, string>(pair.Key, pair.Value.ToString()))
-                        .AsEnumerable();
-                content = new FormUrlEncodedContent(listOfParams);
-                request.Content = content;
-                break;
-            case ParameterEncoding.JSON:
-                Client.DefaultRequestHeaders.Accept.Clear();
-                Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                if (!skipBody && parameters != null)
-                {
-                    content = new StringContent(JsonConvert.SerializeObject(parameters));
+                case ParameterEncoding.FORM_URL:
+                    var listOfParams =
+                        parameters.Select(pair => new KeyValuePair<string, string>(pair.Key, pair.Value.ToString()))
+                            .AsEnumerable();
+                    content = new FormUrlEncodedContent(listOfParams);
                     request.Content = content;
-                    request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                }
+                    break;
+                case ParameterEncoding.JSON:
+                    Client.DefaultRequestHeaders.Accept.Clear();
+                    Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    if (!skipBody && parameters != null)
+                    {
+                        var serializeObject = JsonConvert.SerializeObject(parameters);
+                        content = new StringContent(serializeObject);
+                        request.Content = content;
+                        request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    }
 
-                break;
-            case ParameterEncoding.FORM_MULTIPART:
-                //TODO:
-                content = new MultipartFormDataContent("");
-                request.Content = content;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException("parameterEncoding");
+                    break;
+                case ParameterEncoding.FORM_MULTIPART:
+                    //TODO:
+                    content = new MultipartFormDataContent("");
+                    request.Content = content;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("parameterEncoding");
             }
 
-            responseHandler(await Client.SendAsync(request));
+            return await Client.SendAsync(request);
         }
 
         private Dictionary<string, object> FlattenParameters(Dictionary<string, object> parameters)

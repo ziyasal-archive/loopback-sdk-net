@@ -1,10 +1,10 @@
-﻿using LoopBack.Sdk.Xamarin.Remoting.Adapters;
+﻿using Loopback.Sdk.Xamarin.Remoting.Adapters;
 
-namespace LoopBack.Sdk.Xamarin.Remoting
+namespace Loopback.Sdk.Xamarin.Remoting
 {
     public interface IRemoteRepository
     {
-        AdapterBase Adapter { get; set; }
+        IRemotingRestAdapter Adapter { get; set; }
         string RemoteClassName { get; }
     }
 }

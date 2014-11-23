@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using LoopBack.Sdk.Xamarin.Extensions;
-using LoopBack.Sdk.Xamarin.Remoting.Adapters;
-using LoopBack.Sdk.Xamarin.Shared;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Loopback.Sdk.Xamarin.Extensions;
+using Loopback.Sdk.Xamarin.Remoting.Adapters;
+using Loopback.Sdk.Xamarin.Shared;
 using Newtonsoft.Json.Linq;
 
-namespace LoopBack.Sdk.Xamarin.Loopback
+namespace Loopback.Sdk.Xamarin.Loopback
 {
     /// <summary>
-    ///    A base class implementing <see cref="ModelRepository{T}" /> for the built-in User type.
+    ///     A base class implementing <see cref="ModelRepository{T}" /> for the built-in User type.
     ///     <pre>
     ///         <code>UserRepository{MyUser} userRepo = new UserRepository{MyUser}("user", typeof(MyUser));
     ///  </code>
@@ -38,42 +38,22 @@ namespace LoopBack.Sdk.Xamarin.Loopback
     /// <typeparam name="T"> User implemenentation based on <see cref="User" /></typeparam>
     public class UserRepository<T> : ModelRepository<T> where T : User
     {
-        public static string SHARED_PREFERENCES_NAME = "RestAdapter";
-        public static string PROPERTY_CURRENT_USER_ID = "currentUserId";
+        private const string PROPERTY_CURRENT_USER_ID_KEY = "loopback.currentUserId";
+        private readonly IStorageService _storageService;
         private AccessTokenRepository _accessTokenRepository;
         private object _currentUserId;
-        private bool isCurrentUserIdLoaded;
-        //TODO:
-        private readonly ISharedReferencesService _sharedReferencesService;
+        private bool _isCurrentUserLoaded;
 
-        /// <summary>
-        ///     Creates a new UserRepository, associating it with the static {T} user class and the user class name.
-        /// </summary>
-        /// <param name="remoteClassName">The remote class name.</param>
-        public UserRepository(string remoteClassName)
-            : this(remoteClassName, null)
+        public UserRepository(string remoteClassName, IStorageService storageService) : base(remoteClassName)
         {
+            _storageService = storageService;
         }
 
-        /// <summary>
-        ///     Creates a new UserRepository, associating it with the static {T} user class and the user class name.
-        /// </summary>
-        /// <param name="remoteClassName">The remote class name.</param>
-        /// <param name="nameForRestUrl">
-        ///     The pluralized class name to use in REST transport. Use <code>null</code> for the default
-        ///     value, which is the plural form of className.
-        /// </param>
-        public UserRepository(string remoteClassName, string nameForRestUrl)
-            : base(remoteClassName, nameForRestUrl)
+        public UserRepository(string remoteClassName, string nameForRestUrl, IStorageService storageService) : base(remoteClassName, nameForRestUrl)
         {
+            _storageService = storageService;
         }
 
-        public UserRepository()
-            : base("user")
-        {
-        }
-
-        //TODO : typical usage
         /// <summary>
         ///     Get the cached value of the currently logged in user.
         /// </summary>
@@ -98,16 +78,18 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         }
 
         /// <summary>
-        ///     Creates a {T} user instance given an email and a password.
+        ///     Creates a <see cref="T" /> user instance given an email and a password.
         /// </summary>
         /// <param name="email">email</param>
         /// <param name="password">password</param>
         /// <returns>A {T} user instance.</returns>
         public T CreateUser(string email, string password)
         {
-            var dictionary = new Dictionary<string, object>();
-            dictionary.Add("email", email);
-            dictionary.Add("password", password);
+            var dictionary = new Dictionary<string, object>
+            {
+                {"email", email},
+                {"password", password}
+            };
 
             var user = CreateObject(dictionary);
             return user;
@@ -123,7 +105,8 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         {
             var contract = base.CreateContract();
 
-            contract.AddItem(new RestContractItem("/" + NameForRestUrl + "/login?include=user", "POST"), RemoteClassName + ".login");
+            contract.AddItem(new RestContractItem("/" + NameForRestUrl + "/login?include=user", "POST"),
+                RemoteClassName + ".login");
             contract.AddItem(new RestContractItem("/" + NameForRestUrl + "/logout", "POST"), RemoteClassName + ".logout");
             return contract;
         }
@@ -151,65 +134,60 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         /// </summary>
         /// <param name="email">user email</param>
         /// <param name="password">user password</param>
-        /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
-        /// <param name="onError">The callback to invoke when the execution finished with error</param>
-        public void LoginUser(string email, string password, Action<AccessToken, T> onSuccess, Action<Exception> onError)
+        public async Task<LoginResponse<T>> LoginUser(string email, string password)
         {
+            var result = new LoginResponse<T>();
             var parameters = new Dictionary<string, object>
             {
                 {"email", email},
-                { "password", password}
+                {"password", password}
             };
 
-            InvokeStaticMethod("login", parameters, response =>
+            var response = await InvokeStaticMethod("login", parameters);
+
+            if (response.IsSuccessStatusCode)
             {
-                try
-                {
-                    var creationParameters = response.ToDictionaryFromJson();
+                var creationParameters = response.Content.ToDictionaryFromJson();
 
-                    var token = GetAccessTokenRepository().CreateObject(creationParameters);
-                    GetRestAdapter().AccessToken = token.Id.ToString();
+                var token = GetAccessTokenRepository().CreateObject(creationParameters);
+                GetRestAdapter().AccessToken = token.Id.ToString();
 
-                    var userJson = JObject.Parse(response)["user"];
-                    var dictionaryFromJson = userJson.ToString().ToDictionaryFromJson();
+                var userJson = JObject.Parse(response.Content)["user"];
+                var dictionaryFromJson = userJson.ToString().ToDictionaryFromJson();
 
-                    var user = userJson != null
-                        ? CreateObject(dictionaryFromJson)
-                        : null;
+                var user = userJson != null
+                    ? CreateObject(dictionaryFromJson)
+                    : null;
 
-                    CurrentUserId = token.UserId;
-                    CachedCurrentUser = user;
+                CurrentUserId = token.UserId;
+                CachedCurrentUser = user;
 
-                    onSuccess(token, user);
-                }
-                catch (Exception)
-                {
-                    //TODO:log
-                }
-            }, onError);
+                result.Result = response.ReadAs<AccessToken>();
+                result.User = user;
+            }
+            else
+            {
+                result.Exception = response.Exception;
+            }
+
+            return result;
         }
 
         /// <summary>
         ///     Logs the current user out of the server and removes the access token from the system.
         /// </summary>
-        /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
-        /// <param name="onError">The callback to invoke when the execution finished with error</param>
-        public void Logout(Action onSuccess, Action<Exception> onError)
+        public async Task<RestResponse> Logout()
         {
-            InvokeStaticMethod("logout", null, response =>
+            var response = await InvokeStaticMethod("logout", null);
+
+            if (response.IsSuccessStatusCode)
             {
-                try
-                {
-                    var radapter = GetRestAdapter();
-                    radapter.ClearAccessToken();
-                    CurrentUserId = null;
-                    onSuccess();
-                }
-                catch (Exception)
-                {
-                    //TODO:Log
-                }
-            }, onError);
+                var radapter = GetRestAdapter();
+                radapter.ClearAccessToken();
+                CurrentUserId = null;
+            }
+
+            return (RestResponse)response;
         }
 
         private AccessTokenRepository GetAccessTokenRepository()
@@ -220,12 +198,16 @@ namespace LoopBack.Sdk.Xamarin.Loopback
 
         private void SaveCurrentUserId()
         {
-            //Save to shared cache
+            _storageService.Save(PROPERTY_CURRENT_USER_ID_KEY, CurrentUserId.ToString());
         }
 
         private void LoadCurrentUserIdIfNotLoaded()
         {
-            //Load it from shared cache
+            if (!_isCurrentUserLoaded)
+            {
+                CurrentUserId = _storageService.Get<object>(PROPERTY_CURRENT_USER_ID_KEY);
+                _isCurrentUserLoaded = true;
+            }
         }
     }
 }

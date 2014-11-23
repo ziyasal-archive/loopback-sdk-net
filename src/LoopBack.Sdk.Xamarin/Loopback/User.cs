@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using LoopBack.Sdk.Xamarin.Remoting;
 
-namespace LoopBack.Sdk.Xamarin.Loopback
+namespace Loopback.Sdk.Xamarin.Loopback
 {
     /// <summary>
     ///     A local representative of a single user instance on the server. Derived from Model,
@@ -9,7 +8,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
     /// </summary>
     public class User : Model
     {
-        public User(RemoteRepository<User> repository, Dictionary<string, object> creationParamerters)
+        public User(RestRepository<User> repository, Dictionary<string, object> creationParamerters)
             : base(repository, creationParamerters)
         {
         }

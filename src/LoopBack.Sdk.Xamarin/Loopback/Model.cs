@@ -1,12 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LoopBack.Sdk.Xamarin.Extensions;
-using LoopBack.Sdk.Xamarin.Remoting;
+using System.Threading.Tasks;
+using Loopback.Sdk.Xamarin.Extensions;
+using Loopback.Sdk.Xamarin.Remoting;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace LoopBack.Sdk.Xamarin.Loopback
+namespace Loopback.Sdk.Xamarin.Loopback
 {
+    /// <summary>
+    ///     A local representative of a single model instance on the server. The data is
+    ///     immediately accessible locally, but can be saved, destroyed, etc.from the
+    ///     server easily.
+    /// </summary>
     public class Model : RemoteClass
     {
         private readonly Dictionary<string, object> _overflow = new Dictionary<string, object>();
@@ -24,6 +31,7 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         /// <summary>
         ///     The model's id field.
         /// </summary>
+        [JsonProperty("id")]
         public object Id { get; internal set; }
 
         /// <summary>
@@ -65,12 +73,11 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         {
             var result = new Dictionary<string, object>();
 
-            result.AddRange(_overflow);
+            //result.AddRange(_overflow); //TODO:? Check
 
             result.Add("id", Id);
 
-            //TODO:
-            result.AddRange(base.ToDictionary());
+            //result.AddRange(base.ToDictionary()); //TODO:? Check
 
             return result;
         }
@@ -79,41 +86,50 @@ namespace LoopBack.Sdk.Xamarin.Loopback
         ///     Saves the Model to the server.
         ///     <p> This method calls <see cref="RemoteClass.ToDictionary()" /> to determine which fields should be saved.</p>
         /// </summary>
-        /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
-        /// <param name="onError">The callback to invoke when the execution finished with error</param>
-        public void Save(Action onSuccess, Action<Exception> onError)
+        public async Task<RestResponse> Save()
         {
             var method = Id == null ? "create" : "save";
-            InvokeMethod(method, ToDictionary(), responseContent =>
+
+            RemotingResponse remotingResponse = await InvokeMethod(method, ToDictionary());
+
+            RestResponse result = ToRestResponse(remotingResponse);
+            if (result.IsSuccessStatusCode)
             {
-                try
-                {
-                    var response = JObject.Parse(responseContent);
+                var response = JObject.Parse(remotingResponse.Content);
 
-                    JToken id;
-                    if (response.TryGetValue("id", out id))
-                    {
-                        if (id.HasValues)
-                            Id = id.Values().First();
-                    }
-
-                    onSuccess();
-                }
-                catch (Exception ex)
+                JToken id;
+                if (response.TryGetValue("id", out id))
                 {
-                    //TODO:Log
+                    if (id.HasValues)
+                        Id = id.Values().First();
                 }
-            }, onError);
+            }
+
+            return result;
         }
 
         /// <summary>
         ///     Destroys the Model from the server.
         /// </summary>
-        /// <param name="onSuccess">The callback to invoke when the execution finished with success</param>
-        /// <param name="onError">The callback to invoke when the execution finished with error</param>
-        public void Destroy(Action onSuccess, Action<Exception> onError)
+        public async Task<RestResponse> Destroy()
         {
-            InvokeMethod("remove", ToDictionary(), responseContent => { onSuccess(); }, onError);
+            return ToRestResponse(await InvokeMethod("remove", ToDictionary()));
+        }
+
+        private static RestResponse ToRestResponse(RemotingResponse response)
+        {
+            RestResponse result = new RestResponse
+            {
+                Content = response.Content,
+                Raw = response.Raw
+            };
+
+            if (!response.IsSuccessStatusCode)
+            {
+                result.Exception = response.Exception;
+            }
+
+            return result;
         }
     }
 }

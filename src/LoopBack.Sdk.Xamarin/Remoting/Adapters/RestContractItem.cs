@@ -1,4 +1,4 @@
-﻿namespace LoopBack.Sdk.Xamarin.Remoting.Adapters
+﻿namespace Loopback.Sdk.Xamarin.Remoting.Adapters
 {
     /// <summary>
     ///     A single item within a larger SLRESTContract, encapsulation a single route's verb and pattern, e.g. GET
@@ -45,16 +45,5 @@
         /// <summary>
         /// </summary>
         public virtual AdapterBase.ParameterEncoding ParameterEncoding { get; private set; }
-
-        /// <summary>
-        ///     Creates a new item encapsulating a route that expects multi-part request (e.g. file upload).
-        /// </summary>
-        /// <param name="pattern">The pattern corresponding to this route, e.g. <code>"/files/:id"</code>.</param>
-        /// <param name="verb">The verb corresponding to this route, e.g. <code>"POST"</code>.</param>
-        /// <returns>The <see cref="RestContractItem" /> created.</returns>
-        public static RestContractItem CreateMultipart(string pattern, string verb)
-        {
-            return new RestContractItem(pattern, verb, AdapterBase.ParameterEncoding.FORM_MULTIPART);
-        }
     }
 }

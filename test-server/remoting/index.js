@@ -4,7 +4,7 @@ var SharedClass = require('strong-remoting').SharedClass;
 
 remotes.exports = {
   simple: require('./simple'),
-  contract: require('./contract'),
+  contract: require('./contract')
 };
 
 remotes.addClass(new SharedClass('SimpleClass', require('./simple-class')));
@@ -18,6 +18,6 @@ var server = require('http')
   .createServer(app)
   .listen(3001, function() {
     console.log(
-      'strong-remoting test server listening on http://localhost:3001/');
+      'Remoting Test Server listening on http://localhost:3001/');
   });
 

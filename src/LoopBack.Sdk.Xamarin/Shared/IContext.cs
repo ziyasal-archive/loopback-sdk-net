@@ -1,4 +1,4 @@
-namespace LoopBack.Sdk.Xamarin.Shared
+﻿namespace Loopback.Sdk.Xamarin.Shared
 {
     public interface IContext
     {

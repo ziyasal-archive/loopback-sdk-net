@@ -1,4 +1,4 @@
-﻿namespace LoopBack.Sdk.Xamarin.Loopback
+﻿namespace Loopback.Sdk.Xamarin.Loopback
 {
     public class AccessTokenRepository : ModelRepository<AccessToken>
     {

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Loopback.Sdk.Xamarin.Remoting;
 using Newtonsoft.Json;
 
-namespace LoopBack.Sdk.Xamarin.Extensions
+namespace Loopback.Sdk.Xamarin.Extensions
 {
     public static class DictionaryExtensions
     {
+
         //public static Dictionary<string, object> ToDictionaryFromJson(this string json)
         //{
         //    var values = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
@@ -30,16 +32,30 @@ namespace LoopBack.Sdk.Xamarin.Extensions
             return JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
         }
 
-        public static T ToObject<T>(this Dictionary<string, object> source, T instance) where T : class
+        public static T ToObject<T>(this Dictionary<string, object> source, T instance) where T : RemoteClass
         {
-            var someObjectType = instance.GetType();
+            var objectType = instance.GetType();
 
             foreach (var item in source)
             {
-                someObjectType.GetRuntimeProperty(item.Key).SetValue(instance, item.Value, null);
+                var runtimeProperty = objectType.GetRuntimeProperty(item.Key);
+                if (runtimeProperty != null)
+                {
+                    runtimeProperty.SetValue(instance, item.Value, null);
+                }
+                else
+                {
+                    AddPropertyToObjectWithValue(item, instance);
+                }
             }
 
             return instance;
+        }
+
+        private static void AddPropertyToObjectWithValue(KeyValuePair<string, object> propertyPair, RemoteClass instance)
+        {
+            //HACK: Reflection emit not available in PCL
+            //TODO:
         }
 
         public static void AddRange<T>(this ICollection<T> target, IEnumerable<T> source)
@@ -68,7 +84,11 @@ namespace LoopBack.Sdk.Xamarin.Extensions
             var dictionary = new Dictionary<string, T>();
             foreach (var property in source.GetType().GetRuntimeProperties())
             {
-                AddPropertyToDictionary(property, source, dictionary);
+                var ignoreAttribute = property.GetCustomAttribute<JsonIgnoreAttribute>();
+                if (ignoreAttribute == null)
+                {
+                    AddPropertyToDictionary(property, source, dictionary);
+                }
             }
 
             return dictionary;
@@ -80,7 +100,16 @@ namespace LoopBack.Sdk.Xamarin.Extensions
             var value = property.GetValue(source, null);
             if (IsOfType<T>(value))
             {
-                dictionary.Add(property.Name, (T) value);
+                var propertyAttribute = property.GetCustomAttribute<JsonPropertyAttribute>();
+
+                var propertyName = property.Name;
+
+                if (propertyAttribute != null)
+                {
+                    propertyName = propertyAttribute.PropertyName;
+                }
+
+                dictionary.Add(propertyName, (T) value);
             }
         }
 
