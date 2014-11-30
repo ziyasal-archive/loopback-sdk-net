@@ -73,7 +73,7 @@ namespace Loopback.Sdk.Xamarin.Loopback.Adapters
         /// <param name="modelClass">modelClass The model class. The class must have a public no-argument constructor.</param>
         /// <returns>A new repository instance.</returns>
         public virtual ModelRepository<T> CreateRepository<T>(string name, string nameForRestUrl, Type modelClass)
-            where T : Model
+            where T : Model, new()
         {
             var repository = new ModelRepository<T>(name, nameForRestUrl);
             AttachModelRepository(repository);
@@ -91,7 +91,7 @@ namespace Loopback.Sdk.Xamarin.Loopback.Adapters
         /// <returns>A new repository instance.</returns>
         public virtual TRepository CreateRepository<TRepository, T>()
             where TRepository : RestRepository<T>, new()
-            where T : RemoteClass
+            where T : RemoteClass, new()
         {
             TRepository repository;
             try
@@ -112,9 +112,10 @@ namespace Loopback.Sdk.Xamarin.Loopback.Adapters
             return repository;
         }
 
-        private void AttachModelRepository<T>(RestRepository<T> repository) where T : RemoteClass
+        private void AttachModelRepository<T>(RestRepository<T> repository) where T : RemoteClass, new()
         {
-            Contract.AddItemsFromContract(repository.CreateContract());
+            //TODO: 
+            //Contract.AddItemsFromContract(repository.CreateContract());
             repository.Adapter = this;
         }
 

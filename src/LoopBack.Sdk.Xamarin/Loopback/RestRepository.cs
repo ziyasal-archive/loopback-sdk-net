@@ -1,10 +1,9 @@
 ﻿using Loopback.Sdk.Xamarin.Loopback.Adapters;
 using Loopback.Sdk.Xamarin.Remoting;
-using Loopback.Sdk.Xamarin.Remoting.Adapters;
 
 namespace Loopback.Sdk.Xamarin.Loopback
 {
-    public class RestRepository<T> : RemoteRepository<T> where T : RemoteClass
+    public class RestRepository<T> : RemoteRepository<T> where T : RemoteClass, new()
     {
         public RestRepository(string remoteClassName) : base(remoteClassName)
         {
@@ -13,14 +12,13 @@ namespace Loopback.Sdk.Xamarin.Loopback
         /// <summary>
         ///     Creates new RestContact
         /// </summary>
-        /// <returns> Return new <see cref="RestContract" /> instance. </returns>
-        public virtual RestContract CreateContract()
+        /// <returns> Return new <see cref="Model" /> instance. </returns>
+        public virtual void SetRemoting(T model)
         {
-            return new RestContract();
         }
 
         /// <summary>
-        ///     Returns Repository adapter as <see cref="RestAdapter" />
+        ///     Returns Repository adapter as <see cref="Adapters.RestAdapter" />
         /// </summary>
         /// <returns></returns>
         public IRestAdapter GetRestAdapter()

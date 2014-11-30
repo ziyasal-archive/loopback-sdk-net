@@ -10,7 +10,7 @@ namespace Loopback.Sdk.Xamarin.Remoting
     ///     A local representative of remote model repository, it provides access to static methods like
     ///     <pre>User.findById()</pre>
     /// </summary>
-    public class RemoteRepository<T> : IRemoteRepository where T : RemoteClass
+    public class RemoteRepository<T> : IRemoteRepository where T : RemoteClass, new()
     {
         /// <summary>
         ///     Creates a new Repository, associating it with the named remote class.
@@ -35,7 +35,7 @@ namespace Loopback.Sdk.Xamarin.Remoting
         /// <summary>
         ///     The name given to this prototype on the server.
         /// </summary>
-        public string RemoteClassName { get; private set; }
+        public string RemoteClassName { get; }
 
         /// <summary>
         ///     Creates a new <see cref="RemoteClass" /> as a virtual instance of this remote class.
@@ -77,9 +77,15 @@ namespace Loopback.Sdk.Xamarin.Remoting
             {
                 throw new ArgumentException("No adapter set");
             }
-            var path = RemoteClassName + "." + method;
+            var methodTmp = RemoteClassName + "." + method;
 
-            return await Adapter.InvokeStaticMethod(path, parameters);
+            var modelDef = CreateObject(parameters);
+
+            var verb = modelDef.GetVerbForMethod(methodTmp);
+            var path = modelDef.GetUrlForMethod(methodTmp, parameters);
+            var parameterEncoding = modelDef.GetParameterEncodingForMethod(methodTmp);
+
+            return await Adapter.InvokeStaticMethod(parameters, path, verb, parameterEncoding);
         }
     }
 }

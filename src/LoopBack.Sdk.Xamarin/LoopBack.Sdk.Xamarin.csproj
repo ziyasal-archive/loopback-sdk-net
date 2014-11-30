@@ -32,6 +32,7 @@
   <ItemGroup>
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\RestResponseExtensions.cs" />
     <Compile Include="Loopback\AccessToken.cs" />
     <Compile Include="Loopback\AccessTokenRepository.cs" />
     <Compile Include="Loopback\Adapters\IRestAdapter.cs" />
@@ -47,11 +48,11 @@
     <Compile Include="Remoting\Adapters\AdapterBase.cs" />
     <Compile Include="Remoting\Adapters\IRemotingRestAdapter.cs" />
     <Compile Include="Remoting\Adapters\RestAdapter.cs" />
-    <Compile Include="Remoting\Adapters\RestContract.cs" />
-    <Compile Include="Remoting\Adapters\RestContractItem.cs" />
+    <Compile Include="Remoting\Adapters\RemoteDefinition.cs" />
     <Compile Include="Remoting\IRemoteRepository.cs" />
     <Compile Include="Remoting\RemoteClass.cs" />
     <Compile Include="Remoting\RemoteRepository.cs" />
+    <Compile Include="Remoting\RemotingOptions.cs" />
     <Compile Include="Remoting\RemotingResponse.cs" />
     <Compile Include="Shared\IContext.cs" />
     <Compile Include="Shared\ILogger.cs" />

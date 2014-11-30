@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Loopback.Sdk.Xamarin.Extensions;
-using Loopback.Sdk.Xamarin.Remoting.Adapters;
 using Loopback.Sdk.Xamarin.Shared;
 using Newtonsoft.Json.Linq;
 
@@ -36,20 +35,21 @@ namespace Loopback.Sdk.Xamarin.Loopback
     ///     </pre>
     /// </summary>
     /// <typeparam name="T"> User implemenentation based on <see cref="User" /></typeparam>
-    public class UserRepository<T> : ModelRepository<T> where T : User
+    public class UserRepository<T> : ModelRepository<T> where T : User, new()
     {
         private const string PROPERTY_CURRENT_USER_ID_KEY = "loopback.currentUserId";
-        private readonly IStorageService _storageService;
         private AccessTokenRepository _accessTokenRepository;
         private object _currentUserId;
         private bool _isCurrentUserLoaded;
+        private readonly IStorageService _storageService;
 
         public UserRepository(string remoteClassName, IStorageService storageService) : base(remoteClassName)
         {
             _storageService = storageService;
         }
 
-        public UserRepository(string remoteClassName, string nameForRestUrl, IStorageService storageService) : base(remoteClassName, nameForRestUrl)
+        public UserRepository(string remoteClassName, string nameForRestUrl, IStorageService storageService)
+            : base(remoteClassName, nameForRestUrl)
         {
             _storageService = storageService;
         }
@@ -95,20 +95,12 @@ namespace Loopback.Sdk.Xamarin.Loopback
             return user;
         }
 
-        /// <summary>
-        ///     Creates a <see cref="RestContract" /> representing the user type's custom
-        ///     routes. Used to extend an <see cref="AdapterBase" /> to support user. Calls
-        ///     super <see cref="ModelRepository{T}" /> createContract first.
-        /// </summary>
-        /// <returns>A <see cref="RestContract" /> for this model type.</returns>
-        public override RestContract CreateContract()
+        public override void SetRemoting(T model)
         {
-            var contract = base.CreateContract();
+            base.SetRemoting(model);
 
-            contract.AddItem(new RestContractItem("/" + NameForRestUrl + "/login?include=user", "POST"),
-                RemoteClassName + ".login");
-            contract.AddItem(new RestContractItem("/" + NameForRestUrl + "/logout", "POST"), RemoteClassName + ".logout");
-            return contract;
+            model.SetRemoting("/" + NameForRestUrl + "/login?include=user", "POST", RemoteClassName + ".login");
+            model.SetRemoting("/" + NameForRestUrl + "/logout", "POST", RemoteClassName + ".logout");
         }
 
         /// <summary>
@@ -187,7 +179,7 @@ namespace Loopback.Sdk.Xamarin.Loopback
                 CurrentUserId = null;
             }
 
-            return (RestResponse)response;
+            return (RestResponse) response;
         }
 
         private AccessTokenRepository GetAccessTokenRepository()

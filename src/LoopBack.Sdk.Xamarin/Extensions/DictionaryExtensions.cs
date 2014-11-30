@@ -8,7 +8,6 @@ namespace Loopback.Sdk.Xamarin.Extensions
 {
     public static class DictionaryExtensions
     {
-
         //public static Dictionary<string, object> ToDictionaryFromJson(this string json)
         //{
         //    var values = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);

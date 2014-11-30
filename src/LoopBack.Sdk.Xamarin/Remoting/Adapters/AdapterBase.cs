@@ -62,17 +62,21 @@ namespace Loopback.Sdk.Xamarin.Remoting.Adapters
         ///         `parameters` for the latter.
         ///     </p>
         /// </summary>
-        /// <param name="method">method The method to invoke, e.g. <code>"MyClass.prototype.doSomething"</code>.</param>
-        /// <param name="constructorParameters">The parameters the virtual object should be created with.</param>
-        /// <param name="parameters">The parameters to invoke with.</param>
-        public abstract Task<RemotingResponse> InvokeInstanceMethod(string method,
-            Dictionary<string, object> constructorParameters, Dictionary<string, object> parameters);
+        /// <param name="parameters">The parameters the virtual object should be created with.</param>
+        /// <param name="path"></param>
+        /// <param name="verb"></param>
+        /// <param name="encoding"></param>
+        public abstract Task<RemotingResponse> InvokeInstanceMethod(Dictionary<string, object> parameters, string path,
+            string verb, ParameterEncoding encoding);
 
         /// <summary>
         ///     Invokes a remotable method exposed statically on the server.
         /// </summary>
-        /// <param name="method">The method to invoke, e.g. <code>"module.doSomething"</code>.</param>
         /// <param name="parameters">The parameters to invoke with.</param>
-        public abstract Task<RemotingResponse> InvokeStaticMethod(string method, Dictionary<string, object> parameters);
+        /// <param name="path"></param>
+        /// <param name="verb"></param>
+        /// <param name="parameterEncoding"></param>
+        public abstract Task<RemotingResponse> InvokeStaticMethod(Dictionary<string, object> parameters, string path,
+            string verb, ParameterEncoding parameterEncoding);
     }
 }

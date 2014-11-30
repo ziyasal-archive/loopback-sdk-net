@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using FluentAssertions;
-using Loopback.Sdk.Xamarin.Extensions;
 using Loopback.Sdk.Xamarin.Loopback;
 using Loopback.Sdk.Xamarin.Loopback.Adapters;
 using Loopback.Sdk.Xamarin.Shared;
+using Loopback.Sdk.Xamarin.Test.Extensions;
 using NUnit.Framework;
 
 namespace Loopback.Sdk.Xamarin.Test.Loopback
 {
     public class ModelTests : TestBase
     {
-        private ModelRepository<Model> _repository;
         private IRestAdapter _adapter;
+        private ModelRepository<Model> _repository;
 
         protected override void FinalizeSetUp()
         {
@@ -21,7 +21,7 @@ namespace Loopback.Sdk.Xamarin.Test.Loopback
         }
 
         [Test]
-        public async void Create_And_Remove_Test()
+        public async void Create_Test()
         {
             TestSuite.SetupFor("MyModel");
 
@@ -76,14 +76,15 @@ namespace Loopback.Sdk.Xamarin.Test.Loopback
 
             createResponse.IsSuccessStatusCode.ShouldBeEquivalentTo(true);
 
-            var response=await model.Destroy();
+            var response = await model.Destroy();
 
             response.IsSuccessStatusCode.ShouldBeEquivalentTo(true);
 
             model.Id.Should().BeNull();
 
-            var findResponse =  await _repository.FindById(model.Id);
-            findResponse.IsSuccessStatusCode.ShouldBeEquivalentTo(false);
+            await
+                AssertExtensions.ThrowsAsync<ArgumentNullException>(
+                    async () => { await _repository.FindById(model.Id); });
         }
     }
 }

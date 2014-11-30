@@ -33,7 +33,7 @@ namespace Loopback.Sdk.Xamarin.Loopback.Adapters
         /// <param name="modelClass">modelClass The model class. The class must have a public no-argument constructor.</param>
         /// <returns>A new repository instance.</returns>
         ModelRepository<T> CreateRepository<T>(string name, string nameForRestUrl, Type modelClass)
-            where T : Model;
+            where T : Model, new();
 
         /// <summary>
         ///     Creates a new <see cref="ModelRepository{T}" /> from the given subclass.
@@ -46,6 +46,6 @@ namespace Loopback.Sdk.Xamarin.Loopback.Adapters
         /// <returns>A new repository instance.</returns>
         TRepository CreateRepository<TRepository, T>()
             where TRepository : RestRepository<T>, new()
-            where T : RemoteClass;
+            where T : RemoteClass, new();
     }
 }

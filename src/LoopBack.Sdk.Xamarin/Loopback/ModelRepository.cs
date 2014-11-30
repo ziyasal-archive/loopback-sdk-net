@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Humanizer;
 using Loopback.Sdk.Xamarin.Extensions;
-using Loopback.Sdk.Xamarin.Remoting.Adapters;
 
 namespace Loopback.Sdk.Xamarin.Loopback
 {
@@ -12,7 +11,7 @@ namespace Loopback.Sdk.Xamarin.Loopback
     ///     <see cref="Model" /> for easy  creation, discovery, and management.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ModelRepository<T> : RestRepository<T> where T : Model
+    public class ModelRepository<T> : RestRepository<T> where T : Model, new()
     {
         public ModelRepository(string remoteClassName) : base(remoteClassName)
         {
@@ -35,27 +34,7 @@ namespace Loopback.Sdk.Xamarin.Loopback
         /// <summary>
         ///     the name of the REST url
         /// </summary>
-        public string NameForRestUrl { get; private set; }
-
-        /// <summary>
-        ///     Creates a <see cref="RestContract" /> representing this model type's custom  routes.Used to extend an
-        ///     <see cref="AdapterBase" /> to support this model type.
-        /// </summary>
-        /// <returns>A <see cref="RestContract" /> for this model type.</returns>
-        public override RestContract CreateContract()
-        {
-            var contract = base.CreateContract();
-
-            contract.AddItem(new RestContractItem("/" + NameForRestUrl, "POST"), RemoteClassName + ".prototype.create");
-            contract.AddItem(new RestContractItem("/" + NameForRestUrl + "/:id", "PUT"),
-                RemoteClassName + ".prototype.save");
-            contract.AddItem(new RestContractItem("/" + NameForRestUrl + "/:id", "DELETE"),
-                RemoteClassName + ".prototype.remove");
-            contract.AddItem(new RestContractItem("/" + NameForRestUrl + "/:id", "GET"), RemoteClassName + ".findById");
-            contract.AddItem(new RestContractItem("/" + NameForRestUrl, "GET"), RemoteClassName + ".all");
-
-            return contract;
-        }
+        public string NameForRestUrl { get; }
 
         /// <summary>
         ///     Creates a new <see cref="Model" />of this type with the parameters described.
@@ -75,7 +54,20 @@ namespace Loopback.Sdk.Xamarin.Loopback
                 }
             }
 
+            SetRemoting(model);
+
             return model;
+        }
+
+        public override void SetRemoting(T model)
+        {
+            base.SetRemoting(model);
+
+            model.SetRemoting("/" + NameForRestUrl, "POST", RemoteClassName + ".prototype.create");
+            model.SetRemoting("/" + NameForRestUrl + "/:id", "PUT", RemoteClassName + ".prototype.save");
+            model.SetRemoting("/" + NameForRestUrl + "/:id", "DELETE", RemoteClassName + ".prototype.remove");
+            model.SetRemoting("/" + NameForRestUrl + "/:id", "GET", RemoteClassName + ".findById");
+            model.SetRemoting("/" + NameForRestUrl, "GET", RemoteClassName + ".all");
         }
 
         /// <summary>
@@ -84,29 +76,28 @@ namespace Loopback.Sdk.Xamarin.Loopback
         /// <param name="id">The id to search for.</param>
         public async Task<RestResponse<T>> FindById(object id)
         {
+            if (id == null)
+            {
+                throw new ArgumentNullException("id");
+            }
+
             var result = new RestResponse<T>();
             var parameters = new Dictionary<string, object>
             {
                 {"id", id}
             };
 
-            try
-            {
-                var response = await InvokeStaticMethod("findById", parameters);
+            var response = await InvokeStaticMethod("findById", parameters);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    result.Result = response.ReadAs<T>();
-                }
-                else
-                {
-                    result.Exception = response.Exception;
-                }
-            }
-            catch (Exception exception)
+            result.FillFrom(response);
+
+            if (response.IsSuccessStatusCode)
             {
-                result.Exception = exception;
-                throw;
+                result.Result = response.ReadAs<T>();
+            }
+            else
+            {
+                result.Exception = response.Exception;
             }
 
             return result;
@@ -120,6 +111,8 @@ namespace Loopback.Sdk.Xamarin.Loopback
             var result = new RestResponse<List<T>>();
 
             var response = await InvokeStaticMethod("all", null);
+
+            result.FillFrom(response);
 
             if (response.IsSuccessStatusCode)
             {

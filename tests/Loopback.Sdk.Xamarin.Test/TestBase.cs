@@ -11,6 +11,9 @@ namespace Loopback.Sdk.Xamarin.Test
     [TestFixture]
     public class TestBase
     {
+        protected IFixture FixtureRepository { get; set; }
+        protected bool VerifyAll { get; set; }
+
         [SetUp]
         public void Setup()
         {
@@ -28,9 +31,6 @@ namespace Loopback.Sdk.Xamarin.Test
         {
             customization.Customize(FixtureRepository);
         }
-
-        protected IFixture FixtureRepository { get; set; }
-        protected bool VerifyAll { get; set; }
 
         protected virtual void FinalizeTearDown()
         {

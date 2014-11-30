@@ -71,7 +71,7 @@
     <Compile Include="Loopback\RestAdapterTests.cs" />
     <Compile Include="Remoting\ContractClass.cs" />
     <Compile Include="Remoting\RestAdapterTests.cs" />
-    <Compile Include="Remoting\RestContractTests.cs" />
+    <Compile Include="Remoting\RemoteClassTests.cs" />
     <Compile Include="Remoting\SimpleClass.cs" />
     <Compile Include="TestSuite.cs" />
     <Compile Include="TestBase.cs" />

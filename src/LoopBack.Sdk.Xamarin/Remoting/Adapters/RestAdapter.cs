@@ -24,7 +24,6 @@ namespace Loopback.Sdk.Xamarin.Remoting.Adapters
             : base(url)
         {
             ApplicationContext = context;
-            Contract = new RestContract();
 
             AttchContextToClient();
         }
@@ -33,7 +32,6 @@ namespace Loopback.Sdk.Xamarin.Remoting.Adapters
             : base(url)
         {
             ApplicationContext = new RestContext("loopback-xamarin/1.0");
-            Contract = new RestContract();
             AttchContextToClient();
         }
 
@@ -43,11 +41,6 @@ namespace Loopback.Sdk.Xamarin.Remoting.Adapters
         ///     The underlying HTTP client. This allows subclasses to add  custom headers like Authorization.
         /// </summary>
         public HttpClient Client { get; private set; }
-
-        /// <summary>
-        ///     This adapter's <see cref="RestContract">adapter</see>, a custom contract for fine-grained route configuration.
-        /// </summary>
-        public RestContract Contract { get; set; }
 
         public override void Connect(string url)
         {
@@ -68,16 +61,16 @@ namespace Loopback.Sdk.Xamarin.Remoting.Adapters
             return Client != null;
         }
 
-        public override async Task<RemotingResponse> InvokeInstanceMethod(string method,
-            Dictionary<string, object> constructorParameters, Dictionary<string, object> parameters)
+        public override async Task<RemotingResponse> InvokeInstanceMethod(Dictionary<string, object> parameters,
+            string path, string verb, ParameterEncoding parameterEncoding)
         {
-            return await InvokeInstanceMethodImpl(method, constructorParameters, parameters);
+            return await InvokeInstanceMethodImpl(parameters, path, verb, parameterEncoding);
         }
 
-        public override async Task<RemotingResponse> InvokeStaticMethod(string method,
-            Dictionary<string, object> parameters)
+        public override async Task<RemotingResponse> InvokeStaticMethod(Dictionary<string, object> parameters,
+            string path, string verb, ParameterEncoding parameterEncoding)
         {
-            return await InvokeStaticMethodImpl(method, parameters);
+            return await InvokeStaticMethodImpl(parameters, path, verb, parameterEncoding);
         }
 
         private void AttchContextToClient()
@@ -88,43 +81,15 @@ namespace Loopback.Sdk.Xamarin.Remoting.Adapters
             }
         }
 
-        private async Task<RemotingResponse> InvokeInstanceMethodImpl(string method,
-            Dictionary<string, object> constructorParameters, Dictionary<string, object> parameters)
+        private async Task<RemotingResponse> InvokeInstanceMethodImpl(Dictionary<string, object> combinedParameters,
+            string path, string verb, ParameterEncoding parameterEncoding)
         {
-            if (Contract == null)
-            {
-                throw new Exception("Invalid contract");
-            }
-
-            var combinedParameters = new Dictionary<string, object>();
-            if (constructorParameters != null)
-            {
-                combinedParameters.AddRange(constructorParameters);
-            }
-            if (parameters != null)
-            {
-                combinedParameters.AddRange(parameters);
-            }
-
-            var verb = Contract.GetVerbForMethod(method);
-            var path = Contract.GetUrlForMethod(method, combinedParameters);
-            
-            var parameterEncoding = Contract.GetParameterEncodingForMethod(method);
-
             return await HandleResponse(await Request(path, verb, combinedParameters, parameterEncoding));
         }
 
-        private async Task<RemotingResponse> InvokeStaticMethodImpl(string method, Dictionary<string, object> parameters)
+        private async Task<RemotingResponse> InvokeStaticMethodImpl(Dictionary<string, object> parameters, string path,
+            string verb, ParameterEncoding parameterEncoding)
         {
-            if (Contract == null)
-            {
-                throw new InvalidOperationException("Invalid contract");
-            }
-
-            var verb = Contract.GetVerbForMethod(method);
-            var path = Contract.GetUrlForMethod(method, parameters);
-            var parameterEncoding = Contract.GetParameterEncodingForMethod(method);
-
             var result = new RemotingResponse();
             try
             {

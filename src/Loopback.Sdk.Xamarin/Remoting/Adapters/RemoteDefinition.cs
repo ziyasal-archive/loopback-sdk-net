@@ -4,13 +4,13 @@
     ///     A single item within a larger SLRESTContract, encapsulation a single route's verb and pattern, e.g. GET
     ///     /widgets/:id.
     /// </summary>
-    public class RestContractItem
+    public class RemoteDefinition
     {
         /// <summary>
         ///     Creates a new item encapsulating the given pattern and the default verb,<code>"POST"</code>
         /// </summary>
         /// <param name="pattern">The pattern corresponding to this route, e.g. <code>"/widgest/:id"</code></param>
-        public RestContractItem(string pattern)
+        public RemoteDefinition(string pattern)
             : this(pattern, "POST")
         {
         }
@@ -20,12 +20,12 @@
         /// </summary>
         /// <param name="pattern">The pattern corresponding to this route, e.g. <code>"/widgets/:id"</code>. </param>
         /// <param name="verb">The verb corresponding to this route, e.g. <code>"GET"</code>.</param>
-        public RestContractItem(string pattern, string verb)
+        public RemoteDefinition(string pattern, string verb)
             : this(pattern, verb, AdapterBase.ParameterEncoding.JSON)
         {
         }
 
-        private RestContractItem(string pattern, string verb, AdapterBase.ParameterEncoding parameterEncoding)
+        private RemoteDefinition(string pattern, string verb, AdapterBase.ParameterEncoding parameterEncoding)
         {
             Pattern = pattern;
             Verb = verb;

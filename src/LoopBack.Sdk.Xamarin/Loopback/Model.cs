@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Loopback.Sdk.Xamarin.Extensions;
 using Loopback.Sdk.Xamarin.Remoting;
@@ -88,11 +86,13 @@ namespace Loopback.Sdk.Xamarin.Loopback
         /// </summary>
         public async Task<RestResponse> Save()
         {
+            var result = new RestResponse();
             var method = Id == null ? "create" : "save";
 
-            RemotingResponse remotingResponse = await InvokeMethod(method, ToDictionary());
+            var remotingResponse = await InvokeMethod(method, ToDictionary());
 
-            RestResponse result = ToRestResponse(remotingResponse);
+            result.FillFrom(remotingResponse);
+
             if (result.IsSuccessStatusCode)
             {
                 var response = JObject.Parse(remotingResponse.Content);
@@ -100,8 +100,7 @@ namespace Loopback.Sdk.Xamarin.Loopback
                 JToken id;
                 if (response.TryGetValue("id", out id))
                 {
-                    if (id.HasValues)
-                        Id = id.Values().First();
+                    Id = id.ToString();
                 }
             }
 
@@ -113,21 +112,16 @@ namespace Loopback.Sdk.Xamarin.Loopback
         /// </summary>
         public async Task<RestResponse> Destroy()
         {
-            return ToRestResponse(await InvokeMethod("remove", ToDictionary()));
-        }
+            var result = new RestResponse();
 
-        private static RestResponse ToRestResponse(RemotingResponse response)
-        {
-            RestResponse result = new RestResponse
-            {
-                Content = response.Content,
-                Raw = response.Raw
-            };
+            var response = await InvokeMethod("remove", ToDictionary());
 
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                result.Exception = response.Exception;
+                Id = null;
             }
+
+            result.FillFrom(response);
 
             return result;
         }
