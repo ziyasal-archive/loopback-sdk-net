@@ -1,4 +1,4 @@
-loopback-sdk-xamarin
+loopback-sdk-net
 ====================
 
-Xamarin Client SDK for the LoopBack framework.
+.NET & Xamarin Client SDK for the LoopBack framework.
